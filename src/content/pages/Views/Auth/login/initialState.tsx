@@ -1,7 +1,7 @@
 import {State} from './types.d';
 
 export const initialState:State = {
-    username: '',
+    email: '',
     password: '',
     isButtonDisabled: true,
     helperText: '',

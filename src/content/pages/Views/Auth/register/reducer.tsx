@@ -2,6 +2,36 @@ import { Action, State } from './types.d';
 
 export const reducer = (state: State, action: Action): State => {
   switch (action.type) {
+    case 'setFirstName':
+      return {
+        ...state,
+        firstName: action.payload
+      };
+    case 'setLastName':
+      return {
+        ...state,
+        lastName: action.payload
+      };
+    case 'setUserName':
+      return {
+        ...state,
+        userName: action.payload
+      };
+    case 'setPhone':
+      return {
+        ...state,
+        phone: action.payload
+      };
+    case 'setGender':
+      return {
+        ...state,
+        gender: action.payload
+      };
+    case 'setBirthDate':
+      return {
+        ...state,
+        birthDate: action.payload
+      };
     case 'setEmail':
       return {
         ...state,
@@ -17,13 +47,13 @@ export const reducer = (state: State, action: Action): State => {
         ...state,
         isButtonDisabled: action.payload
       };
-    case 'loginSuccess':
+    case 'registerSuccess':
       return {
-        ...state,
+        ...state, 
         helperText: action.payload,
         isError: false
       };
-    case 'loginFailed':
+    case 'registerFailed':
       return {
         ...state,
         helperText: action.payload,
@@ -33,12 +63,6 @@ export const reducer = (state: State, action: Action): State => {
       return {
         ...state,
         isError: action.payload
-      };
-    case 'setErrorText':
-      return {
-        ...state,
-        isError: action.payload,
-        helperText: action.message
       };
   }
 };

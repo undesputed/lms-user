@@ -21,6 +21,9 @@ import {
   Stack
 } from '@mui/material';
 import moment from 'moment';
+import { reducer } from './reducer';
+import { initialState } from './initialState';
+import { GoogleLogin } from '@react-oauth/google';
 
 function Copyright(props: any) {
   return (
@@ -58,9 +61,7 @@ const gender = [
 const theme = createTheme();
 
 export default function SignUp() {
-  const [day, setDay] = React.useState('');
-  const [month, setMonth] = React.useState('');
-  const [year, setYear] = React.useState('');
+  const [state, dispatch] = React.useReducer(reducer, initialState);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -70,6 +71,14 @@ export default function SignUp() {
       password: data.get('password')
     });
   };
+
+  const googleSignUp = async (response) => {
+
+  };
+
+  const googleSignUpError = async() => {
+
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -128,16 +137,6 @@ export default function SignUp() {
                   label="Username"
                   name="username"
                   autoComplete="username"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
                 />
               </Grid>
               <Grid item xs={12}>
@@ -224,36 +223,23 @@ export default function SignUp() {
             >
               Sign Up
             </Button>
-            <Button
-              type="submit"
-              fullWidth
-              variant="outlined"
-              sx={{
-                display: 'flex',
-                justifyContent: 'space-evenly',
-                alignItems: 'center',
-                mb: 2
-              }}
-            >
-              <FaGoogle size={40} color="#ff3e30" /> Continue with Google
-            </Button>
-            <Button
-              type="submit"
-              fullWidth
-              variant="outlined"
-              sx={{
-                display: 'flex',
-                justifyContent: 'space-evenly',
-                alignItems: 'center'
-              }}
-            >
-              <FaFacebookSquare size={40} color="#3b5998" /> Continue with
-              Facebook
+            <Button fullWidth sx={{ mb: 2 }}>
+              <GoogleLogin
+                type="standard"
+                theme="filled_blue"
+                text="continue_with"
+                shape="square"
+                width="200"
+                locale="en"
+                cancel_on_tap_outside={true}
+                onSuccess={googleSignUp}
+                onError={() => googleSignUpError}
+              />
             </Button>
             <Grid container justifyContent="flex-end" mt={2}>
               <Grid item>
                 <Link href="/auth/login" variant="body2">
-                  {"Already have an account? Sign in"}
+                  {'Already have an account? Sign in'}
                 </Link>
               </Grid>
             </Grid>

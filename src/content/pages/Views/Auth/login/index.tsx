@@ -7,28 +7,43 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
+import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { FaGoogle, FaFacebookSquare, FaTwitter } from 'react-icons/fa';
 import { Helmet } from 'react-helmet-async';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-
+import { login } from 'src/actions/authActions';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from 'src/assets/image/logo/Logo.png';
-
+import * as api from 'src/api/api';
 import { reducer } from './reducer';
 import { initialState } from './initialState';
+import axios from 'axios';
+import {
+  GoogleLogin,
+  GoogleLoginProps,
+  useGoogleLogin
+} from '@react-oauth/google';
+import jwtDecode from 'jwt-decode';
+import '../../../../../assets/scss/main.css';
+import { useDispatch } from 'react-redux';
+import { AUTH, GOOGLEAUTH } from 'src/actions/constants';
+import { useSelector } from 'react-redux';
+import { RootState } from 'src/reducers';
 
 const theme = createTheme();
 
 const Login = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
-
+  const authDispatch = useDispatch();
+  const [loading, setLoading] = React.useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (state.username.trim() && state.password.trim()) {
+    if (state.email.trim() && state.password.trim()) {
       dispatch({
         type: 'setIsButtonDisabled',
         payload: false
@@ -39,21 +54,58 @@ const Login = () => {
         payload: true
       });
     }
-  }, [state.username, state.password]);
+  }, [state.email, state.password]);
 
-  const handleLogin = () => {
-    if (state.username === 'test' && state.password === 'test') {
-      dispatch({
-        type: 'loginSuccess',
-        payload: 'Login Successfully'
-      });
-      navigate('/admin/dashboard');
+  const handleLogin = async () => {
+    if (state.email && state.password) {
+      try {
+        const { data } = await api.login(state);
+        authDispatch({ type: AUTH, data });
+        dispatch({
+          type: 'loginSuccess',
+          payload: 'Login Successfully'
+        });
+        navigate('/patient/dashboard');
+      } catch (error) {
+        dispatch({
+          type: 'loginFailed',
+          payload: 'Login Failed'
+        });
+
+        dispatch({
+          type: 'setIsError',
+          payload: true
+        });
+      }
     } else {
       dispatch({
         type: 'loginFailed',
         payload: 'Incorrect username or password'
       });
     }
+  };
+
+  const googleLogin = async (response) => {
+    var userObject: any = jwtDecode(response.credential);
+
+    try {
+      const { data } = await api.googleAuth(userObject);
+      authDispatch({ type: GOOGLEAUTH, data });
+      dispatch({
+        type: 'loginSuccess',
+        payload: 'Login Successfully'
+      });
+      navigate('/patient/dashboard');
+    } catch (error) {
+      dispatch({
+        type: 'setErrorText',
+        payload: true,
+        message: 'Email not found!!'
+      });
+    }
+  };
+  const errorMessage = (error) => {
+    console.log(error);
   };
 
   const handleKeyPress = (event: React.KeyboardEvent) => {
@@ -66,7 +118,7 @@ const Login = () => {
     event
   ) => {
     dispatch({
-      type: 'setUsername',
+      type: 'setEmail',
       payload: event.target.value
     });
   };
@@ -79,6 +131,13 @@ const Login = () => {
       payload: event.target.value
     });
   };
+
+  React.useEffect(() => {
+    if (localStorage.length > 0) {
+      navigate('/patient/dashboard');
+    }
+  }, []);
+  
   return (
     <ThemeProvider theme={theme}>
       <Helmet>
@@ -103,7 +162,14 @@ const Login = () => {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <Box component="form" noValidate sx={{ mt: 1 }}>
+          {state.isError ? (
+            <Box mt={2}>
+              <Alert severity="error">
+                Invalid Credentials! Please Try again!!
+              </Alert>
+            </Box>
+          ) : null}
+          <Box component="form" sx={{ mt: 1 }}>
             <TextField
               error={state.isError}
               onChange={handleUsernameChange}
@@ -111,9 +177,10 @@ const Login = () => {
               margin="normal"
               required
               fullWidth
+              type="email"
               id="email"
-              label="Username"
-              name="username"
+              label="email@gmail.com"
+              name="email"
               autoFocus
             />
             <TextField
@@ -135,42 +202,27 @@ const Login = () => {
               label="Remember me"
             />
             <Button
-              type="submit"
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
-              onClick={handleLogin}
               disabled={state.isButtonDisabled}
+              onClick={handleLogin}
             >
-              Sign In
+              Login
             </Button>
-            <Button
-              type="submit"
-              fullWidth
-              variant="outlined"
-              sx={{
-                display: 'flex',
-                justifyContent: 'space-evenly',
-                alignItems: 'center',
-                mb: 2
-              }}
-            >
-              <FaGoogle size={40} color="#ff3e30" /> Continue with Google
+            <Button fullWidth sx={{ mb: 2 }}>
+              <GoogleLogin
+                type="standard"
+                theme="filled_blue"
+                text="continue_with"
+                shape="square"
+                width="200"
+                locale="en"
+                cancel_on_tap_outside={true}
+                onSuccess={googleLogin}
+                onError={() => errorMessage}
+              />
             </Button>
-            <Button
-              type="submit"
-              fullWidth
-              variant="outlined"
-              sx={{
-                display: 'flex',
-                justifyContent: 'space-evenly',
-                alignItems: 'center'
-              }}
-            >
-              <FaFacebookSquare size={40} color="#3b5998" /> Continue with
-              Facebook
-            </Button>
-
             <Grid container mt={2} mb={10}>
               <Grid item xs>
                 <Link to="#">Forgot password?</Link>

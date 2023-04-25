@@ -18,7 +18,7 @@ function Footer() {
       >
         <Box>
           <Typography variant="subtitle1">
-            &copy; 2022 - Tokyo Free White React Typescript Admin Dashboard
+            &copy; 2022 - EC-Care Medical Laboratory
           </Typography>
         </Box>
         <Typography
@@ -29,11 +29,11 @@ function Footer() {
         >
           Crafted by{' '}
           <Link
-            href="https://bloomui.com"
+            href="https://github.com/undesputed"
             target="_blank"
             rel="noopener noreferrer"
           >
-            BloomUI.com
+            Carrie A. Yu  (Undesputed)
           </Link>
         </Typography>
       </Box>

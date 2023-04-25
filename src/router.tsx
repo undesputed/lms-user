@@ -17,20 +17,56 @@ const Loader = (Component) => (props) =>
 // Pages
 const Overview = Loader(lazy(() => import('src/content/overview')));
 const Login = Loader(lazy(() => import('src/content/pages/Views/Auth/login')));
-const Register = Loader(lazy(() => import('src/content/pages/Views/Auth/register')));
-const ContentManagement = Loader(lazy(() => import('src/content/pages/Views/ContentManagement')));
-const Dashboard = Loader(lazy(() => import('src/content/pages/Views/Dashboard')));
-const DataVisualization = Loader(lazy(() => import('src/content/pages/Views/DataVisualization')));
-const EmailManagement = Loader(lazy(() => import('src/content/pages/Views/EmailManagement')));
-const EmployeeManagement = Loader(lazy(() => import('src/content/pages/Views/EmployeeManagement')));
-const InventoryManagement = Loader(lazy(() => import('src/content/pages/Views/InventoryManagement')));
-const MachineIntegration = Loader(lazy(() => import('src/content/pages/Views/MachineIntegration')));
-const Notification = Loader(lazy(() => import('src/content/pages/Views/Notification')));
-const PatientManagement = Loader(lazy(() => import('src/content/pages/Views/PatientManagement')));
-const PaymentIntegration = Loader(lazy(() => import('src/content/pages/Views/PaymentIntegration')));
-const SalesManagement = Loader(lazy(() => import('src/content/pages/Views/SalesManagement')));
-const SearchAndFiltering = Loader(lazy(() => import('src/content/pages/Views/SearchAndFiltering')));
-const UserManagement = Loader(lazy(() => import('src/content/pages/Views/UserManagement')));
+const Register = Loader(
+  lazy(() => import('src/content/pages/Views/Auth/register'))
+);
+const ContentManagement = Loader(
+  lazy(() => import('src/content/pages/Views/ContentManagement'))
+);
+const Dashboard = Loader(
+  lazy(() => import('src/content/pages/Views/Dashboard'))
+);
+const DataVisualization = Loader(
+  lazy(() => import('src/content/pages/Views/DataVisualization'))
+);
+const EmailManagement = Loader(
+  lazy(() => import('src/content/pages/Views/EmailManagement'))
+);
+const EmployeeManagement = Loader(
+  lazy(() => import('src/content/pages/Views/EmployeeManagement'))
+);
+const InventoryManagement = Loader(
+  lazy(() => import('src/content/pages/Views/InventoryManagement'))
+);
+const MachineIntegration = Loader(
+  lazy(() => import('src/content/pages/Views/MachineIntegration'))
+);
+const Notification = Loader(
+  lazy(() => import('src/content/pages/Views/Notification'))
+);
+const PatientManagement = Loader(
+  lazy(() => import('src/content/pages/Views/PatientManagement'))
+);
+const PaymentIntegration = Loader(
+  lazy(() => import('src/content/pages/Views/PaymentIntegration'))
+);
+const SalesManagement = Loader(
+  lazy(() => import('src/content/pages/Views/SalesManagement'))
+);
+const SearchAndFiltering = Loader(
+  lazy(() => import('src/content/pages/Views/SearchAndFiltering'))
+);
+const UserManagement = Loader(
+  lazy(() => import('src/content/pages/Views/UserManagement'))
+);
+
+//Patient Pgaes
+const PatientDashboard = Loader(
+  lazy(() => import('src/content/patient/views/dashboard'))
+);
+const PatientForm = Loader(
+  lazy(() => import('src/content/patient/views/requestForm'))
+);
 
 // Dashboards
 
@@ -109,7 +145,7 @@ const routes: RouteObject[] = [
           {
             path: 'register',
             element: <Register />
-          },
+          }
         ]
       },
       {
@@ -140,6 +176,19 @@ const routes: RouteObject[] = [
       {
         path: '*',
         element: <Status404 />
+      }
+    ]
+  },
+  {
+    path: 'patient',
+    children: [
+      {
+        path: 'dashboard',
+        element: <PatientDashboard />
+      },
+      {
+        path: 'requestForm',
+        element: <PatientForm />
       }
     ]
   },
@@ -198,7 +247,7 @@ const routes: RouteObject[] = [
       {
         path: 'user_management',
         element: <UserManagement />
-      },
+      }
     ]
   },
   {
