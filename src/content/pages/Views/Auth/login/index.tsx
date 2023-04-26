@@ -31,8 +31,6 @@ import jwtDecode from 'jwt-decode';
 import '../../../../../assets/scss/main.css';
 import { useDispatch } from 'react-redux';
 import { AUTH, GOOGLEAUTH } from 'src/actions/constants';
-import { useSelector } from 'react-redux';
-import { RootState } from 'src/reducers';
 
 const theme = createTheme();
 
@@ -102,6 +100,7 @@ const Login = () => {
         payload: true,
         message: 'Email not found!!'
       });
+      console.error(error);
     }
   };
   const errorMessage = (error) => {
@@ -133,11 +132,11 @@ const Login = () => {
   };
 
   React.useEffect(() => {
-    if (localStorage.length > 0) {
+    if (localStorage.getItem('profile')) {
       navigate('/patient/dashboard');
     }
   }, []);
-  
+
   return (
     <ThemeProvider theme={theme}>
       <Helmet>

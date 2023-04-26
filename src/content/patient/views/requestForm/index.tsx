@@ -2,6 +2,7 @@ import * as React from 'react';
 import Typography from '@mui/material/Typography';
 import {
   Box,
+  Button,
   Container,
   Divider,
   FormControl,
@@ -19,9 +20,12 @@ import Header from '../../components/Header';
 import logo from 'src/assets/image/logo/Logo.png';
 import Categories from './category';
 import { categoryInterface } from './interface';
-import { categoryReducer } from './reducer';
-import { categoryState } from './initialState';
+import { categoryReducer, subCategoryReducer } from './reducer';
+import { categoryState, subCategoryState } from './initialState';
 import * as api from 'src/api/api';
+import { useNavigate } from 'react-router';
+import { useDispatch } from 'react-redux';
+import GenerateQR from './generateQR';
 
 const top100Films = [
   { label: 'The Shawshank Redemption', year: 1994 },
@@ -152,13 +156,51 @@ const top100Films = [
 ];
 
 const PatientForm = () => {
+  const navigate = useNavigate();
   const [age, setAge] = React.useState(0);
+  const categoryDispatch = useDispatch();
   const [category, dispatch] = React.useReducer(categoryReducer, categoryState);
+  const [subCategory, subDispatch] = React.useReducer(
+    subCategoryReducer,
+    subCategoryState
+  );
 
-  const fetchCategory = async () => {};
+  const fetchCategory = async () => {
+    try {
+      const { data } = await api.category();
+      categoryDispatch({ type: 'FETCH_CATEGORY', data });
+      dispatch({
+        type: 'CATEGORY_FETCH_SUCCESS',
+        payload: data
+      });
+    } catch (error) {
+      dispatch({
+        type: 'CATEGORY_FETCH_FAILURE',
+        payload: 'Fetch Category Failed',
+        message: error
+      });
+    }
+  };
+
+  const fetchSubCategory = async () => {
+    try {
+      const { data } = await api.subCategory();
+      subDispatch({
+        type: 'SUBCATEGORY_FETCH_SUCCESS',
+        payload: data
+      });
+    } catch (error) {
+      subDispatch({
+        type: 'SUBCATEGORY_FETCH_FAILURE',
+        payload: 'Fetch sub Category Failed',
+        message: error
+      });
+    }
+  };
 
   React.useEffect(() => {
     fetchCategory();
+    fetchSubCategory();
   }, []);
   return (
     <>
@@ -318,7 +360,11 @@ const PatientForm = () => {
             </Grid>
           </Box>
         </Paper>
-        <Categories />
+        <Categories
+          categoryData={category.categoryData}
+          subCategoryData={subCategory.subCategoryData}
+        />
+        <GenerateQR />
       </Container>
       <Footer />
     </>

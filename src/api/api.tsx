@@ -4,7 +4,7 @@ const API = axios.create({ baseURL: 'http://localhost:8080/api/' });
 
 API.interceptors.request.use((req) => {
   if (localStorage.getItem('profile')) {
-    req.headers.authorization = `Bearer ${
+    req.headers.Authorization = `${
       JSON.parse(localStorage.getItem('profile')).token
     }`;
   }
@@ -22,3 +22,10 @@ export const googleUserRegistration = (formData: any) =>
   API.post('auth/google/register', formData);
 export const googleRegistration = (formData: any) =>
   API.post('auth/google/googleRegister', formData);
+
+// Category
+export const category = () => API.get('category');
+
+// SubCategory
+export const subCategory = () =>
+  API.get(`subCategory`);

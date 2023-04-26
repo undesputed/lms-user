@@ -16,6 +16,7 @@ const authReducer = (action: any, state = initialState) => {
         localStorage.setItem('profile', JSON.stringify({ ...state?.data }));
       }
       localStorage.setItem('profile', JSON.stringify({ ...state?.data }));
+      console.log(state.data.token);
       return {
         ...state,
         isLoggedIn: true,

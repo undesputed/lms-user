@@ -13,11 +13,14 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import logo from 'src/assets/image/logo/Logo White-01.png';
+import { Navigate, useNavigate } from 'react-router';
 
 const pages = ['Requests', 'FAQ', 'Privacy Policy'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 function Header() {
+  const navigate = useNavigate();
+
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
@@ -38,6 +41,8 @@ function Header() {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+    localStorage.clear();
+    navigate('/auth/login');
   };
 
   return (
