@@ -18,3 +18,7 @@ export interface subCategoryInterface {
   updated_at: Date;
   deleted_at: Date;
 }
+
+export interface qrCodeInterface {
+  value?: string;
+}

@@ -26,6 +26,7 @@ import * as api from 'src/api/api';
 import { useNavigate } from 'react-router';
 import { useDispatch } from 'react-redux';
 import GenerateQR from './generateQR';
+import Request from './request';
 
 const top100Films = [
   { label: 'The Shawshank Redemption', year: 1994 },
@@ -262,9 +263,9 @@ const PatientForm = () => {
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField
-                  type="date"
+                  type="birthday"
                   id="outlined-select-currency"
-                  helperText="Date"
+                  helperText="Birthday"
                   style={{
                     width: '100%'
                   }}
@@ -364,6 +365,7 @@ const PatientForm = () => {
           categoryData={category.categoryData}
           subCategoryData={subCategory.subCategoryData}
         />
+        <Request />
         <GenerateQR />
       </Container>
       <Footer />

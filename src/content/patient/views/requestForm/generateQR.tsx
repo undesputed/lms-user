@@ -2,8 +2,9 @@ import React from 'react';
 import { Box, Button, Paper } from '@mui/material';
 import QrCode2Icon from '@mui/icons-material/QrCode2';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import { qrCodeInterface } from './interface';
 
-const GenerateQR = () => {
+const GenerateQR: React.FC<qrCodeInterface> = (props) => {
   return (
     <>
       <Paper
