@@ -3,6 +3,7 @@ import { Navigate } from 'react-router-dom';
 import { RouteObject } from 'react-router';
 
 import SidebarLayout from 'src/layouts/SidebarLayout';
+import ReceptionistSideBar from 'src/content/receptionist/component/SidebarLayout';
 import BaseLayout from 'src/layouts/BaseLayout';
 
 import SuspenseLoader from 'src/components/SuspenseLoader';
@@ -16,48 +17,26 @@ const Loader = (Component) => (props) =>
 
 // Pages
 const Overview = Loader(lazy(() => import('src/content/overview')));
-const Login = Loader(lazy(() => import('src/content/pages/Views/Auth/login')));
+
+//Patient Auth
+const Login = Loader(
+  lazy(() => import('src/content/pages/Views/Auth/patientAuth/login'))
+);
 const Register = Loader(
-  lazy(() => import('src/content/pages/Views/Auth/register'))
+  lazy(() => import('src/content/pages/Views/Auth/patientAuth/register'))
 );
-const ContentManagement = Loader(
-  lazy(() => import('src/content/pages/Views/ContentManagement'))
+
+//Receptionist
+const ReceptionLogin = Loader(
+  lazy(() => import('src/content/pages/Views/Auth/receptionistAuth/login'))
 );
-const Dashboard = Loader(
-  lazy(() => import('src/content/pages/Views/Dashboard'))
+
+const ReceptionRegister = Loader(
+  lazy(() => import('src/content/pages/Views/Auth/receptionistAuth/register'))
 );
-const DataVisualization = Loader(
-  lazy(() => import('src/content/pages/Views/DataVisualization'))
-);
-const EmailManagement = Loader(
-  lazy(() => import('src/content/pages/Views/EmailManagement'))
-);
-const EmployeeManagement = Loader(
-  lazy(() => import('src/content/pages/Views/EmployeeManagement'))
-);
-const InventoryManagement = Loader(
-  lazy(() => import('src/content/pages/Views/InventoryManagement'))
-);
-const MachineIntegration = Loader(
-  lazy(() => import('src/content/pages/Views/MachineIntegration'))
-);
-const Notification = Loader(
-  lazy(() => import('src/content/pages/Views/Notification'))
-);
-const PatientManagement = Loader(
-  lazy(() => import('src/content/pages/Views/PatientManagement'))
-);
-const PaymentIntegration = Loader(
-  lazy(() => import('src/content/pages/Views/PaymentIntegration'))
-);
-const SalesManagement = Loader(
-  lazy(() => import('src/content/pages/Views/SalesManagement'))
-);
-const SearchAndFiltering = Loader(
-  lazy(() => import('src/content/pages/Views/SearchAndFiltering'))
-);
-const UserManagement = Loader(
-  lazy(() => import('src/content/pages/Views/UserManagement'))
+
+const ReceptionistDashboard = Loader(
+  lazy(() => import('src/content/receptionist/views/Dashboard'))
 );
 
 //Patient Pgaes
@@ -193,61 +172,69 @@ const routes: RouteObject[] = [
     ]
   },
   {
-    path: 'admin',
-    element: <SidebarLayout />,
+    path: 'receptionist',
+    element: <ReceptionistSideBar />,
     children: [
       {
+        path: 'login',
+        element: <ReceptionLogin />
+      },
+      {
+        path: 'register',
+        element: <ReceptionRegister />
+      },
+      {
         path: 'dashboard',
-        element: <Dashboard />
-      },
-      {
-        path: 'content_management',
-        element: <ContentManagement />
-      },
-      {
-        path: 'data_visualization',
-        element: <DataVisualization />
-      },
-      {
-        path: 'email_management',
-        element: <EmailManagement />
-      },
-      {
-        path: 'employee_management',
-        element: <EmployeeManagement />
-      },
-      {
-        path: 'inventory_management',
-        element: <InventoryManagement />
-      },
-      {
-        path: 'machine_integration',
-        element: <MachineIntegration />
-      },
-      {
-        path: 'notification',
-        element: <Notification />
-      },
-      {
-        path: 'patient_management',
-        element: <PatientManagement />
-      },
-      {
-        path: 'payment_integration',
-        element: <PaymentIntegration />
-      },
-      {
-        path: 'sales_management',
-        element: <SalesManagement />
-      },
-      {
-        path: 'searchAndFiltering',
-        element: <SearchAndFiltering />
-      },
-      {
-        path: 'user_management',
-        element: <UserManagement />
+        element: <ReceptionistDashboard />
       }
+      // {
+      //   path: 'content_management',
+      //   element: <ContentManagement />
+      // },
+      // {
+      //   path: 'data_visualization',
+      //   element: <DataVisualization />
+      // },
+      // {
+      //   path: 'email_management',
+      //   element: <EmailManagement />
+      // },
+      // {
+      //   path: 'employee_management',
+      //   element: <EmployeeManagement />
+      // },
+      // {
+      //   path: 'inventory_management',
+      //   element: <InventoryManagement />
+      // },
+      // {
+      //   path: 'machine_integration',
+      //   element: <MachineIntegration />
+      // },
+      // {
+      //   path: 'notification',
+      //   element: <Notification />
+      // },
+      // {
+      //   path: 'patient_management',
+      //   element: <PatientManagement />
+      // },
+      // {
+      //   path: 'payment_integration',
+      //   element: <PaymentIntegration />
+      // },
+      // {
+      //   path: 'sales_management',
+      //   element: <SalesManagement />
+      // },
+      // {
+      //   path: 'searchAndFiltering',
+      //   element: <SearchAndFiltering />
+      // },
+      // {
+      //   path: 'user_management',
+      //   element: <UserManagement />
+      // }
     ]
   },
   {

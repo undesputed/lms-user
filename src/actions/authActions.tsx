@@ -1,13 +1,24 @@
-import * as api from '../api/api';
-import { AUTH, CREATE_PROFILE } from './constants';
 import { Dispatch } from 'redux';
+import { ThunkAction } from 'redux-thunk';
+import { RootState } from '../reducers';
+import { LOGIN_SUCCESS, LOGIN_FAIL } from '../types/authTypes';
+import axios from 'axios';
 
-export const login = (formData: any, setLoading: any) => async (dispatch: Dispatch) => {
-  try {
-    const { data } = await api.login(formData);
-    dispatch({ type: AUTH, payload: data }); // return a valid action object with a payload property
-    // window.location.href = '/dashboards';
-  } catch (error) {
-    setLoading(false);
-  }
-};
+export const login =
+  (
+    email: any,
+    password: string,
+    navigate: any
+  ): ThunkAction<void, RootState, null, any> =>
+  async (dispatch: Dispatch) => {
+    try {
+      const res = await axios.post('/api/login', { email, password });
+      dispatch({ type: LOGIN_SUCCESS });
+      navigate('/dashboard');
+    } catch (err) {
+      dispatch({
+        type: LOGIN_FAIL,
+        payload: err.response.data.error
+      });
+    }
+  };

@@ -22,10 +22,14 @@ export const googleUserRegistration = (formData: any) =>
   API.post('auth/google/register', formData);
 export const googleRegistration = (formData: any) =>
   API.post('auth/google/googleRegister', formData);
+// Receptionist Authentication
+export const receptionistAuth = (formData: any) =>
+  API.post('auth/receptionist/login', formData);
+export const receptionistRegister = (formData: any) =>
+  API.post('auth/receptionist/register', formData);
 
 // Category
 export const category = () => API.get('category');
 
 // SubCategory
-export const subCategory = () =>
-  API.get(`subCategory`);
+export const subCategory = () => API.get(`subCategory`);

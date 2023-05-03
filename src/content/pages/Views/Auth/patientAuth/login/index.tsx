@@ -28,7 +28,7 @@ import {
   useGoogleLogin
 } from '@react-oauth/google';
 import jwtDecode from 'jwt-decode';
-import '../../../../../assets/scss/main.css';
+import 'src/assets/scss/main.css';
 import { useDispatch } from 'react-redux';
 import { AUTH, GOOGLEAUTH } from 'src/actions/constants';
 
