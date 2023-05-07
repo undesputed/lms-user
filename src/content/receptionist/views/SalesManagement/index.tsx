@@ -1,29 +1,35 @@
-import { AccountBalance } from '@mui/icons-material';
-import { Container, Grid } from '@mui/material';
-import React from 'react';
 import { Helmet } from 'react-helmet-async';
-import Footer from 'src/components/Footer';
+import PageHeader from './PageHeader';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
-import AccountSecurity from 'src/content/dashboards/Crypto/AccountSecurity';
-import PageHeader from 'src/content/dashboards/Crypto/PageHeader';
-import Wallets from 'src/content/dashboards/Crypto/Wallets';
-import WatchList from 'src/content/dashboards/Crypto/WatchList';
+import { Grid, Container } from '@mui/material';
+import Footer from 'src/components/Footer';
+import PatientListTable from './PatientListTable';
 
-const SalesManagement = () => {
+function SalesManagement() {
   return (
     <>
       <Helmet>
-        <title>Crypto SalesManagement</title>
+        <title>Patient Management - Applications</title>
       </Helmet>
       <PageTitleWrapper>
-        <PageHeader />
+        {/* <PageHeader /> */}
       </PageTitleWrapper>
       <Container maxWidth="lg">
-        This is SalesManagement
+        <Grid
+          container
+          direction="row"
+          justifyContent="center"
+          alignItems="stretch"
+          spacing={3}
+        >
+          <Grid item xs={12}>
+            <PatientListTable />
+          </Grid>
+        </Grid>
       </Container>
       <Footer />
     </>
   );
-};
+}
 
 export default SalesManagement;

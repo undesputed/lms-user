@@ -5,7 +5,7 @@ import { Grid, Container } from '@mui/material';
 import Footer from 'src/components/Footer';
 import PatientListTable from './PatientListTable';
 
-function ApplicationsTransactions() {
+function LaboratoryTestManagement() {
   return (
     <>
       <Helmet>
@@ -32,4 +32,4 @@ function ApplicationsTransactions() {
   );
 }
 
-export default ApplicationsTransactions;
+export default LaboratoryTestManagement;

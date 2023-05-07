@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 import {
   Avatar,
@@ -59,6 +59,7 @@ const UserBoxDescription = styled(Typography)(
 );
 
 function HeaderUserbox() {
+  const navigate = useNavigate();
   const user = {
     name: 'Catherine Pike',
     avatar: '/static/images/avatars/1.jpg',
@@ -74,6 +75,12 @@ function HeaderUserbox() {
 
   const handleClose = (): void => {
     setOpen(false);
+  };
+
+  const handleLogout = () => {
+    setOpen(false);
+    localStorage.clear();
+    navigate('/receptionist/login');
   };
 
   return (
@@ -116,26 +123,22 @@ function HeaderUserbox() {
         </MenuUserBox>
         <Divider sx={{ mb: 0 }} />
         <List sx={{ p: 1 }} component="nav">
-          <ListItem button to="/management/profile/details" component={NavLink}>
+          <ListItem button to="#" component={NavLink}>
             <AccountBoxTwoToneIcon fontSize="small" />
             <ListItemText primary="My Profile" />
           </ListItem>
-          <ListItem button to="/dashboards/messenger" component={NavLink}>
+          <ListItem button to="#" component={NavLink}>
             <InboxTwoToneIcon fontSize="small" />
             <ListItemText primary="Messenger" />
           </ListItem>
-          <ListItem
-            button
-            to="/management/profile/settings"
-            component={NavLink}
-          >
+          <ListItem button to="#" component={NavLink}>
             <AccountTreeTwoToneIcon fontSize="small" />
             <ListItemText primary="Account Settings" />
           </ListItem>
         </List>
         <Divider />
         <Box sx={{ m: 1 }}>
-          <Button color="primary" fullWidth>
+          <Button color="primary" fullWidth onClick={handleLogout}>
             <LockOpenTwoToneIcon sx={{ mr: 1 }} />
             Sign out
           </Button>

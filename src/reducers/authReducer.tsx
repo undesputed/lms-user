@@ -1,47 +1,55 @@
-import { AUTH, LOGOUT } from 'src/actions/constants';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { RootState, AppThunk } from 'src/app/store';
+import { patientAuth } from 'src/api/authAPI';
 
-const initialState = {
-  isLoggedIn: false,
-  token: '',
-  data: {
-    token: ''
-  }
+export interface AuthState {
+  token: string;
+  status: 'idle' | 'loading' | 'failed';
+}
+
+const initialState: AuthState = {
+  token: null,
+  status: 'idle'
 };
 
-const authReducer = (action: any, state = initialState) => {
-  switch (action?.type) {
-    case 'AUTH':
-      if (localStorage.length !== 0) {
-        localStorage.clear();
-        localStorage.setItem('profile', JSON.stringify({ ...state?.data }));
-      }
-      localStorage.setItem('profile', JSON.stringify({ ...state?.data }));
-      console.log(state.data.token);
-      return {
-        ...state,
-        isLoggedIn: true,
-        token: state.data.token
-      };
-    case 'GOOGLEAUTH':
-      if (localStorage.length !== 0) {
-        localStorage.clear();
-        localStorage.setItem('profile', JSON.stringify({ ...state?.data }));
-      }
-      localStorage.setItem('profile', JSON.stringify({ ...state?.data }));
-      return {
-        ...state,
-        isLoggedIn: true,
-        token: state.data.token
-      };
-    case 'LOGOUT':
-      return {
-        ...state,
-        isLoggedIn: false,
-        token: ''
-      };
-    default:
-      return state;
+export const loginAsync = createAsyncThunk(
+  'auth/login',
+  async (credentials: { email: string; password: string }) => {
+    const response = await patientAuth(credentials);
+    return response.token;
   }
-};
+);
 
-export default authReducer;
+export const authSlice = createSlice({
+  name: 'auth',
+  initialState,
+  reducers: {
+    setToken: (state, action: PayloadAction<string>) => {
+      localStorage.setItem('patient', action.payload);
+      state.token = action.payload;
+    },
+    clearToken: (state) => {
+      localStorage.clear();
+      state.token = null;
+    }
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(loginAsync.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(loginAsync.fulfilled, (state, action) => {
+        state.status = 'idle';
+        state.token = action.payload;
+      })
+      .addCase(loginAsync.rejected, (state) => {
+        state.status = 'failed';
+      });
+  }
+});
+
+export const { setToken, clearToken } = authSlice.actions;
+
+export const selectToken = (state: RootState) => state.auth.token;
+
+export default authSlice.reducer;

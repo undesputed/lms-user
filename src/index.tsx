@@ -9,10 +9,7 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import * as serviceWorker from 'src/serviceWorker';
 import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';
-import thunk from 'redux-thunk';
-import reducers from './reducers';
-
-const store = createStore(reducers, compose(applyMiddleware(thunk)));
+import { store } from 'src/app/store';
 
 ReactDOM.render(
   <Provider store={store}>

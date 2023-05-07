@@ -18,10 +18,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import logo from 'src/assets/image/logo/Logo.png';
 import { useDispatch } from 'react-redux';
 import { AUTH, GOOGLEAUTH } from 'src/actions/constants';
-import { login } from 'src/actions/authActions';
 import { initialState } from './initialState';
 import { reducer } from './reducer';
-import * as api from 'src/api/api';
+import * as api from 'src/api/apiTest';
 import { LoadingButton } from '@mui/lab';
 import { Backdrop, CircularProgress } from '@mui/material';
 
@@ -29,7 +28,6 @@ const theme = createTheme();
 
 const Login = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const authDispatch = useDispatch();
   const [loading, setLoading] = React.useState(false);
   const navigate = useNavigate();
 
@@ -44,10 +42,15 @@ const Login = () => {
             payload: 'Login Successfully'
           });
           setLoading(false);
+          localStorage.setItem('profile', JSON.stringify({data}));
           navigate('/receptionist/dashboard');
         }
       } catch (error) {
-        console.log(error);
+        console.error(error);
+        dispatch({
+          type: 'setIsError',
+          payload: true
+        });
       }
     } else {
       dispatch({

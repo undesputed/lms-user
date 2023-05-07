@@ -41,8 +41,6 @@ function Header() {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
-    localStorage.clear();
-    navigate('/auth/login');
   };
 
   return (

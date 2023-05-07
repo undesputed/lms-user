@@ -7,6 +7,7 @@ import ReceptionistSideBar from 'src/content/receptionist/component/SidebarLayou
 import BaseLayout from 'src/layouts/BaseLayout';
 
 import SuspenseLoader from 'src/components/SuspenseLoader';
+import path from 'path';
 
 const Loader = (Component) => (props) =>
   (
@@ -39,7 +40,39 @@ const ReceptionistDashboard = Loader(
   lazy(() => import('src/content/receptionist/views/Dashboard'))
 );
 
-//Patient Pgaes
+const InventoryManagement = Loader(
+  lazy(() => import('src/content/receptionist/views/InventoryManagement'))
+);
+
+const MachineIntegration = Loader(
+  lazy(() => import('src/content/receptionist/views/MachineIntegration'))
+);
+
+const Notification = Loader(
+  lazy(() => import('src/content/receptionist/views/Notification'))
+);
+
+const PatientManagement = Loader(
+  lazy(() => import('src/content/receptionist/views/PatientManagement'))
+);
+
+const Reservation = Loader(
+  lazy(() => import('src/content/receptionist/views/Reservation'))
+);
+
+const ResultsManagement = Loader(
+  lazy(() => import('src/content/receptionist/views/ResultsManagement'))
+);
+
+const SalesManagement = Loader(
+  lazy(() => import('src/content/receptionist/views/SalesManagement'))
+);
+
+const LaboratoryTestManagement = Loader(
+  lazy(() => import('src/content/receptionist/views/LaboratoryTestManagement'))
+);
+
+//Patient Pages
 const PatientDashboard = Loader(
   lazy(() => import('src/content/patient/views/dashboard'))
 );
@@ -173,7 +206,6 @@ const routes: RouteObject[] = [
   },
   {
     path: 'receptionist',
-    element: <ReceptionistSideBar />,
     children: [
       {
         path: 'login',
@@ -185,56 +217,94 @@ const routes: RouteObject[] = [
       },
       {
         path: 'dashboard',
-        element: <ReceptionistDashboard />
+        element: <ReceptionistSideBar />,
+        children: [
+          {
+            path: '',
+            element: <ReceptionistDashboard />
+          }
+        ]
+      },
+      {
+        path: 'inventory_management',
+        element: <ReceptionistSideBar />,
+        children: [
+          {
+            path: '',
+            element: <InventoryManagement />
+          }
+        ]
+      },
+      {
+        path: 'machine_integration',
+        element: <ReceptionistSideBar />,
+        children: [
+          {
+            path: '',
+            element: <MachineIntegration />
+          }
+        ]
+      },
+      {
+        path: 'notification',
+        element: <ReceptionistSideBar />,
+        children: [
+          {
+            path: '',
+            element: <Notification />
+          }
+        ]
+      },
+      {
+        path: 'patient_management',
+        element: <ReceptionistSideBar />,
+        children: [
+          {
+            path: '',
+            element: <PatientManagement />
+          }
+        ]
+      },
+      {
+        path: 'reservation',
+        element: <ReceptionistSideBar />,
+        children: [
+          {
+            path: '',
+            element: <Reservation />
+          }
+        ]
+      },
+      {
+        path: 'results_management',
+        element: <ReceptionistSideBar />,
+        children: [
+          {
+            path: '',
+            element: <ResultsManagement />
+          }
+        ]
+      },
+      {
+        path: 'sales_management',
+        element: <ReceptionistSideBar />,
+        children: [
+          {
+            path: '',
+            element: <SalesManagement />
+          }
+        ]
+      },
+      {
+        path: 'laboratory_tests',
+        element: <ReceptionistSideBar />,
+        children: [
+          {
+            path: '',
+            element: <LaboratoryTestManagement />
+          }
+        ]
       }
-      // {
-      //   path: 'content_management',
-      //   element: <ContentManagement />
-      // },
-      // {
-      //   path: 'data_visualization',
-      //   element: <DataVisualization />
-      // },
-      // {
-      //   path: 'email_management',
-      //   element: <EmailManagement />
-      // },
-      // {
-      //   path: 'employee_management',
-      //   element: <EmployeeManagement />
-      // },
-      // {
-      //   path: 'inventory_management',
-      //   element: <InventoryManagement />
-      // },
-      // {
-      //   path: 'machine_integration',
-      //   element: <MachineIntegration />
-      // },
-      // {
-      //   path: 'notification',
-      //   element: <Notification />
-      // },
-      // {
-      //   path: 'patient_management',
-      //   element: <PatientManagement />
-      // },
-      // {
-      //   path: 'payment_integration',
-      //   element: <PaymentIntegration />
-      // },
-      // {
-      //   path: 'sales_management',
-      //   element: <SalesManagement />
-      // },
-      // {
-      //   path: 'searchAndFiltering',
-      //   element: <SearchAndFiltering />
-      // },
-      // {
-      //   path: 'user_management',
-      //   element: <UserManagement />
-      // }
     ]
   },
   {

@@ -5,14 +5,14 @@ import { Grid, Container } from '@mui/material';
 import Footer from 'src/components/Footer';
 import PatientListTable from './PatientListTable';
 
-function ApplicationsTransactions() {
+function ResultsManagement() {
   return (
     <>
       <Helmet>
         <title>Patient Management - Applications</title>
       </Helmet>
       <PageTitleWrapper>
-        <PageHeader />
+        {/* <PageHeader /> */}
       </PageTitleWrapper>
       <Container maxWidth="lg">
         <Grid
@@ -32,4 +32,4 @@ function ApplicationsTransactions() {
   );
 }
 
-export default ApplicationsTransactions;
+export default ResultsManagement;

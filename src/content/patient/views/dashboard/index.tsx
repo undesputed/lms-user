@@ -14,15 +14,22 @@ import {
 import { useNavigate } from 'react-router';
 import QrCode2Icon from '@mui/icons-material/QrCode2';
 import BiotechIcon from '@mui/icons-material/Biotech';
+import { useAppSelector, useAppDispatch } from 'src/actions/hooks';
+import {
+  decrement,
+  increment,
+  incrementByAmount,
+  incrementAsync,
+  incrementIfOdd,
+  selectCount
+} from 'src/reducers/counterReducer';
 
 const PatientDashboard = () => {
+  const [incrementAmount, setIncrementAmount] = React.useState('2');
   const navigate = useNavigate();
 
-  React.useEffect(() => {
-    if (localStorage.length === 0) {
-      navigate('/auth/login');
-    }
-  }, []);
+  const incrementValue = Number(incrementAmount) || 0;
+
   return (
     <>
       <Helmet>

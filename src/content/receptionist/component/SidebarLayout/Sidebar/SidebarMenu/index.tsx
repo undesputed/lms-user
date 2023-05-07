@@ -15,8 +15,7 @@ import { SidebarContext } from 'src/contexts/SidebarContext';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import BrightnessLowTwoToneIcon from '@mui/icons-material/BrightnessLowTwoTone';
 import MmsTwoToneIcon from '@mui/icons-material/MmsTwoTone';
-import TableChartTwoToneIcon from '@mui/icons-material/TableChartTwoTone';
-import BallotTwoToneIcon from '@mui/icons-material/BallotTwoTone';
+import BiotechIcon from '@mui/icons-material/Biotech';
 import FactCheckIcon from '@mui/icons-material/FactCheck';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import InventoryIcon from '@mui/icons-material/Inventory';
@@ -185,7 +184,7 @@ function SidebarMenu() {
                   disableRipple
                   component={RouterLink}
                   onClick={closeSidebar}
-                  to="/dashboards/crypto"
+                  to="/receptionist/dashboard"
                   startIcon={<BrightnessLowTwoToneIcon />}
                 >
                   Dashboard
@@ -196,7 +195,7 @@ function SidebarMenu() {
                   disableRipple
                   component={RouterLink}
                   onClick={closeSidebar}
-                  to="/dashboards/messenger"
+                  to="/receptionist/reservation"
                   startIcon={<MmsTwoToneIcon />}
                 >
                   Reservation
@@ -220,7 +219,7 @@ function SidebarMenu() {
                   disableRipple
                   component={RouterLink}
                   onClick={closeSidebar}
-                  to="/management/transactions"
+                  to="/receptionist/patient_management"
                   startIcon={<ManageAccountsIcon />}
                 >
                   Patient Management
@@ -231,7 +230,7 @@ function SidebarMenu() {
                   disableRipple
                   component={RouterLink}
                   onClick={closeSidebar}
-                  to="/management/transactions"
+                  to="/receptionist/results_management"
                   startIcon={<FactCheckIcon />}
                 >
                   Results Management
@@ -242,7 +241,7 @@ function SidebarMenu() {
                   disableRipple
                   component={RouterLink}
                   onClick={closeSidebar}
-                  to="/management/transactions"
+                  to="/receptionist/sales_management"
                   startIcon={<AttachMoneyIcon />}
                 >
                   Sales Management
@@ -253,10 +252,21 @@ function SidebarMenu() {
                   disableRipple
                   component={RouterLink}
                   onClick={closeSidebar}
-                  to="/management/transactions"
+                  to="/receptionist/inventory_management"
                   startIcon={<InventoryIcon />}
                 >
                   Inventory Management
+                </Button>
+              </ListItem>
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to="/receptionist/laboratory_tests"
+                  startIcon={<BiotechIcon />}
+                >
+                  Lab Test Management
                 </Button>
               </ListItem>
             </List>
@@ -277,7 +287,7 @@ function SidebarMenu() {
                   disableRipple
                   component={RouterLink}
                   onClick={closeSidebar}
-                  to="/components/buttons"
+                  to="/receptionist/machine_integration"
                   startIcon={<PrecisionManufacturingIcon />}
                 >
                   Machine Management

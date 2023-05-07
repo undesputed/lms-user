@@ -8,36 +8,29 @@ import Checkbox from '@mui/material/Checkbox';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Alert from '@mui/material/Alert';
-import AlertTitle from '@mui/material/AlertTitle';
-import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { FaGoogle, FaFacebookSquare, FaTwitter } from 'react-icons/fa';
 import { Helmet } from 'react-helmet-async';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { login } from 'src/actions/authActions';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from 'src/assets/image/logo/Logo.png';
-import * as api from 'src/api/api';
+import * as api from 'src/api/apiTest';
 import { reducer } from './reducer';
 import { initialState } from './initialState';
-import axios from 'axios';
 import {
   GoogleLogin,
   GoogleLoginProps,
   useGoogleLogin
 } from '@react-oauth/google';
 import jwtDecode from 'jwt-decode';
-import 'src/assets/scss/main.css';
-import { useDispatch } from 'react-redux';
-import { AUTH, GOOGLEAUTH } from 'src/actions/constants';
+import { loginAsync } from 'src/reducers/authReducer';
+import { useAppSelector, useAppDispatch } from 'src/actions/hooks';
 
 const theme = createTheme();
 
 const Login = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const authDispatch = useDispatch();
-  const [loading, setLoading] = React.useState(false);
+  const authDispatch = useAppDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -54,11 +47,10 @@ const Login = () => {
     }
   }, [state.email, state.password]);
 
-  const handleLogin = async () => {
+  const handleLogin = () => {
     if (state.email && state.password) {
       try {
-        const { data } = await api.login(state);
-        authDispatch({ type: AUTH, data });
+        authDispatch(loginAsync(state));
         dispatch({
           type: 'loginSuccess',
           payload: 'Login Successfully'
@@ -88,7 +80,7 @@ const Login = () => {
 
     try {
       const { data } = await api.googleAuth(userObject);
-      authDispatch({ type: GOOGLEAUTH, data });
+      localStorage.setItem('patient', JSON.stringify(data));
       dispatch({
         type: 'loginSuccess',
         payload: 'Login Successfully'
@@ -132,7 +124,7 @@ const Login = () => {
   };
 
   React.useEffect(() => {
-    if (localStorage.getItem('profile')) {
+    if (localStorage.getItem('patient')) {
       navigate('/patient/dashboard');
     }
   }, []);

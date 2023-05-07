@@ -22,7 +22,7 @@ import Categories from './category';
 import { categoryInterface } from './interface';
 import { categoryReducer, subCategoryReducer } from './reducer';
 import { categoryState, subCategoryState } from './initialState';
-import * as api from 'src/api/api';
+import * as api from 'src/api/apiTest';
 import { useNavigate } from 'react-router';
 import { useDispatch } from 'react-redux';
 import GenerateQR from './generateQR';

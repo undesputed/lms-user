@@ -9,21 +9,21 @@ import PageHeader from 'src/content/dashboards/Crypto/PageHeader';
 import Wallets from 'src/content/dashboards/Crypto/Wallets';
 import WatchList from 'src/content/dashboards/Crypto/WatchList';
 
-const EmployeeManagement = () => {
+const Reservation = () => {
   return (
     <>
       <Helmet>
-        <title>Crypto EmployeeManagement</title>
+        <title>Crypto Reservation</title>
       </Helmet>
       <PageTitleWrapper>
         <PageHeader />
       </PageTitleWrapper>
       <Container maxWidth="lg">
-        This is EmployeeManagement
+        This is Reservation
       </Container>
       <Footer />
     </>
   );
 };
 
-export default EmployeeManagement;
+export default Reservation;
