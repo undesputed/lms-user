@@ -1,6 +1,8 @@
 import * as React from 'react';
 import Typography from '@mui/material/Typography';
 import {
+  Alert,
+  AlertTitle,
   Box,
   Button,
   Container,
@@ -27,181 +29,151 @@ import { useNavigate } from 'react-router';
 import { useDispatch } from 'react-redux';
 import GenerateQR from './generateQR';
 import Request from './request';
-
-const top100Films = [
-  { label: 'The Shawshank Redemption', year: 1994 },
-  { label: 'The Godfather', year: 1972 },
-  { label: 'The Godfather: Part II', year: 1974 },
-  { label: 'The Dark Knight', year: 2008 },
-  { label: '12 Angry Men', year: 1957 },
-  { label: "Schindler's List", year: 1993 },
-  { label: 'Pulp Fiction', year: 1994 },
-  {
-    label: 'The Lord of the Rings: The Return of the King',
-    year: 2003
-  },
-  { label: 'The Good, the Bad and the Ugly', year: 1966 },
-  { label: 'Fight Club', year: 1999 },
-  {
-    label: 'The Lord of the Rings: The Fellowship of the Ring',
-    year: 2001
-  },
-  {
-    label: 'Star Wars: Episode V - The Empire Strikes Back',
-    year: 1980
-  },
-  { label: 'Forrest Gump', year: 1994 },
-  { label: 'Inception', year: 2010 },
-  {
-    label: 'The Lord of the Rings: The Two Towers',
-    year: 2002
-  },
-  { label: "One Flew Over the Cuckoo's Nest", year: 1975 },
-  { label: 'Goodfellas', year: 1990 },
-  { label: 'The Matrix', year: 1999 },
-  { label: 'Seven Samurai', year: 1954 },
-  {
-    label: 'Star Wars: Episode IV - A New Hope',
-    year: 1977
-  },
-  { label: 'City of God', year: 2002 },
-  { label: 'Se7en', year: 1995 },
-  { label: 'The Silence of the Lambs', year: 1991 },
-  { label: "It's a Wonderful Life", year: 1946 },
-  { label: 'Life Is Beautiful', year: 1997 },
-  { label: 'The Usual Suspects', year: 1995 },
-  { label: 'Léon: The Professional', year: 1994 },
-  { label: 'Spirited Away', year: 2001 },
-  { label: 'Saving Private Ryan', year: 1998 },
-  { label: 'Once Upon a Time in the West', year: 1968 },
-  { label: 'American History X', year: 1998 },
-  { label: 'Interstellar', year: 2014 },
-  { label: 'Casablanca', year: 1942 },
-  { label: 'City Lights', year: 1931 },
-  { label: 'Psycho', year: 1960 },
-  { label: 'The Green Mile', year: 1999 },
-  { label: 'The Intouchables', year: 2011 },
-  { label: 'Modern Times', year: 1936 },
-  { label: 'Raiders of the Lost Ark', year: 1981 },
-  { label: 'Rear Window', year: 1954 },
-  { label: 'The Pianist', year: 2002 },
-  { label: 'The Departed', year: 2006 },
-  { label: 'Terminator 2: Judgment Day', year: 1991 },
-  { label: 'Back to the Future', year: 1985 },
-  { label: 'Whiplash', year: 2014 },
-  { label: 'Gladiator', year: 2000 },
-  { label: 'Memento', year: 2000 },
-  { label: 'The Prestige', year: 2006 },
-  { label: 'The Lion King', year: 1994 },
-  { label: 'Apocalypse Now', year: 1979 },
-  { label: 'Alien', year: 1979 },
-  { label: 'Sunset Boulevard', year: 1950 },
-  {
-    label:
-      'Dr. Strangelove or: How I Learned to Stop Worrying and Love the Bomb',
-    year: 1964
-  },
-  { label: 'The Great Dictator', year: 1940 },
-  { label: 'Cinema Paradiso', year: 1988 },
-  { label: 'The Lives of Others', year: 2006 },
-  { label: 'Grave of the Fireflies', year: 1988 },
-  { label: 'Paths of Glory', year: 1957 },
-  { label: 'Django Unchained', year: 2012 },
-  { label: 'The Shining', year: 1980 },
-  { label: 'WALL·E', year: 2008 },
-  { label: 'American Beauty', year: 1999 },
-  { label: 'The Dark Knight Rises', year: 2012 },
-  { label: 'Princess Mononoke', year: 1997 },
-  { label: 'Aliens', year: 1986 },
-  { label: 'Oldboy', year: 2003 },
-  { label: 'Once Upon a Time in America', year: 1984 },
-  { label: 'Witness for the Prosecution', year: 1957 },
-  { label: 'Das Boot', year: 1981 },
-  { label: 'Citizen Kane', year: 1941 },
-  { label: 'North by Northwest', year: 1959 },
-  { label: 'Vertigo', year: 1958 },
-  {
-    label: 'Star Wars: Episode VI - Return of the Jedi',
-    year: 1983
-  },
-  { label: 'Reservoir Dogs', year: 1992 },
-  { label: 'Braveheart', year: 1995 },
-  { label: 'M', year: 1931 },
-  { label: 'Requiem for a Dream', year: 2000 },
-  { label: 'Amélie', year: 2001 },
-  { label: 'A Clockwork Orange', year: 1971 },
-  { label: 'Like Stars on Earth', year: 2007 },
-  { label: 'Taxi Driver', year: 1976 },
-  { label: 'Lawrence of Arabia', year: 1962 },
-  { label: 'Double Indemnity', year: 1944 },
-  {
-    label: 'Eternal Sunshine of the Spotless Mind',
-    year: 2004
-  },
-  { label: 'Amadeus', year: 1984 },
-  { label: 'To Kill a Mockingbird', year: 1962 },
-  { label: 'Toy Story 3', year: 2010 },
-  { label: 'Logan', year: 2017 },
-  { label: 'Full Metal Jacket', year: 1987 },
-  { label: 'Dangal', year: 2016 },
-  { label: 'The Sting', year: 1973 },
-  { label: '2001: A Space Odyssey', year: 1968 },
-  { label: "Singin' in the Rain", year: 1952 },
-  { label: 'Toy Story', year: 1995 },
-  { label: 'Bicycle Thieves', year: 1948 },
-  { label: 'The Kid', year: 1921 },
-  { label: 'Inglourious Basterds', year: 2009 },
-  { label: 'Snatch', year: 2000 },
-  { label: '3 Idiots', year: 2009 },
-  { label: 'Monty Python and the Holy Grail', year: 1975 }
-];
+import { useAppSelector, useAppDispatch } from 'src/actions/hooks';
+import { getToken } from 'src/reducers/auth/authReducer';
+import { fetchUserById, userInterface } from 'src/reducers/user/userReducer';
+import { fetchAllCategory } from 'src/reducers/category/categoryReducer';
+import {
+  fetchAllSubCategory,
+  selectSubCategory
+} from 'src/reducers/subCategory/subCategoryReducer';
+import { subCategory } from 'src/reducers/subCategory/subCategory';
+import { category } from 'src/reducers/category/category';
 
 const PatientForm = () => {
   const navigate = useNavigate();
   const [age, setAge] = React.useState(0);
-  const categoryDispatch = useDispatch();
-  const [category, dispatch] = React.useReducer(categoryReducer, categoryState);
-  const [subCategory, subDispatch] = React.useReducer(
-    subCategoryReducer,
-    subCategoryState
+  const [sex, setSex] = React.useState(0);
+  const [user, setUser] = React.useState<userInterface>();
+  const [fullName, setFullName] = React.useState<string>();
+  const [toDate, setToDate] = React.useState<string>(
+    new Date().toISOString().substr(0, 10)
   );
+  const [birthday, setBirthday] = React.useState<string>('');
+  const [address, setAddress] = React.useState<string>('');
+  const [category, setCategory] = React.useState<category[]>([]);
+  const [subCategory, setSubCategory] = React.useState<subCategory[]>([]);
+  const [selectedSubCat, setSelectedSubCat] = React.useState<number[]>([]);
+  const [others, setOthers] = React.useState<string>('');
+  const [requestedBy, setRequestedBy] = React.useState<string>('');
+  const [dateRequested, setDateRequested] = React.useState<string>('');
+  const [remarks, setRemarks] = React.useState<string>('');
+  const [error, setError] = React.useState<boolean>(false);
+  const [errorMsg, setErrorMsg] = React.useState<string[]>([]);
+  const dispatch = useAppDispatch();
 
-  const fetchCategory = async () => {
-    try {
-      const { data } = await api.category();
-      categoryDispatch({ type: 'FETCH_CATEGORY', data });
-      dispatch({
-        type: 'CATEGORY_FETCH_SUCCESS',
-        payload: data
-      });
-    } catch (error) {
-      dispatch({
-        type: 'CATEGORY_FETCH_FAILURE',
-        payload: 'Fetch Category Failed',
-        message: error
-      });
+  const calculateAge = (birthdate: string) => {
+    const today = new Date();
+    const birthDate = new Date(birthdate);
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const month = today.getMonth() - birthDate.getMonth();
+    if (month < 0 || (month === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    setAge(age);
+  };
+
+  const onSelectSubCat = (e: any, id: number) => {
+    if (e.target.checked) {
+      if (selectedSubCat.includes(id)) {
+        console.log('Already in the array');
+      } else {
+        setSelectedSubCat((prevSelectedSubCat) => [...prevSelectedSubCat, id]);
+      }
+    } else {
+      if (selectedSubCat.includes(id)) {
+        setSelectedSubCat((prevSelectedSubCat) =>
+          prevSelectedSubCat.filter((item) => item !== id)
+        );
+      }
     }
   };
 
-  const fetchSubCategory = async () => {
+  const fetchCategorySubCategory = () => {
     try {
-      const { data } = await api.subCategory();
-      subDispatch({
-        type: 'SUBCATEGORY_FETCH_SUCCESS',
-        payload: data
-      });
-    } catch (error) {
-      subDispatch({
-        type: 'SUBCATEGORY_FETCH_FAILURE',
-        payload: 'Fetch sub Category Failed',
-        message: error
-      });
+      dispatch(fetchAllCategory())
+        .then((res) => {
+          setCategory(res.payload);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+      dispatch(fetchAllSubCategory())
+        .then((res) => {
+          setSubCategory(res.payload);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const fetchPatient = async () => {
+    try {
+      const data = dispatch(getToken);
+      dispatch(fetchUserById(data.userId))
+        .then((response) => {
+          setUser(response.payload);
+          setFullName(
+            response.payload.firstName + ' ' + response.payload.lastName
+          );
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const onSubmit = () => {
+    if (!fullName) {
+      setError(true);
+      setErrorMsg((prevErrorMsg) => [
+        ...prevErrorMsg,
+        'Missing field Full Name!!'
+      ]);
+      return;
+    }
+    if (!age) {
+      setError(true);
+      setErrorMsg((prevErrorMsg) => [
+        ...prevErrorMsg,
+        'Missing field Age required!!'
+      ]);
+      return;
+    }
+    if (!sex) {
+      setError(true);
+      setErrorMsg((prevErrorMsg) => [
+        ...prevErrorMsg,
+        'Missing field Gender Required!!'
+      ]);
+      return;
+    }
+    if (!birthday) {
+      setError(true);
+      setErrorMsg((prevErrorMsg) => [
+        ...prevErrorMsg,
+        'Missing field BirthDay Required!!'
+      ]);
+      return;
+    }
+    if (!address) {
+      setError(true);
+      setErrorMsg((prevErrorMsg) => [
+        ...prevErrorMsg,
+        'Missing field Address Required!!'
+      ]);
+      return;
     }
   };
 
   React.useEffect(() => {
-    fetchCategory();
-    fetchSubCategory();
+    fetchCategorySubCategory();
+    fetchPatient();
   }, []);
   return (
     <>
@@ -243,19 +215,29 @@ const PatientForm = () => {
             <Grid container spacing={2}>
               <Grid item xs={12} md={8}>
                 <TextField
+                  error={error}
                   name="fullName"
                   required
                   fullWidth
                   id="fullName"
-                  label="Full Name"
                   helperText="Full Name"
+                  value={fullName}
+                  onChange={(e: any) => setFullName(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12} sm={4}>
                 <TextField
+                  error={error}
                   type="date"
                   id="outlined-select-currency"
-                  helperText="Date"
+                  helperText="Date of Visit"
+                  value={toDate}
+                  onChange={(e: any) => setToDate(e.target.value)}
+                  InputProps={{
+                    inputProps: {
+                      min: new Date().toISOString().split('T')[0] // set minimum date to today's date
+                    }
+                  }}
                   style={{
                     width: '100%'
                   }}
@@ -263,9 +245,28 @@ const PatientForm = () => {
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField
-                  type="birthday"
+                  error={error}
+                  type="date"
                   id="outlined-select-currency"
                   helperText="Birthday"
+                  value={birthday}
+                  onChange={(e: any) => {
+                    setBirthday(e.target.value);
+                    calculateAge(e.target.value);
+                  }}
+                  style={{
+                    width: '100%'
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12} md={3}>
+                <TextField
+                  error={error}
+                  type="number"
+                  id="outlined-select-currency"
+                  helperText="Age"
+                  value={age}
+                  disabled
                   style={{
                     width: '100%'
                   }}
@@ -273,100 +274,89 @@ const PatientForm = () => {
               </Grid>
               <Grid item xs={12} md={3}>
                 <FormControl fullWidth>
-                  <InputLabel id="demo-simple-select-label">Age</InputLabel>
-                  <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={age}
-                    label="Age"
-                  >
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid item xs={12} md={3}>
-                <FormControl fullWidth>
                   <InputLabel id="demo-simple-select-label">Sex</InputLabel>
                   <Select
+                    error={error}
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
-                    value={age}
+                    value={sex}
+                    onChange={(e: any) => setSex(e.target.value)}
                     label="Age"
                   >
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
+                    <MenuItem value={1}>Male</MenuItem>
+                    <MenuItem value={2}>Female</MenuItem>
+                    <Divider />
+                    <MenuItem value={3}>Others</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>
-              <Grid item xs={12} md={3}>
-                <Autocomplete
-                  disablePortal
-                  id="combo-box-demo"
-                  options={top100Films}
-                  sx={{ width: '100%' }}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      fullWidth
-                      label="Name of Barangay"
-                      helperText="Barangay Name"
-                    />
-                  )}
-                />
-              </Grid>
-              <Grid item xs={12} md={3}>
-                <Autocomplete
-                  disablePortal
-                  id="combo-box-demo"
-                  options={top100Films}
-                  sx={{ width: '100%' }}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      fullWidth
-                      label="Name of Municipality"
-                      helperText="Municipality"
-                    />
-                  )}
-                />
-              </Grid>
-              <Grid item xs={12} md={3}>
-                <Autocomplete
-                  disablePortal
-                  id="combo-box-demo"
-                  options={top100Films}
-                  sx={{ width: '100%' }}
-                  renderInput={(params) => (
-                    <TextField
-                      fullWidth
-                      {...params}
-                      label="City"
-                      helperText="City"
-                    />
-                  )}
-                />
-              </Grid>
-              <Grid item xs={12} md={3}>
+              <Grid item xs={12} md={12}>
                 <TextField
-                  name="zipcode"
-                  fullWidth
-                  id="fullName"
-                  label="Zip Code"
-                  helperText="ZIP Code"
+                  error={error}
+                  type="text"
+                  id="outlined-select-currency"
+                  helperText="Complete Address"
+                  value={address}
+                  onChange={(e: any) => setAddress(e.target.value)}
+                  style={{
+                    width: '100%'
+                  }}
                 />
               </Grid>
             </Grid>
           </Box>
         </Paper>
         <Categories
-          categoryData={category.categoryData}
-          subCategoryData={subCategory.subCategoryData}
+          categoryData={category}
+          subCategoryData={subCategory}
+          onSelectSubCat={onSelectSubCat}
         />
-        <Request />
-        <GenerateQR />
+        <Paper
+          variant="outlined"
+          sx={{
+            my: { xs: 3 },
+            p: { xs: 2 },
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}
+        >
+          <Grid container spacing={2}>
+            <Grid item xs={12} md={12}>
+              <TextField
+                name="others"
+                required
+                fullWidth
+                id="others"
+                value={others}
+                onChange={(e: any) => setOthers(e.target.value)}
+                helperText="Others"
+              />
+            </Grid>
+          </Grid>
+        </Paper>
+        <Request
+          requestedBy={requestedBy}
+          setRequestedBy={(e: any) => setRequestedBy(e.target.value)}
+          dateRequested={dateRequested}
+          setDateRequested={(e: any) => setDateRequested(e.target.value)}
+          remarks={remarks}
+          setRemarks={(e: any) => setRemarks(e.target.value)}
+        />
+        <GenerateQR onClick={onSubmit} />
+        {error && error ? (
+          <Paper>
+            <Alert severity="error">
+              <AlertTitle>Missing Field Required</AlertTitle>
+              {errorMsg &&
+                errorMsg?.map((d) => (
+                  <>
+                    * <strong>{d}</strong>
+                  </>
+                ))}
+            </Alert>
+          </Paper>
+        ) : null}
       </Container>
       <Footer />
     </>

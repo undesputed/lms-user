@@ -23,7 +23,7 @@ import {
   useGoogleLogin
 } from '@react-oauth/google';
 import jwtDecode from 'jwt-decode';
-import { loginAsync } from 'src/reducers/authReducer';
+import { loginAsync } from 'src/reducers/auth/authReducer';
 import { useAppSelector, useAppDispatch } from 'src/actions/hooks';
 
 const theme = createTheme();

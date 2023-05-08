@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Button, Paper } from '@mui/material';
-import QrCode2Icon from '@mui/icons-material/QrCode2';
+import PublishIcon from '@mui/icons-material/Publish';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { qrCodeInterface } from './interface';
 
@@ -32,9 +32,10 @@ const GenerateQR: React.FC<qrCodeInterface> = (props) => {
             sx={{ margin: 1 }}
             variant="contained"
             color="primary"
-            startIcon={<QrCode2Icon />}
+            onClick={props.onClick}
+            startIcon={<PublishIcon />}
           >
-            Generate QR Code
+            Proceed To Payment
           </Button>
         </Box>
       </Paper>

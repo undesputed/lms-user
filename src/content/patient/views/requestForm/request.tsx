@@ -13,7 +13,16 @@ import {
 } from '@mui/material';
 import React from 'react';
 
-const Request = () => {
+type RequestType = {
+  requestedBy?: any;
+  dateRequested?: any;
+  remarks?: any;
+  setRequestedBy?: any;
+  setDateRequested?: any;
+  setRemarks?: any;
+};
+
+const Request: React.FC<RequestType> = (props) => {
   return (
     <Paper
       variant="outlined"
@@ -32,8 +41,9 @@ const Request = () => {
             required
             fullWidth
             id="requestBy"
-            label="Requested By"
             helperText="Requested By"
+            value={props.requestedBy}
+            onChange={(e: any) => props.setRequestedBy(e)}
           />
         </Grid>
         <Grid item xs={12} sm={4}>
@@ -42,8 +52,9 @@ const Request = () => {
             required
             fullWidth
             id="dateRequested"
-            label="Date Requested"
             helperText="Date Requested"
+            value={props.dateRequested}
+            onChange={(e: any) => props.setDateRequested(e)}
           />
         </Grid>
         <Grid item xs={12} md={12}>
@@ -52,8 +63,9 @@ const Request = () => {
             required
             fullWidth
             id="remarks"
-            label="Remarks"
             helperText="Remarks"
+            value={props.remarks}
+            onChange={(e: any) => props.setRemarks(e)}
           />
         </Grid>
       </Grid>

@@ -12,6 +12,7 @@ export type subCategory = {
   isError?: boolean;
   isHelperText?: string;
   isLoading?: boolean;
+  onSelectSubCat?: any;
 };
 
 export type Action =

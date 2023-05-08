@@ -25,7 +25,7 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     setToken: (state, action: PayloadAction<string>) => {
-      localStorage.setItem('patient', action.payload);
+      localStorage.setItem('profile', action.payload);
       state.token = action.payload;
     },
     clearToken: (state) => {
@@ -47,6 +47,14 @@ export const authSlice = createSlice({
       });
   }
 });
+
+export const getToken = () => {
+  const profile = JSON.parse(localStorage.getItem('profile'));
+  const decodedToken = JSON.parse(atob(profile.data.token.split('.')[1]));
+  if (decodedToken) {
+    return decodedToken;
+  }
+};
 
 export const { setToken, clearToken } = authSlice.actions;
 

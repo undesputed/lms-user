@@ -6,6 +6,7 @@ import {
   FormGroup,
   Grid,
   Paper,
+  TextField,
   Typography
 } from '@mui/material';
 import { category, subCategory } from './types.d';
@@ -45,7 +46,13 @@ const Categories: React.FC<CategoryProps> = (props) => {
                   .map((subCat) => (
                     <FormGroup key={subCat.id}>
                       <FormControlLabel
-                        control={<Checkbox />}
+                        control={
+                          <Checkbox
+                            onChange={(e: any) =>
+                              props.onSelectSubCat(e, subCat.id)
+                            }
+                          />
+                        }
                         label={subCat.sub_category_name}
                       />
                     </FormGroup>
