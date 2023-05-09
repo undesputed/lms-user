@@ -201,7 +201,7 @@ const Login = () => {
             >
               Login
             </Button>
-            <Button fullWidth sx={{ mb: 2 }}>
+            {/* <Button fullWidth sx={{ mb: 2 }}>
               <GoogleLogin
                 type="standard"
                 theme="filled_blue"
@@ -213,7 +213,7 @@ const Login = () => {
                 onSuccess={googleLogin}
                 onError={() => errorMessage}
               />
-            </Button>
+            </Button> */}
             <Grid container mt={2} mb={10}>
               <Grid item xs>
                 <Link to="#">Forgot password?</Link>

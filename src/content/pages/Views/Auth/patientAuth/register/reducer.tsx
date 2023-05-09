@@ -12,25 +12,35 @@ export const reducer = (state: State, action: Action): State => {
         ...state,
         lastName: action.payload
       };
+    case 'setMiddleName':
+      return {
+        ...state,
+        lastName: action.payload
+      };
     case 'setUserName':
       return {
         ...state,
-        userName: action.payload
+        username: action.payload
       };
     case 'setPhone':
       return {
         ...state,
         phone: action.payload
       };
+    case 'setAddress':
+      return {
+        ...state,
+        address: action.payload
+      };
     case 'setGender':
       return {
         ...state,
-        gender: action.payload
+        sex: action.payload
       };
     case 'setBirthDate':
       return {
         ...state,
-        birthDate: action.payload
+        birthday: action.payload
       };
     case 'setEmail':
       return {
@@ -42,27 +52,15 @@ export const reducer = (state: State, action: Action): State => {
         ...state,
         password: action.payload
       };
-    case 'setIsButtonDisabled':
+    case 'setConfirmPassword':
       return {
         ...state,
-        isButtonDisabled: action.payload
+        password: action.payload
       };
-    case 'registerSuccess':
-      return {
-        ...state, 
-        helperText: action.payload,
-        isError: false
-      };
-    case 'registerFailed':
+    case '':
       return {
         ...state,
-        helperText: action.payload,
-        isError: true
-      };
-    case 'setIsError':
-      return {
-        ...state,
-        isError: action.payload
+        error: action.payload
       };
   }
 };

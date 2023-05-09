@@ -1,16 +1,17 @@
-import { State } from "./types.d";
+import { State } from './types.d';
 
-export const initialState:State = {
-    firstName: '',
-    lastName: '',
-    userName: '',
-    phone: '',
-    gender: '',
-    birthDate: new Date,
-    email: '',
-    password: '',
-    isError: false,
-    error: '',
-    isButtonDisabled: true,
-    helperText: ''
+export const initialState: State = {
+  firstName: '',
+  lastName: '',
+  middleName: '',
+  phone: '',
+  address: '',
+  sex: 0,
+  age: 0,
+  birthday: new Date(),
+  username: '',
+  email: '',
+  password: '',
+  confirmPassword: '',
+  error: false
 };
