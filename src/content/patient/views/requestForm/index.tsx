@@ -215,7 +215,7 @@ const PatientForm = () => {
             <Grid container spacing={2}>
               <Grid item xs={12} md={8}>
                 <TextField
-                  error={error}
+                  error={fullName ? true : false}
                   name="fullName"
                   required
                   fullWidth
@@ -227,7 +227,7 @@ const PatientForm = () => {
               </Grid>
               <Grid item xs={12} sm={4}>
                 <TextField
-                  error={error}
+                  error={toDate ? true : false}
                   type="date"
                   id="outlined-select-currency"
                   helperText="Date of Visit"
@@ -245,7 +245,7 @@ const PatientForm = () => {
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField
-                  error={error}
+                  error={birthday ? true : false}
                   type="date"
                   id="outlined-select-currency"
                   helperText="Birthday"
@@ -261,7 +261,7 @@ const PatientForm = () => {
               </Grid>
               <Grid item xs={12} md={3}>
                 <TextField
-                  error={error}
+                  error={age ? true : false}
                   type="number"
                   id="outlined-select-currency"
                   helperText="Age"
@@ -276,7 +276,7 @@ const PatientForm = () => {
                 <FormControl fullWidth>
                   <InputLabel id="demo-simple-select-label">Sex</InputLabel>
                   <Select
-                    error={error}
+                    error={sex ? true : false}
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
                     value={sex}
@@ -292,7 +292,7 @@ const PatientForm = () => {
               </Grid>
               <Grid item xs={12} md={12}>
                 <TextField
-                  error={error}
+                  error={address ? true : false}
                   type="text"
                   id="outlined-select-currency"
                   helperText="Complete Address"

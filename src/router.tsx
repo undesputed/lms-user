@@ -19,7 +19,7 @@ const Loader = (Component) => (props) =>
 // Pages
 const Overview = Loader(lazy(() => import('src/content/overview')));
 
-//Patient Auth
+//Patient
 const Login = Loader(
   lazy(() => import('src/content/pages/Views/Auth/patientAuth/login'))
 );
@@ -79,6 +79,7 @@ const PatientDashboard = Loader(
 const PatientForm = Loader(
   lazy(() => import('src/content/patient/views/requestForm'))
 );
+const Payment = Loader(lazy(() => import('src/content/patient/views/payment')));
 
 // Dashboards
 
@@ -201,6 +202,10 @@ const routes: RouteObject[] = [
       {
         path: 'requestForm',
         element: <PatientForm />
+      },
+      {
+        path: 'payment',
+        element: <Payment />
       }
     ]
   },

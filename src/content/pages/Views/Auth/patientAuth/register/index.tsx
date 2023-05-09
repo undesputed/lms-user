@@ -72,13 +72,9 @@ export default function SignUp() {
     });
   };
 
-  const googleSignUp = async (response) => {
+  const googleSignUp = async (response) => {};
 
-  };
-
-  const googleSignUpError = async() => {
-
-  }
+  const googleSignUpError = async () => {};
 
   return (
     <ThemeProvider theme={theme}>
@@ -133,20 +129,20 @@ export default function SignUp() {
                 <TextField
                   required
                   fullWidth
-                  id="username"
-                  label="Username"
-                  name="username"
-                  autoComplete="username"
+                  id="phone"
+                  label="Phone Number"
+                  name="phone"
+                  autoComplete="phone"
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
                   required
                   fullWidth
-                  id="phone"
-                  label="Phone Number"
-                  name="phone"
-                  autoComplete="phone"
+                  id="address"
+                  label="address"
+                  name="address"
+                  autoComplete="address"
                 />
               </Grid>
               <Grid item xs={6}>
