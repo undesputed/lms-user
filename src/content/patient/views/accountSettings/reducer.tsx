@@ -7,6 +7,46 @@ export const reducer = (state: State, action: Action): State => {
         ...state,
         profile: action.payload
       };
+    // case 'setFirstName':
+    //   return {
+    //     ...state,
+    //     profile: action.payload
+    //   };
+    // case 'setLastName':
+    //   return {
+    //     ...state,
+    //     profile: action.payload
+    //   };
+    // case 'setMiddleName':
+    //   return {
+    //     ...state,
+    //     profile: action.payload
+    //   };
+    // case 'setPhone':
+    //   return {
+    //     ...state,
+    //     profile: action.payload
+    //   };
+    // case 'setAddress':
+    //   return {
+    //     ...state,
+    //     profile: action.payload
+    //   };
+    // case 'setSex':
+    //   return {
+    //     ...state,
+    //     profile: action.payload
+    //   };
+    // case 'setBirthday':
+    //   return {
+    //     ...state,
+    //     profile: action.payload
+    //   };
+    // case 'setEmail':
+    //   return {
+    //     ...state,
+    //     profile: action.payload
+    //   };
     case 'setErrorMessage':
       return {
         ...state,

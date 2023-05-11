@@ -33,7 +33,7 @@ const AlertDialog: React.FC<modalType> = (props) => {
       }}
     >
       <DialogTitle>
-        <Typography component="h1" variant="h3" align="center">
+        <Typography component="h1" variant="inherit" align="center">
           {props.tittle}
         </Typography>
       </DialogTitle>
@@ -75,7 +75,7 @@ const AlertDialog: React.FC<modalType> = (props) => {
               color="primary"
               startIcon={<PublishIcon />}
             >
-              Update Email Address
+              Update
             </Button>
           </Grid>
         </Grid>

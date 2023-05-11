@@ -32,6 +32,18 @@ function PatientAccountSettings() {
   const handleTabsChange = (event: ChangeEvent<{}>, value: string): void => {
     setCurrentTab(value);
   };
+
+  const handleUpdateDetails = () => {
+    console.log(state.profile);
+  };
+
+  const handleOnChange = (event: any) => {
+    const { name, value } = event.target;
+
+    state.profile.firstName = value;
+    console.log(state.profile);
+  };
+
   const fetchProfile = () => {
     try {
       const data = reduxDispatch(getToken);
@@ -86,7 +98,11 @@ function PatientAccountSettings() {
           </Grid>
           <Grid item xs={12}>
             {currentTab === 'edit_profile' && (
-              <EditProfileTab user={state.profile} />
+              <EditProfileTab
+                user={state.profile}
+                handleUpdateDetails={handleUpdateDetails}
+                handleOnChange={handleOnChange}
+              />
             )}
             {currentTab === 'notifications' && <NotificationsTab />}
             {currentTab === 'security' && <SecurityTab />}

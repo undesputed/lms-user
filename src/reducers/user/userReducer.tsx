@@ -9,7 +9,7 @@ import {
 import axios from 'axios';
 import { RootState } from 'src/app/store';
 import produce from 'immer';
-import { retrievePatientById } from 'src/api/userAPI';
+import { retrievePatientById, updatePatientById } from 'src/api/userAPI';
 
 export interface userInterface {
   id: number;
@@ -49,6 +49,14 @@ export const fetchUserById: any = createAsyncThunk(
   }
 );
 
+export const updateProfileById: any = createAsyncThunk(
+  'user/updateDetail',
+  async (id: number, userData: any) => {
+    const res = await updatePatientById(id, userData);
+    return res;
+  }
+);
+
 const userSlice = createSlice({
   name: 'users',
   initialState: initialState,
@@ -65,6 +73,16 @@ const userSlice = createSlice({
       .addCase(fetchUserById.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message;
+      })
+      .addCase(updateProfileById.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(updateProfileById.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        userAdapter.updateOne(state, action.payload);
+      })
+      .addCase(updateProfileById, (state) => {
+        state.status = 'failed';
       });
   }
 });

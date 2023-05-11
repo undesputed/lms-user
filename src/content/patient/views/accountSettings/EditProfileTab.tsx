@@ -44,6 +44,8 @@ const EditProfileTab: React.FC<profileType> = (props) => {
         onClose={handleClose}
         tittle={'Update Personal Details'}
         profile={props.user}
+        handleUpdateDetails={props.handleUpdateDetails}
+        handleOnChange={props.handleOnChange}
       />
       <EmailModal
         open={emailOpen}

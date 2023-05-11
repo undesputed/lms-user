@@ -33,7 +33,7 @@ const AlertDialog: React.FC<modalType> = (props) => {
       }}
     >
       <DialogTitle>
-        <Typography component="h1" variant="h3" align="center">
+        <Typography variant="h4" align="center">
           {props.tittle}
         </Typography>
       </DialogTitle>
@@ -46,6 +46,8 @@ const AlertDialog: React.FC<modalType> = (props) => {
               fullWidth
               id="firstName"
               helperText="First Name"
+              value={props.profile?.firstName}
+              onChange={(e: any) => props.handleOnChange(e)}
             />
           </Grid>
           <Grid item xs={12} md={2}>
@@ -138,8 +140,9 @@ const AlertDialog: React.FC<modalType> = (props) => {
               variant="contained"
               color="primary"
               startIcon={<PublishIcon />}
+              onClick={props.handleUpdateDetails}
             >
-              Update Profile
+              Update
             </Button>
           </Grid>
         </Grid>

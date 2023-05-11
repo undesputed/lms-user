@@ -23,3 +23,12 @@ interface userInterface {
 export function retrievePatientById(id: number): Promise<userInterface> {
   return api.get<userInterface>(`user/${id}`).then((res) => res.data);
 }
+
+export function updatePatientById(
+  id: number,
+  data: userInterface
+): Promise<userInterface> {
+  return api
+    .put<userInterface>(`user/updateDetail/${id}`, data)
+    .then((res) => res.data);
+}

@@ -25,6 +25,8 @@ export interface profileState {
 export type profileType = {
   handleOnclick?: any;
   user?: any;
+  handleUpdateDetails?: () => void;
+  handleOnChange?: (e: any) => void;
 };
 
 export type modalType = {
@@ -33,6 +35,8 @@ export type modalType = {
   type?: string;
   tittle?: string;
   profile?: profileState;
+  handleUpdateDetails?: () => void;
+  handleOnChange?: (e: any) => void;
 };
 
 export type State = {
@@ -44,6 +48,14 @@ export type State = {
 
 export type Action =
   | { type: 'setProfile'; payload: profileState }
+  | { type: 'setFirstName'; payload: string }
+  | { type: 'setLastName'; payload: string }
+  | { type: 'setMiddleName'; payload: string }
+  | { type: 'setPhone'; payload: string }
+  | { type: 'setAddress'; payload: string }
+  | { type: 'setSex'; payload: string }
+  | { type: 'setBirthday'; payload: string }
+  | { type: 'setEmail'; payload: string }
   | { type: 'setErrorMessage'; payload: string }
   | { type: 'setLoading'; payload: boolean }
   | { type: 'setIsError'; payload: boolean };
