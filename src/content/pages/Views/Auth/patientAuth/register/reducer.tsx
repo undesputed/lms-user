@@ -42,6 +42,11 @@ export const reducer = (state: State, action: Action): State => {
         ...state,
         birthday: action.payload
       };
+    case 'setAge':
+      return {
+        ...state,
+        age: action.payload
+      };
     case 'setEmail':
       return {
         ...state,
@@ -55,12 +60,37 @@ export const reducer = (state: State, action: Action): State => {
     case 'setConfirmPassword':
       return {
         ...state,
-        password: action.payload
+        confirmPassword: action.payload
       };
-    case '':
+    case 'setError':
       return {
         ...state,
         error: action.payload
+      };
+    case 'setErrorMessage':
+      return {
+        ...state,
+        errorMessage: action.payload
+      };
+    case 'setEmailExists':
+      return {
+        ...state,
+        emailExists: action.payload
+      };
+    case 'setEmailExistsMessage':
+      return {
+        ...state,
+        emailExistsMessage: action.payload
+      };
+    case 'setLoading':
+      return {
+        ...state,
+        loading: action.payload
+      };
+    case 'setLoginSuccess':
+      return {
+        ...state,
+        loginSuccess: action.payload
       };
   }
 };

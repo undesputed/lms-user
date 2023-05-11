@@ -12,6 +12,11 @@ export type State = {
   password: string;
   confirmPassword: string;
   error: boolean;
+  errorMessage: string;
+  emailExists: boolean;
+  emailExistsMessage: string;
+  loading: boolean;
+  loginSuccess: boolean;
 };
 
 export type Action =
@@ -23,9 +28,15 @@ export type Action =
   | { type: 'setAddress'; payload: string }
   | { type: 'setGender'; payload: number }
   | { type: 'setBirthDate'; payload: Date }
+  | { type: 'setAge'; payload: number }
   | { type: 'setEmail'; payload: string }
   | { type: 'setPassword'; payload: string }
   | { type: 'setConfirmPassword'; payload: string }
   | { type: 'registerSuccess'; payload: string }
   | { type: 'registerFailed'; payload: string }
-  | { type: ''; payload: boolean };
+  | { type: 'setError'; payload: boolean }
+  | { type: 'setErrorMessage'; payload: string }
+  | { type: 'setEmailExists'; payload: boolean }
+  | { type: 'setEmailExistsMessage'; payload: string }
+  | { type: 'setLoading'; payload: boolean }
+  | { type: 'setLoginSuccess'; payload: boolean };

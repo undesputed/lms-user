@@ -40,5 +40,15 @@ export const reducer = (state: State, action: Action): State => {
         isError: action.payload,
         helperText: action.message
       };
+    case 'setLoading':
+      return {
+        ...state,
+        loading: action.payload
+      };
+    case 'setSuccess':
+      return {
+        ...state,
+        success: action.payload
+      };
   }
 };

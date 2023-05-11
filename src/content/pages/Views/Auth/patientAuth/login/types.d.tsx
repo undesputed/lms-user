@@ -4,6 +4,8 @@ export type State = {
   isButtonDisabled: boolean;
   helperText: string;
   isError: boolean;
+  loading: boolean;
+  success: boolean;
 };
 
 export type Action =
@@ -12,5 +14,7 @@ export type Action =
   | { type: 'setIsButtonDisabled'; payload: boolean }
   | { type: 'loginSuccess'; payload: string }
   | { type: 'loginFailed'; payload: string }
-  | { type: 'setErrorText'; payload: boolean, message: string }
-  | { type: 'setIsError'; payload: boolean };
+  | { type: 'setErrorText'; payload: boolean; message: string }
+  | { type: 'setIsError'; payload: boolean }
+  | { type: 'setLoading'; payload: boolean }
+  | { type: 'setSuccess'; payload: boolean };

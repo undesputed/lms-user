@@ -14,16 +14,26 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { FaGoogle, FaFacebookSquare, FaTwitter } from 'react-icons/fa';
 import logo from 'src/assets/image/logo/Logo.png';
 import {
+  Alert,
+  AlertTitle,
+  Backdrop,
+  CircularProgress,
   FormControl,
   FormLabel,
+  IconButton,
   MenuItem,
   RadioGroup,
+  Snackbar,
   Stack
 } from '@mui/material';
 import moment from 'moment';
 import { reducer } from './reducer';
 import { initialState } from './initialState';
 import { GoogleLogin } from '@react-oauth/google';
+import { useAppDispatch } from 'src/actions/hooks';
+import { registerAsync } from 'src/reducers/auth/authReducer';
+import { useNavigate } from 'react-router';
+import CloseIcon from '@mui/icons-material/Close';
 
 function Copyright(props: any) {
   return (
@@ -32,6 +42,7 @@ function Copyright(props: any) {
       color="text.secondary"
       align="center"
       {...props}
+      mb={5}
     >
       {'Copyright © '}
       <Link color="inherit" href="https://mui.com/">
@@ -61,11 +72,145 @@ const gender = [
 const theme = createTheme();
 
 export default function SignUp() {
+  const navigate = useNavigate();
   const [state, dispatch] = React.useReducer(reducer, initialState);
+  const reduxDispatch = useAppDispatch();
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleClose = (
+    event: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    dispatch({
+      type: 'setLoginSuccess',
+      payload: true
+    });
+  };
+
+  const action = (
+    <React.Fragment>
+      <Button color="secondary" size="small" onClick={handleClose}>
+        EXIT
+      </Button>
+      <IconButton
+        size="small"
+        aria-label="close"
+        color="inherit"
+        onClick={handleClose}
+      >
+        <CloseIcon fontSize="small" />
+      </IconButton>
+    </React.Fragment>
+  );
+
+  const calculateAge = (birthdate: Date) => {
+    const today = new Date();
+    const birthDate = new Date(birthdate);
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const month = today.getMonth() - birthDate.getMonth();
+    if (month < 0 || (month === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    dispatch({
+      type: 'setAge',
+      payload: age
+    });
+  };
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log(state);
+    dispatch({
+      type: 'setLoading',
+      payload: true
+    });
+    if (
+      !state.firstName ||
+      !state.lastName ||
+      !state.phone ||
+      !state.address ||
+      state.sex === 0 ||
+      !state.email ||
+      !state.password ||
+      !state.confirmPassword
+    ) {
+      dispatch({
+        type: 'setError',
+        payload: true
+      });
+      return;
+    }
+
+    if (new Date(state.birthday).getDate() === new Date().getDate()) {
+      dispatch({
+        type: 'setError',
+        payload: true
+      });
+      dispatch({
+        type: 'setErrorMessage',
+        payload: 'Birthday is required!!'
+      });
+      return;
+    }
+
+    if (state.password !== state.confirmPassword) {
+      dispatch({
+        type: 'setError',
+        payload: true
+      });
+      dispatch({
+        type: 'setErrorMessage',
+        payload: 'Password Does not Match'
+      });
+      return;
+    }
+    dispatch({
+      type: 'setLoginSuccess',
+      payload: true
+    });
+
+    try {
+      const response = await reduxDispatch(registerAsync(state));
+      if (response.type === 'auth/register/rejected') {
+        dispatch({
+          type: 'setEmailExists',
+          payload: true
+        });
+        dispatch({
+          type: 'setError',
+          payload: true
+        });
+        dispatch({
+          type: 'setEmailExistsMessage',
+          payload: 'Email Already In Use'
+        });
+        return;
+      }
+      dispatch({
+        type: 'setError',
+        payload: false
+      });
+      dispatch({
+        type: 'setErrorMessage',
+        payload: ''
+      });
+      dispatch({
+        type: 'setLoading',
+        payload: false
+      });
+      navigate('/auth/login');
+    } catch (err) {
+      dispatch({
+        type: 'setError',
+        payload: true
+      });
+      dispatch({
+        type: 'setErrorMessage',
+        payload: 'Password Does not Match'
+      });
+    }
   };
 
   const onChangeFirstName: React.ChangeEventHandler<HTMLInputElement> = (
@@ -112,6 +257,7 @@ export default function SignUp() {
       type: 'setBirthDate',
       payload: event.target.value
     });
+    calculateAge(event.target.value);
   };
   const onChangeEmail: any = (event) => {
     dispatch({
@@ -132,6 +278,10 @@ export default function SignUp() {
     });
   };
 
+  React.useEffect(() => {
+    calculateAge(state.birthday);
+  }, []);
+
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
@@ -151,7 +301,7 @@ export default function SignUp() {
             alt="EC-Care Medical Laboratory"
           ></Avatar>
           <Typography component="h1" variant="h5">
-            Sign up
+            Patient Sign up
           </Typography>
           <Box
             component="form"
@@ -162,55 +312,67 @@ export default function SignUp() {
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
+                  error={!state.firstName && state.error ? true : false}
                   autoComplete="given-name"
                   name="firstName"
                   required
                   fullWidth
                   id="firstName"
                   label="First Name"
+                  value={state.firstName}
                   autoFocus
                   onChange={(e: any) => onChangeFirstName(e)}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
+                  error={!state.lastName && state.error ? true : false}
                   required
                   fullWidth
                   id="lastName"
                   label="Last Name"
                   name="lastName"
+                  value={state.lastName}
                   autoComplete="family-name"
                   onChange={(e: any) => onChangeLastName(e)}
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
+                  error={!state.phone && state.error ? true : false}
                   required
                   fullWidth
+                  type="tel"
                   id="phone"
+                  inputProps={{ pattern: '[0-9]*' }}
                   label="Phone Number"
                   name="phone"
+                  value={state.phone}
                   autoComplete="phone"
                   onChange={(e: any) => onChangePhone(e)}
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
+                  error={!state.address && state.error ? true : false}
                   required
                   fullWidth
                   id="address"
                   label="address"
                   name="address"
+                  value={state.address}
                   autoComplete="address"
                   onChange={(e: any) => onChangeAddress(e)}
                 />
               </Grid>
               <Grid item xs={6}>
                 <TextField
+                  error={!state.sex && state.error ? true : false}
                   id="outlined-select-currency"
                   select
                   label="Select"
                   defaultValue="male"
+                  value={state.sex}
                   helperText="Please select your gender"
                   onChange={(e: any) => onChangeGender(e)}
                 >
@@ -223,28 +385,34 @@ export default function SignUp() {
               </Grid>
               <Grid item xs={6}>
                 <TextField
+                  error={!state.birthday && state.error ? true : false}
                   type="date"
                   id="outlined-select-currency"
                   helperText="Enter Birth Date"
                   style={{
                     width: '100%'
                   }}
+                  value={state.birthday}
                   onChange={(e: any) => onChangeBirthday(e)}
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
+                  error={!state.email && state.error ? true : false}
                   required
                   fullWidth
                   id="email"
                   label="Email Address"
+                  type="email"
                   name="email"
+                  value={state.email}
                   autoComplete="email"
                   onChange={(e: any) => onChangeEmail(e)}
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
+                  error={!state.password && state.error ? true : false}
                   required
                   fullWidth
                   name="password"
@@ -252,29 +420,27 @@ export default function SignUp() {
                   type="password"
                   id="password"
                   autoComplete="new-password"
+                  value={state.password}
                   onChange={(e: any) => onChangePassword(e)}
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
+                  error={
+                    state.confirmPassword !== state.password && state.error
+                      ? true
+                      : false
+                  }
                   required
                   fullWidth
-                  name="password"
+                  name="confirmPass"
                   label="Re-Type Password"
                   type="password"
-                  id="password"
-                  autoComplete="new-password"
+                  value={state.confirmPassword}
+                  id="confirmPass"
                   onChange={(e: any) => onChangeConfirmPass(e)}
                 />
               </Grid>
-              {/* <Grid item xs={12}>
-                <FormControlLabel
-                  control={
-                    <Checkbox value="allowExtraEmails" color="primary" />
-                  }
-                  label="I want to receive inspiration, marketing promotions and updates via email."
-                />
-              </Grid> */}
             </Grid>
             <Button
               type="submit"
@@ -291,9 +457,58 @@ export default function SignUp() {
                 </Link>
               </Grid>
             </Grid>
+            {state.error ? (
+              <Grid container spacing={2} mt={2}>
+                <Grid item xs={12}>
+                  <Alert severity="error">
+                    <AlertTitle>Error</AlertTitle>
+                    All Fields are required — <strong>check it out!</strong>
+                  </Alert>
+                  {state.errorMessage ? (
+                    <Alert severity="error">
+                      <AlertTitle>Error</AlertTitle>
+                      <strong>{state.errorMessage}</strong>
+                    </Alert>
+                  ) : null}
+                </Grid>
+              </Grid>
+            ) : null}
+            {state.emailExists ? (
+              <Grid container spacing={2} mt={2}>
+                <Grid item xs={12}>
+                  <Alert severity="info">
+                    <AlertTitle>Info</AlertTitle>
+                    {state.emailExistsMessage} <strong>{state.email}</strong>
+                  </Alert>
+                </Grid>
+              </Grid>
+            ) : null}
+            {state.loading ? (
+              <Backdrop
+                sx={{
+                  color: '#fff',
+                  zIndex: (theme) => theme.zIndex.drawer + 1
+                }}
+                open={state.loading}
+                onClick={() => {
+                  dispatch({ type: 'setLoading', payload: false });
+                }}
+              >
+                <CircularProgress color="inherit" />
+              </Backdrop>
+            ) : null}
+            {state.loginSuccess ? (
+              <Snackbar
+                open={state.loginSuccess}
+                autoHideDuration={6000}
+                onClose={handleClose}
+                message="Login Success"
+                action={action}
+              />
+            ) : null}
           </Box>
         </Box>
-        <Copyright sx={{ mt: 5 }} />
+        <Copyright sx={{ mt: 3}} />
       </Container>
     </ThemeProvider>
   );

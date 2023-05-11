@@ -14,11 +14,13 @@ interface registerCreds {
 }
 export interface AuthState {
   token: string;
+  message: string;
   status: 'idle' | 'loading' | 'failed';
 }
 
 const initialState: AuthState = {
-  token: null,
+  token: '',
+  message: '',
   status: 'idle'
 };
 
@@ -26,6 +28,7 @@ export const loginAsync = createAsyncThunk(
   'auth/login',
   async (credentials: { email: string; password: string }) => {
     const response = await patientAuth(credentials);
+    sessionStorage.setItem('profile', response.token);
     return response.token;
   }
 );
@@ -43,11 +46,9 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     setToken: (state, action: PayloadAction<string>) => {
-      localStorage.setItem('profile', action.payload);
       state.token = action.payload;
     },
     clearToken: (state) => {
-      localStorage.clear();
       state.token = null;
     }
   },
@@ -59,18 +60,33 @@ export const authSlice = createSlice({
       .addCase(loginAsync.fulfilled, (state, action) => {
         state.status = 'idle';
         state.token = action.payload;
+        setToken(action.payload);
       })
       .addCase(loginAsync.rejected, (state) => {
+        state.status = 'failed';
+      })
+      .addCase(registerAsync.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(registerAsync.fulfilled, (state, action) => {
+        state.status = 'idle';
+        state.message = action.payload;
+      })
+      .addCase(registerAsync.rejected, (state) => {
         state.status = 'failed';
       });
   }
 });
 
 export const getToken = () => {
-  const profile = JSON.parse(localStorage.getItem('profile'));
-  const decodedToken = JSON.parse(atob(profile.data.token.split('.')[1]));
-  if (decodedToken) {
-    return decodedToken;
+  const token = sessionStorage.getItem('profile');
+  try {
+    const decodedToken = JSON.parse(atob(token.split('.')[1]));
+    if (decodedToken) {
+      return decodedToken;
+    }
+  } catch (error) {
+    console.error('Error parsing token:', error);
   }
 };
 

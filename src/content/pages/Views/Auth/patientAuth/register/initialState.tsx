@@ -13,5 +13,10 @@ export const initialState: State = {
   email: '',
   password: '',
   confirmPassword: '',
-  error: false
+  error: false,
+  errorMessage: '',
+  emailExists: false,
+  emailExistsMessage: '',
+  loading: false,
+  loginSuccess: false,
 };

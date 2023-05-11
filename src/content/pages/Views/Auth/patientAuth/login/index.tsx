@@ -25,6 +25,7 @@ import {
 import jwtDecode from 'jwt-decode';
 import { loginAsync } from 'src/reducers/auth/authReducer';
 import { useAppSelector, useAppDispatch } from 'src/actions/hooks';
+import { Backdrop, CircularProgress, Snackbar } from '@mui/material';
 
 const theme = createTheme();
 
@@ -47,15 +48,38 @@ const Login = () => {
     }
   }, [state.email, state.password]);
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
+    dispatch({
+      type: 'setLoading',
+      payload: true
+    });
     if (state.email && state.password) {
       try {
-        authDispatch(loginAsync(state));
+        const res = await authDispatch(loginAsync(state));
+        dispatch({
+          type: 'setLoading',
+          payload: false
+        });
+        if (res.type === 'auth/login/rejected') {
+          dispatch({
+            type: 'setIsError',
+            payload: true
+          });
+          return;
+        }
+        dispatch({
+          type: 'setSuccess',
+          payload: true
+        });
+        dispatch({
+          type: 'setIsError',
+          payload: false
+        });
         dispatch({
           type: 'loginSuccess',
           payload: 'Login Successfully'
         });
-        navigate('/patient/dashboard');
+        navigate('/patient/profile');
       } catch (error) {
         dispatch({
           type: 'loginFailed',
@@ -226,6 +250,26 @@ const Login = () => {
             </Grid>
           </Box>
         </Box>
+        <Backdrop
+          sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={state.loading}
+          onClick={handleLogin}
+        >
+          <CircularProgress color="inherit" />
+        </Backdrop>
+        <Snackbar
+          open={state.success}
+          autoHideDuration={6000}
+          onClose={handleLogin}
+        >
+          <Alert
+            onClose={handleLogin}
+            severity="success"
+            sx={{ width: '100%' }}
+          >
+            Login Success
+          </Alert>
+        </Snackbar>
       </Container>
     </ThemeProvider>
   );

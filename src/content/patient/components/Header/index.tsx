@@ -16,7 +16,7 @@ import logo from 'src/assets/image/logo/Logo White-01.png';
 import { Navigate, useNavigate } from 'react-router';
 
 const pages = ['Requests', 'FAQ', 'Privacy Policy'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const settings = ['Profile', 'Account Settings', 'Logout'];
 
 function Header() {
   const navigate = useNavigate();
@@ -41,20 +41,42 @@ function Header() {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
-    localStorage.clear();
-    navigate('/auth/login');
+  };
+
+  const handleProfile = () => {
+    setAnchorElUser(null);
+    navigate('/patient/profile');
+  };
+
+  const handleAccntSettings = () => {
+    setAnchorElUser(null);
+    navigate('/patient/account_settings');
+  };
+
+  const handleLogout = () => {
+    sessionStorage.clear();
+    navigate('/');
   };
 
   return (
     <AppBar position="static" sx={{ background: '#147ec0' }}>
       <Container maxWidth="lg">
         <Toolbar disableGutters>
-          <img src={logo} alt="Logo" style={{ height: '40px' }} />
+          <Avatar
+            alt="logo"
+            src={logo}
+            sx={{
+              display: { xs: 'none', md: 'flex' },
+              mr: 1,
+              width: '50px',
+              height: '50px'
+            }}
+          />
           <Typography
             variant="h6"
             noWrap
             component="a"
-            href="/"
+            href="/patient/profile"
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
@@ -65,7 +87,7 @@ function Header() {
               textDecoration: 'none'
             }}
           >
-            EC-CARE
+            EC-Care
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -104,7 +126,16 @@ function Header() {
               ))}
             </Menu>
           </Box>
-          <img src={logo} alt="Logo" style={{ height: '40px' }} />
+          <Avatar
+            alt="logo"
+            src={logo}
+            sx={{
+              width: '50px',
+              height: '50px',
+              display: { xs: 'flex', md: 'none' },
+              mr: 1
+            }}
+          />
           <Typography
             variant="h5"
             noWrap
@@ -121,7 +152,7 @@ function Header() {
               textDecoration: 'none'
             }}
           >
-            LOGO
+            EC-Care
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
@@ -157,11 +188,15 @@ function Header() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
+              <MenuItem onClick={handleProfile}>
+                <Typography textAlign="center">Profile</Typography>
+              </MenuItem>
+              <MenuItem onClick={handleAccntSettings}>
+                <Typography textAlign="center">Account Settings</Typography>
+              </MenuItem>
+              <MenuItem onClick={handleLogout}>
+                <Typography textAlign="center">Logout</Typography>
+              </MenuItem>
             </Menu>
           </Box>
         </Toolbar>

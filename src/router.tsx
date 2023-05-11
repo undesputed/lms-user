@@ -80,7 +80,12 @@ const PatientForm = Loader(
   lazy(() => import('src/content/patient/views/requestForm'))
 );
 const Payment = Loader(lazy(() => import('src/content/patient/views/payment')));
-
+const PatientProfile = Loader(
+  lazy(() => import('src/content/patient/views/profile'))
+);
+const PatientAccountSettings = Loader(
+  lazy(() => import('src/content/patient/views/accountSettings'))
+);
 // Dashboards
 
 const Crypto = Loader(lazy(() => import('src/content/dashboards/Crypto')));
@@ -206,6 +211,14 @@ const routes: RouteObject[] = [
       {
         path: 'payment',
         element: <Payment />
+      },
+      {
+        path: 'profile',
+        element: <PatientProfile />
+      },
+      {
+        path: 'account_settings',
+        element: <PatientAccountSettings />
       }
     ]
   },
