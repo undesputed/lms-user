@@ -18,6 +18,12 @@ import PublishIcon from '@mui/icons-material/Publish';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 
 const AlertDialog: React.FC<modalType> = (props) => {
+  const [email, setEmail] = React.useState<string>('');
+
+  const onUpdateEmail = () => {
+    props.handleUpdateEmail(email);
+  };
+
   return (
     <Dialog
       onClose={props.onClose}
@@ -46,6 +52,8 @@ const AlertDialog: React.FC<modalType> = (props) => {
               fullWidth
               id="email"
               helperText="Enter New Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </Grid>
           <Grid
@@ -74,6 +82,7 @@ const AlertDialog: React.FC<modalType> = (props) => {
               variant="contained"
               color="primary"
               startIcon={<PublishIcon />}
+              onClick={onUpdateEmail}
             >
               Update
             </Button>

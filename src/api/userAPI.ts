@@ -20,15 +20,42 @@ interface userInterface {
   deletedAt: string | null;
 }
 
+interface updateCreds {
+  firstName: string;
+  middleName: string;
+  lastName: string;
+  birthday: string;
+  phone: string;
+  age: number;
+  gender: number;
+  address: string;
+}
+
+interface updateEmailResponse {
+  id: string;
+  email: string;
+}
+
 export function retrievePatientById(id: number): Promise<userInterface> {
   return api.get<userInterface>(`user/${id}`).then((res) => res.data);
 }
 
 export function updatePatientById(
   id: number,
-  data: userInterface
+  data: updateCreds
 ): Promise<userInterface> {
   return api
     .put<userInterface>(`user/updateDetail/${id}`, data)
+    .then((res) => res.data);
+}
+
+export function updateEmailPatientById(
+  id: number,
+  data: {
+    email: string;
+  }
+): Promise<updateEmailResponse> {
+  return api
+    .put<updateEmailResponse>(`user/updateEmail/${id}`, data)
     .then((res) => res.data);
 }

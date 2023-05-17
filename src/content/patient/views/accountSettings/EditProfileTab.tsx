@@ -14,44 +14,25 @@ import DoneTwoToneIcon from '@mui/icons-material/DoneTwoTone';
 import Text from 'src/components/Text';
 import Label from 'src/components/Label';
 import { profileType } from './types.d';
-import AlertDialog from './PatientModal';
+import ProfileModal from './PatientModal';
 import EmailModal from './EmailModal';
 
 const EditProfileTab: React.FC<profileType> = (props) => {
-  const [open, setOpen] = React.useState(false);
-  const [emailOpen, setEmailOpen] = React.useState(false);
-
-  const handleEmailOpen = () => {
-    setEmailOpen(true);
-  };
-
-  const handleEmailClose = () => {
-    setEmailOpen(false);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const handleOpen = () => {
-    setOpen(true);
-  };
-
   return (
     <Grid container spacing={3}>
-      <AlertDialog
-        open={open}
-        onClose={handleClose}
+      <ProfileModal
+        open={props.isOpen}
+        onClose={props.handleOnClose}
         tittle={'Update Personal Details'}
         profile={props.user}
         handleUpdateDetails={props.handleUpdateDetails}
-        handleOnChange={props.handleOnChange}
       />
       <EmailModal
-        open={emailOpen}
-        onClose={handleEmailClose}
+        open={props.emailOpen}
+        onClose={props.handleEmailClose}
         tittle={'Update Email Address'}
         profile={props.user}
+        handleUpdateEmail={props.handleUpdateEmail}
       />
       <Grid item xs={12}>
         <Card>
@@ -72,7 +53,7 @@ const EditProfileTab: React.FC<profileType> = (props) => {
             <Button
               variant="text"
               startIcon={<EditTwoToneIcon />}
-              onClick={handleOpen}
+              onClick={props.handleIsOpen}
             >
               Edit
             </Button>
@@ -128,6 +109,16 @@ const EditProfileTab: React.FC<profileType> = (props) => {
                 </Grid>
                 <Grid item xs={12} sm={4} md={3} textAlign={{ sm: 'right' }}>
                   <Box pr={3} pb={2}>
+                    Age:
+                  </Box>
+                </Grid>
+                <Grid item xs={12} sm={8} md={9}>
+                  <Text color="black">
+                    <b>{props.user?.age}</b>
+                  </Text>
+                </Grid>
+                <Grid item xs={12} sm={4} md={3} textAlign={{ sm: 'right' }}>
+                  <Box pr={3} pb={2}>
                     Gender:
                   </Box>
                 </Grid>
@@ -143,7 +134,9 @@ const EditProfileTab: React.FC<profileType> = (props) => {
                 </Grid>
                 <Grid item xs={12} sm={8} md={9}>
                   <Box sx={{ maxWidth: { xs: 'auto', sm: 300 } }}>
-                    <Text color="black">{props.user?.address}</Text>
+                    <Text color="black">
+                      <b>{props.user?.address}</b>
+                    </Text>
                   </Box>
                 </Grid>
               </Grid>
@@ -170,7 +163,7 @@ const EditProfileTab: React.FC<profileType> = (props) => {
             <Button
               variant="text"
               startIcon={<EditTwoToneIcon />}
-              onClick={handleEmailOpen}
+              onClick={props.handleEmailOpen}
             >
               Edit
             </Button>
@@ -181,7 +174,7 @@ const EditProfileTab: React.FC<profileType> = (props) => {
               <Grid container spacing={0}>
                 <Grid item xs={12} sm={4} md={3} textAlign={{ sm: 'right' }}>
                   <Box pr={3} pb={2}>
-                    Email ID:
+                    Email address:
                   </Box>
                 </Grid>
                 <Grid item xs={12} sm={8} md={9}>
@@ -191,16 +184,6 @@ const EditProfileTab: React.FC<profileType> = (props) => {
                   <Box pl={1} component="span">
                     <Label color="success">Primary</Label>
                   </Box>
-                </Grid>
-                <Grid item xs={12} sm={4} md={3} textAlign={{ sm: 'right' }}>
-                  <Box pr={3} pb={2}>
-                    Username:
-                  </Box>
-                </Grid>
-                <Grid item xs={12} sm={8} md={9}>
-                  <Text color="black">
-                    <b>{props.user?.username}</b>
-                  </Text>
                 </Grid>
               </Grid>
             </Typography>

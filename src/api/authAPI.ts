@@ -13,6 +13,11 @@ interface loginCredentials {
   password: string;
 }
 
+interface updatePassResponse {
+  email: string;
+  password: string;
+}
+
 interface registrationCredentials {
   firstName: string;
   lastName: string;
@@ -22,6 +27,13 @@ interface registrationCredentials {
   username: string;
   email: string;
   password: string;
+}
+
+interface updatePasswordCreds {
+  email: string;
+  oldPass: string;
+  newPass: string;
+  confirmPass: string;
 }
 
 export function patientAuth(
@@ -37,5 +49,13 @@ export function patientRegistration(
 ): Promise<RegistrationResponse> {
   return api
     .post<RegistrationResponse>('auth/register', credentials)
+    .then((res) => res.data);
+}
+
+export function patientUpdatePassword(
+  credentials: updatePasswordCreds
+): Promise<updatePassResponse> {
+  return api
+    .put<updatePassResponse>('auth/updatePassword', credentials)
     .then((res) => res.data);
 }

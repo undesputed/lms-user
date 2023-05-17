@@ -1,6 +1,10 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState, AppThunk } from 'src/app/store';
-import { patientAuth, patientRegistration } from 'src/api/authAPI';
+import {
+  patientAuth,
+  patientRegistration,
+  patientUpdatePassword
+} from 'src/api/authAPI';
 
 interface registerCreds {
   firstName: string;
@@ -12,6 +16,7 @@ interface registerCreds {
   email: string;
   password: string;
 }
+
 export interface AuthState {
   token: string;
   message: string;
@@ -40,6 +45,7 @@ export const registerAsync = createAsyncThunk(
     return response.message;
   }
 );
+
 
 export const authSlice = createSlice({
   name: 'auth',

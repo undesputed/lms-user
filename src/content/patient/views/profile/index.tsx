@@ -44,6 +44,9 @@ const PatientProfile = () => {
   };
 
   React.useEffect(() => {
+    if (!sessionStorage.getItem('profile')) {
+      navigate('/');
+    }
     fetchProfile();
   }, []);
 
@@ -55,7 +58,7 @@ const PatientProfile = () => {
       <Header />
       <Container component="main" maxWidth="lg">
         <Grid item xs={12} md={12}>
-          <ProfileCover user={state.profile} />
+          <ProfileCover user={state?.profile} />
         </Grid>
         <Grid item xs={12} md={12}>
           <ProfileListTable />
