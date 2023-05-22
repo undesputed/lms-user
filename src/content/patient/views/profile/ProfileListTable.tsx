@@ -19,12 +19,6 @@ import {
   Typography,
   useTheme
 } from '@mui/material';
-import { format } from 'date-fns';
-import React from 'react';
-import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
-import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
-import { profileState } from './types.d';
-import * as api from 'src/api/apiTest';
 import ImageSearchIcon from '@mui/icons-material/ImageSearch';
 
 const PatientListTable = () => {
@@ -54,10 +48,9 @@ const PatientListTable = () => {
               <TableCell padding="checkbox">
                 <Checkbox color="primary" />
               </TableCell>
-              <TableCell>First Name</TableCell>
-              <TableCell>Last Name</TableCell>
-              <TableCell>Email Address</TableCell>
-              <TableCell>Password</TableCell>
+              <TableCell>Date Of Visit</TableCell>
+              <TableCell>Result Release Type</TableCell>
+              <TableCell>Release Date and Time</TableCell>
               <TableCell>Status</TableCell>
               <TableCell>Action</TableCell>
             </TableRow>
@@ -66,17 +59,6 @@ const PatientListTable = () => {
             <TableRow hover>
               <TableCell padding="checkbox">
                 <Checkbox color="primary" />
-              </TableCell>
-              <TableCell>
-                <Typography
-                  variant="body1"
-                  fontWeight="bold"
-                  color="text.primary"
-                  gutterBottom
-                  noWrap
-                >
-                  Carrie
-                </Typography>
               </TableCell>
               <TableCell>
                 <Typography
@@ -113,20 +95,6 @@ const PatientListTable = () => {
               </TableCell>
               <TableCell>1</TableCell>
               <TableCell>
-                <Tooltip title="Update Transaction" arrow>
-                  <IconButton
-                    sx={{
-                      '&:hover': {
-                        background: theme.colors.primary.lighter
-                      },
-                      color: theme.palette.primary.main
-                    }}
-                    color="inherit"
-                    size="small"
-                  >
-                    <EditTwoToneIcon fontSize="small" />
-                  </IconButton>
-                </Tooltip>
                 <Tooltip title="View Transaction" arrow>
                   <IconButton
                     sx={{

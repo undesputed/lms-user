@@ -7,6 +7,11 @@ export const reducer = (state: State, action: Action): State => {
         ...state,
         profile: action.payload
       };
+    case 'setRequest':
+      return {
+        ...state,
+        request: action.payload
+      };
     case 'setErrorMessage':
       return {
         ...state,
@@ -21,6 +26,21 @@ export const reducer = (state: State, action: Action): State => {
       return {
         ...state,
         isError: action.payload
+      };
+    case 'setSnackBarStatus':
+      return {
+        ...state,
+        snackBarStatus: action.payload
+      };
+    case 'setOpenModal':
+      return {
+        ...state,
+        modalStatus: action.payload
+      };
+    case 'setDateOfVisit':
+      return {
+        ...state,
+        dateOfVisit: action.payload
       };
   }
 };

@@ -45,15 +45,6 @@ const ProfileCover: React.FC<CoverType> = (props) => {
         <CardMedia image={coverPhoto} />
         <CardCoverAction>
           <Input accept="image/*" id="change-cover" multiple type="file" />
-          {/* <label htmlFor="change-cover">
-            <Button
-              startIcon={<UploadTwoToneIcon />}
-              variant="contained"
-              component="span"
-            >
-              Change cover
-            </Button>
-          </label> */}
         </CardCoverAction>
       </CardCover>
       <AvatarWrapper>
@@ -65,11 +56,6 @@ const ProfileCover: React.FC<CoverType> = (props) => {
             name="icon-button-file"
             type="file"
           />
-          {/* <label htmlFor="icon-button-file">
-            <IconButton component="span" color="primary">
-              <UploadTwoToneIcon />
-            </IconButton>
-          </label> */}
         </ButtonUploadWrapper>
       </AvatarWrapper>
       <Box py={2} pl={2} mb={3}>
@@ -116,14 +102,14 @@ const ProfileCover: React.FC<CoverType> = (props) => {
               variant="contained"
               onClick={props.handleOnclick}
             >
-              Create a Request
+              Submit a Request
             </Button>
-            <Button size="small" sx={{ mx: 1 }} variant="outlined">
+            {/* <Button size="small" sx={{ mx: 1 }} variant="outlined">
               View Requests
-            </Button>
-            <IconButton color="primary" sx={{ p: 0.5 }}>
+            </Button> */}
+            {/* <IconButton color="primary" sx={{ p: 0.5 }}>
               <MoreHorizTwoToneIcon />
-            </IconButton>
+            </IconButton> */}
           </Box>
           <Button
             sx={{ mt: { xs: 2, md: 0 } }}
