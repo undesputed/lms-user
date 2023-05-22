@@ -72,6 +72,10 @@ const LaboratoryTestManagement = Loader(
   lazy(() => import('src/content/receptionist/views/LaboratoryTestManagement'))
 );
 
+const RequestManagement = Loader(
+  lazy(() => import('src/content/receptionist/views/RequestManagement'))
+);
+
 //Patient Pages
 const PatientDashboard = Loader(
   lazy(() => import('src/content/patient/views/dashboard'))
@@ -320,6 +324,16 @@ const routes: RouteObject[] = [
           {
             path: '',
             element: <LaboratoryTestManagement />
+          }
+        ]
+      },
+      {
+        path: 'request_management',
+        element: <ReceptionistSideBar />,
+        children: [
+          {
+            path: '',
+            element: <RequestManagement />
           }
         ]
       }

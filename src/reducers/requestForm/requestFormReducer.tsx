@@ -16,13 +16,16 @@ import {
 import { requestFormCred } from './requestForm';
 
 export interface RequestForm {
-  id: string;
+  id: number;
   user_id: number;
   dateOfVisit: Date;
   status: number;
   authBy: number;
+  receivedBy: string | null;
+  releasedBy: string | null;
+  releaseDate: Date | null;
   created_at: Date;
-  updated_at: any;
+  updated_at: Date | null;
 }
 
 interface APIRequestFormResponse {
@@ -31,16 +34,11 @@ interface APIRequestFormResponse {
   dateOfVisit: Date;
   status: number;
   authBy: number;
+  receivedBy: string | null;
+  releasedBy: string | null;
+  releaseDate: Date | null;
   created_at: Date;
-  updated_at: Date;
-}
-
-interface createResponse {
-  id: number;
-  user_id: number;
-  dateOfVisit: string;
-  status: number;
-  authBy: number;
+  updated_at: Date | null;
 }
 
 const requestFormAdapter = createEntityAdapter<RequestForm>();
@@ -78,11 +76,14 @@ const mapResponseToRequestForm = (
   response: APIRequestFormResponse[]
 ): RequestForm[] => {
   return response.map((item) => ({
-    id: String(item.id),
+    id: item.id,
     user_id: item.user_id,
     dateOfVisit: item.dateOfVisit,
     status: item.status,
     authBy: item.authBy,
+    receivedBy: item.receivedBy,
+    releasedBy: item.releasedBy,
+    releaseDate: item.releaseDate,
     created_at: item.created_at ? new Date() : item.created_at,
     updated_at: item.updated_at ? new Date() : item.updated_at
   }));
@@ -102,16 +103,22 @@ const requestFormSlice = createSlice({
         dateOfVisit: Date,
         status: number,
         authBy: number,
+        receivedBy: string,
+        releasedBy: string,
+        releaseDate: Date,
         created_at: Date,
         updated_at: Date
       ) {
         return {
           payload: {
-            id: nanoid(),
+            id: Number(nanoid()),
             user_id,
             dateOfVisit,
             status,
             authBy,
+            receivedBy,
+            releasedBy,
+            releaseDate,
             created_at,
             updated_at
           }

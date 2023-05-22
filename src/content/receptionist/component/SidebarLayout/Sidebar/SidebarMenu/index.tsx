@@ -230,6 +230,17 @@ function SidebarMenu() {
                   disableRipple
                   component={RouterLink}
                   onClick={closeSidebar}
+                  to="/receptionist/request_management"
+                  startIcon={<ManageAccountsIcon />}
+                >
+                  Request Management
+                </Button>
+              </ListItem>
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
                   to="/receptionist/results_management"
                   startIcon={<FactCheckIcon />}
                 >

@@ -42,7 +42,7 @@ const Login = () => {
             payload: 'Login Successfully'
           });
           setLoading(false);
-          localStorage.setItem('profile', JSON.stringify({data}));
+          sessionStorage.setItem('profile', data);
           navigate('/receptionist/dashboard');
         }
       } catch (error) {

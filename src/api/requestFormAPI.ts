@@ -6,8 +6,11 @@ interface RequestFormResponse {
   dateOfVisit: Date;
   status: number;
   authBy: number;
+  receivedBy: string | null;
+  releasedBy: string | null;
+  releaseDate: Date | null;
   created_at: Date;
-  updated_at: any;
+  updated_at: Date | null;
 }
 
 interface requestFormCred {
@@ -38,5 +41,11 @@ export function createRequestForm(
 ): Promise<RequestFormResponse> {
   return api
     .post<RequestFormResponse>(`requestForm/`, credentials)
+    .then((res) => res.data);
+}
+
+export function retrieveAllPendingRequest(): Promise<RequestFormResponse[]> {
+  return api
+    .post<RequestFormResponse[]>(`/requestForm/pending`)
     .then((res) => res.data);
 }
