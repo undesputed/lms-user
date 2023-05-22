@@ -69,17 +69,17 @@ const requestFormLabTestSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchAllRequestFormLabTest.pending, (state, action) => {
+      .addCase(fetchLabTestById.pending, (state, action) => {
         state.status = 'loading';
       })
-      .addCase(fetchAllRequestFormLabTest.fulfilled, (state, action) => {
+      .addCase(fetchLabTestById.fulfilled, (state, action) => {
         const transformedPayload = mapResponseToRequestFormLabTest(
           action.payload
         );
         requestFormLabTestAdapter.setAll(state, transformedPayload);
         state.status = 'succeeded';
       })
-      .addCase(fetchAllRequestFormLabTest.rejected, (state, action) => {
+      .addCase(fetchLabTestById.rejected, (state, action) => {
         state.status = 'failed';
       })
       .addCase(createLabTest.pending, (state, action) => {

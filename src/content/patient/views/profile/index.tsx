@@ -30,6 +30,7 @@ import {
 import ModalComponent from '../../components/Modal';
 import { RequestForm } from './types.d';
 import { createLabTest } from 'src/reducers/requestFormLabTest/requestFormLabTestReducer';
+import { createNewNotification } from 'src/reducers/receptionistNotification/receptionistNotificationReducer';
 
 const PatientProfile = () => {
   const [state, dispatch] = React.useReducer(reducer, initialState);
@@ -61,13 +62,27 @@ const PatientProfile = () => {
           created_at: new Date(),
           updated_at: null
         };
+
+        const notifData = {
+          receptionist_id: 1,
+          patient_request_id: createReq.payload[0].id,
+          message: 'New Lab Test Request Form',
+          is_read: 0,
+          created_at: new Date(),
+          updated_at: null
+        };
         const createLabTestForm = await reduxDispatch(
           createLabTest(labTestData)
         );
-
+        const createNotification = await reduxDispatch(
+          createNewNotification(notifData)
+        );
+        console.log(createNotification);
         if (
           createLabTestForm.type ===
-          'requestFormLabTest/createLabTest/fulfilled'
+            'requestFormLabTest/createLabTest/fulfilled' &&
+          createNotification.type ===
+            'receptionistNotification/createNewNotification/fulfilled'
         ) {
           setTimeout(() => {
             dispatch({

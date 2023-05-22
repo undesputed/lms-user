@@ -104,12 +104,6 @@ const ProfileCover: React.FC<CoverType> = (props) => {
             >
               Submit a Request
             </Button>
-            {/* <Button size="small" sx={{ mx: 1 }} variant="outlined">
-              View Requests
-            </Button> */}
-            {/* <IconButton color="primary" sx={{ p: 0.5 }}>
-              <MoreHorizTwoToneIcon />
-            </IconButton> */}
           </Box>
           <Button
             sx={{ mt: { xs: 2, md: 0 } }}
