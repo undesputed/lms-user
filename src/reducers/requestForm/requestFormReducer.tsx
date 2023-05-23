@@ -11,6 +11,7 @@ import produce from 'immer';
 import {
   checkUserRequest,
   createRequestForm,
+  retrieveAllPendingRequest,
   retrieveAllUserRequest
 } from 'src/api/requestFormAPI';
 import { requestFormCred } from './requestForm';
@@ -47,6 +48,14 @@ const initialState = requestFormAdapter.getInitialState({
   status: 'idle',
   error: null
 });
+
+export const fetchAllPendingRequest = createAsyncThunk(
+  'requestForm/fetchAllPendingRequest',
+  async () => {
+    const res = await retrieveAllPendingRequest();
+    return res;
+  }
+);
 
 export const fetchPendingRequest = createAsyncThunk(
   'requestForm/fetchPendingRequest',

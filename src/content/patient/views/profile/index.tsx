@@ -53,6 +53,7 @@ const PatientProfile = () => {
         updated_at: null
       };
       const createReq = await reduxDispatch(createUserRequest(data));
+      console.log(createReq);
       if (createReq.type === 'requestForm/createUserRequest/fulfilled') {
         const labTestData = {
           request_form_id: createReq.payload[0].id,

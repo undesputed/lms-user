@@ -25,7 +25,7 @@ export interface profileState {
 export interface RequestForm {
   authBy: number;
   created_at: string;
-  dateOfVisit: string;
+  dateOfVisit: Date;
   id: number;
   status: number;
   updated_at: Date;

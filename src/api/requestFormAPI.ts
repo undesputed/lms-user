@@ -46,6 +46,6 @@ export function createRequestForm(
 
 export function retrieveAllPendingRequest(): Promise<RequestFormResponse[]> {
   return api
-    .post<RequestFormResponse[]>(`/requestForm/pending`)
+    .get<RequestFormResponse[]>(`/requestForm/pending`)
     .then((res) => res.data);
 }

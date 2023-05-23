@@ -1,9 +1,9 @@
 import { Typography, Button, Grid } from '@mui/material';
 
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
+import { PageHeaderType } from './types.d';
 
-function PageHeader() {
-
+const PageHeader: React.FC<PageHeaderType> = (props) => {
   return (
     <Grid container justifyContent="space-between" alignItems="center">
       <Grid item>
@@ -19,12 +19,13 @@ function PageHeader() {
           sx={{ mt: { xs: 2, md: 0 } }}
           variant="contained"
           startIcon={<AddTwoToneIcon fontSize="small" />}
+          onClick={props.onClick}
         >
           Add New Patient
         </Button>
       </Grid>
     </Grid>
   );
-}
+};
 
 export default PageHeader;

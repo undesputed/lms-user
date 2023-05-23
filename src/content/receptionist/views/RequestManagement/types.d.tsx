@@ -4,12 +4,29 @@ export interface requestState {
   dateOfVisit: Date;
   status: number;
   authBy: number;
-  receivedBy: string | null;
-  releasedBy: string | null;
-  releaseDate: Date | null;
+  receivedBy: String | null;
+  releasedBy: String | null;
+  releaseDate: Date;
   created_at: Date;
   updated_at: Date | null;
+  firstName: string;
+  lastName: string;
+  middleName: string;
+  phone: string;
+  address: string;
+  sex: number;
+  age: number;
+  birthday: Date;
 }
+
+export type PageHeaderType = {
+  onClick?: () => void;
+};
+
+export type PageListTableType = {
+  request: requestState[];
+  onClickViewRequest?: (request_form_id: number) => void;
+};
 
 export type State = {
   request: requestState[];

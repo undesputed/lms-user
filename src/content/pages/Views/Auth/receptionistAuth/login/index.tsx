@@ -23,26 +23,23 @@ import { reducer } from './reducer';
 import * as api from 'src/api/apiTest';
 import { LoadingButton } from '@mui/lab';
 import { Backdrop, CircularProgress } from '@mui/material';
+import { useAppDispatch } from 'src/actions/hooks';
+import { loginAsync } from 'src/reducers/auth/receptionistAuthReducer';
 
 const theme = createTheme();
 
 const Login = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [loading, setLoading] = React.useState(false);
+  const reduxDispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const handleLogin = async () => {
     setLoading(true);
     if (state.email && state.password) {
       try {
-        const { data } = await api.receptionistAuth(state);
-        if (data) {
-          dispatch({
-            type: 'loginSuccess',
-            payload: 'Login Successfully'
-          });
-          setLoading(false);
-          sessionStorage.setItem('profile', data);
+        const res = await reduxDispatch(loginAsync(state));
+        if (res.type === 'auth/receptionist/login/fulfilled') {
           navigate('/receptionist/dashboard');
         }
       } catch (error) {

@@ -126,6 +126,7 @@ export default function SignUp() {
       type: 'setLoading',
       payload: true
     });
+    
     if (
       !state.firstName ||
       !state.lastName ||
@@ -166,13 +167,10 @@ export default function SignUp() {
       });
       return;
     }
-    dispatch({
-      type: 'setLoginSuccess',
-      payload: true
-    });
 
     try {
       const response = await reduxDispatch(registerAsync(state));
+      console.log(response);
       if (response.type === 'auth/register/rejected') {
         dispatch({
           type: 'setEmailExists',
@@ -188,6 +186,10 @@ export default function SignUp() {
         });
         return;
       }
+      dispatch({
+        type: 'setLoginSuccess',
+        payload: true
+      });
       dispatch({
         type: 'setError',
         payload: false
@@ -508,7 +510,7 @@ export default function SignUp() {
             ) : null}
           </Box>
         </Box>
-        <Copyright sx={{ mt: 3}} />
+        <Copyright sx={{ mt: 3 }} />
       </Container>
     </ThemeProvider>
   );

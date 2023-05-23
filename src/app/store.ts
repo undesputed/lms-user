@@ -7,11 +7,13 @@ import SubCategoryReducer from 'src/reducers/subCategory/subCategoryReducer';
 import RequestFormReducer from 'src/reducers/requestForm/requestFormReducer';
 import RequestFormLabTestReducer from 'src/reducers/requestFormLabTest/requestFormLabTestReducer';
 import ReceptionistNotificationReducer from 'src/reducers/receptionistNotification/receptionistNotificationReducer';
+import ReceptionistAuthReducer from 'src/reducers/auth/receptionistAuthReducer';
 
 export const store = configureStore({
   reducer: {
     counter: CounterReducer,
     auth: AuthReducer,
+    receptionistAuth: ReceptionistAuthReducer,
     users: UserReducer,
     category: CategoryReducer,
     subCategory: SubCategoryReducer,
