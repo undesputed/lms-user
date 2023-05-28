@@ -10,8 +10,12 @@ import { initialState } from './initialState';
 import { useNavigate } from 'react-router';
 import { useAppDispatch } from 'src/actions/hooks';
 import { getToken } from 'src/reducers/auth/authReducer';
-import { fetchAllPendingRequest } from 'src/reducers/requestForm/requestFormReducer';
+import {
+  fetchAllBasicInfo,
+  fetchAllPendingRequest
+} from 'src/reducers/requestForm/requestFormReducer';
 import { requestState } from './types.d';
+import { basicInfoFormResponse } from 'src/reducers/requestForm/requestForm';
 
 const RequestManagement = () => {
   const [state, dispatch] = React.useReducer(reducer, initialState);
@@ -20,18 +24,18 @@ const RequestManagement = () => {
   const userData = reduxDispatch(getToken);
 
   const onClickViewRequest = (request_form_id: number) => {
-    console.log(request_form_id);
-    // navigate('/receptionist/add_lab_test_request_form');
+    navigate(`/receptionist/view_request?form_id=${request_form_id}`);
   };
 
   const addRequest = () => {
-    navigate('/receptionist/add_lab_test_request_form');
+    navigate('/receptionist/add_new_request');
   };
 
   const fetchPendingRequest = async () => {
     try {
-      const res = await reduxDispatch(fetchAllPendingRequest());
-      const payload = res.payload as requestState[];
+      const res = await reduxDispatch(fetchAllBasicInfo());
+      const payload = res.payload as basicInfoFormResponse[];
+
       dispatch({
         type: 'setRequest',
         payload: payload

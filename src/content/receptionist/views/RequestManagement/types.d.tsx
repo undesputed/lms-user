@@ -1,3 +1,5 @@
+import { basicInfoFormResponse } from 'src/reducers/requestForm/requestForm';
+
 export interface requestState {
   id: number;
   user_id: number;
@@ -24,19 +26,19 @@ export type PageHeaderType = {
 };
 
 export type PageListTableType = {
-  request: requestState[];
+  request: basicInfoFormResponse[];
   onClickViewRequest?: (request_form_id: number) => void;
 };
 
 export type State = {
-  request: requestState[];
+  request: basicInfoFormResponse[];
   isError: boolean;
   loading: boolean;
   snackBarStatus: boolean;
 };
 
 export type Action =
-  | { type: 'setRequest'; payload: requestState[] }
+  | { type: 'setRequest'; payload: basicInfoFormResponse[] }
   | { type: 'setIsError'; payload: boolean }
   | { type: 'setLoading'; payload: boolean }
   | { type: 'setSnackBarStatus'; payload: boolean };

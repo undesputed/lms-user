@@ -27,6 +27,21 @@ export const fetchAllSubCategory: any = createAsyncThunk(
   }
 );
 
+// const mapResponse = (response: subCategory[]): subCategory[] => {
+//   return response.map((item) => ({
+//     ...item,
+//     iid: item.id,
+//     category_id: item.category_id,
+//     sub_category_name: item.sub_category_name,
+//     price: item.price,
+//     status: item.status,
+//     authBy: item.authBy,
+//     created_at: item.created_at,
+//     updated_at: item.updated_at,
+//     deleted_at: item.deleted_at
+//   }));
+// };
+
 const subCategorySlice = createSlice({
   name: 'subCategory',
   initialState: initialState,
@@ -39,6 +54,10 @@ const subCategorySlice = createSlice({
       .addCase(fetchAllSubCategory.fulfilled, (state, action) => {
         state.status = 'succeeded';
         subCategoryAdapter.upsertMany(state, action.payload);
+        // if (Array.isArray(action.payload)) {
+        //   const payload = mapResponse(action.payload);
+        //   subCategoryAdapter.setAll(state, payload);
+        // }
       })
       .addCase(fetchAllSubCategory.rejected, (state, action) => {
         state.status = 'failed';

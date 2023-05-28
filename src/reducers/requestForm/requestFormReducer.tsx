@@ -12,7 +12,8 @@ import {
   checkUserRequest,
   createRequestForm,
   retrieveAllPendingRequest,
-  retrieveAllUserRequest
+  retrieveAllUserRequest,
+  retrieveFormByBasicInfo
 } from 'src/api/requestFormAPI';
 import { requestFormCred } from './requestForm';
 
@@ -69,6 +70,14 @@ export const fetchAllUserRequest = createAsyncThunk(
   'requestForm/fetchAllUserRequest',
   async (id: number) => {
     const res = await retrieveAllUserRequest(id);
+    return res;
+  }
+);
+
+export const fetchAllBasicInfo = createAsyncThunk(
+  'requestForm/fetchAllBasicInfo',
+  async () => {
+    const res = await retrieveFormByBasicInfo();
     return res;
   }
 );

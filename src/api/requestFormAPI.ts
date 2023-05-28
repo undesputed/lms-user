@@ -1,4 +1,5 @@
 import api from 'src/api/api';
+import { basicInfoFormResponse } from 'src/reducers/requestForm/requestForm';
 
 interface RequestFormResponse {
   id: number;
@@ -15,10 +16,10 @@ interface RequestFormResponse {
 
 interface requestFormCred {
   authBy: number;
-  dateOfVisit: Date;
+  dateOfVisit: Date | string;
   status: number;
   user_id: number;
-  created_at: Date;
+  created_at: Date | string;
   updated_at: any;
 }
 
@@ -47,5 +48,11 @@ export function createRequestForm(
 export function retrieveAllPendingRequest(): Promise<RequestFormResponse[]> {
   return api
     .get<RequestFormResponse[]>(`/requestForm/pending`)
+    .then((res) => res.data);
+}
+
+export function retrieveFormByBasicInfo(): Promise<basicInfoFormResponse[]> {
+  return api
+    .get<basicInfoFormResponse[]>(`/requestForm/basicInfo/`)
     .then((res) => res.data);
 }

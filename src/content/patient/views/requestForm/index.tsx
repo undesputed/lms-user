@@ -100,7 +100,7 @@ const PatientForm = () => {
         });
       dispatch(fetchAllSubCategory())
         .then((res) => {
-          setSubCategory(res.payload);
+          // setSubCategory(res.payload);
         })
         .catch((err) => {
           console.error(err);

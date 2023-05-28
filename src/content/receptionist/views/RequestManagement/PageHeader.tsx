@@ -21,7 +21,7 @@ const PageHeader: React.FC<PageHeaderType> = (props) => {
           startIcon={<AddTwoToneIcon fontSize="small" />}
           onClick={props.onClick}
         >
-          Add New Patient
+          Add New Request
         </Button>
       </Grid>
     </Grid>

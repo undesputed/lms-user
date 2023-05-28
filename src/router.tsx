@@ -80,6 +80,14 @@ const AddLabTestByRequest = Loader(
   lazy(() => import('src/content/receptionist/content/RequestFormLabTest'))
 );
 
+const AddRequest = Loader(
+  lazy(() => import('src/content/receptionist/content/AddRequest'))
+);
+
+const ViewRequest = Loader(
+  lazy(() => import('src/content/receptionist/content/ViewRequest'))
+);
+
 //Patient Pages
 const PatientDashboard = Loader(
   lazy(() => import('src/content/patient/views/dashboard'))
@@ -348,6 +356,26 @@ const routes: RouteObject[] = [
           {
             path: '',
             element: <AddLabTestByRequest />
+          }
+        ]
+      },
+      {
+        path: 'add_new_request',
+        element: <ReceptionistSideBar />,
+        children: [
+          {
+            path: '',
+            element: <AddRequest />
+          }
+        ]
+      },
+      {
+        path: 'view_request',
+        element: <ReceptionistSideBar />,
+        children: [
+          {
+            path: '',
+            element: <ViewRequest />
           }
         ]
       }

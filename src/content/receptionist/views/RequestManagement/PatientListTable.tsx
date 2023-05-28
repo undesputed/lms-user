@@ -25,10 +25,26 @@ import RateReviewIcon from '@mui/icons-material/RateReview';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import { PatientList } from './Patient_Interface';
 import * as api from 'src/api/apiTest';
-import { PageListTableType } from './types.d';
+import { PageListTableType, requestState } from './types.d';
+import { basicInfoFormResponse } from 'src/reducers/requestForm/requestForm';
 
 const PatientListTable: React.FC<PageListTableType> = (props) => {
   const theme = useTheme();
+  const [status, setStatus] = React.useState<number>(1);
+  const [data, setData] = React.useState<basicInfoFormResponse[]>(
+    props.request
+  );
+
+  React.useEffect(() => {
+    if (status === 4) {
+      setData(props.request);
+    } else {
+      const filteredData = props.request?.filter(
+        (item) => item.status === status
+      );
+      setData(filteredData);
+    }
+  }, [props.request, status]);
   return (
     <Card>
       <CardHeader
@@ -36,18 +52,21 @@ const PatientListTable: React.FC<PageListTableType> = (props) => {
           <Box width={150}>
             <FormControl fullWidth variant="outlined">
               <InputLabel>Status</InputLabel>
-              <Select label="Status" autoWidth>
-                <MenuItem key="pending" value="pending">
-                  Pending
-                </MenuItem>
-                <MenuItem key="inProgress" value="inProgress">
-                  In Progress
-                </MenuItem>
+              <Select
+                label="Status"
+                autoWidth
+                value={status}
+                onChange={(e: any) => setStatus(e.target.value)}
+              >
+                <MenuItem value={1}>Pending</MenuItem>
+                <MenuItem value={2}>In Progress</MenuItem>
+                <MenuItem value={3}>Completed</MenuItem>
+                <MenuItem value={4}>All</MenuItem>
               </Select>
             </FormControl>
           </Box>
         }
-        title="Recent Orders"
+        title="Recent Requests"
       />
       <Divider />
       <TableContainer>
@@ -59,16 +78,17 @@ const PatientListTable: React.FC<PageListTableType> = (props) => {
               </TableCell>
               <TableCell>Full Name</TableCell>
               <TableCell>Phone Number</TableCell>
-              <TableCell>Age</TableCell>
+              <TableCell>Gender</TableCell>
               <TableCell>Address</TableCell>
+              <TableCell>Company name</TableCell>
               <TableCell>Appointment Date</TableCell>
               <TableCell>Status</TableCell>
               <TableCell>Action</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {props.request?.map((d) => (
-              <TableRow hover key={d.id}>
+            {data?.map((d: any, index: number) => (
+              <TableRow hover key={index}>
                 <TableCell padding="checkbox">
                   <Checkbox color="primary" />
                 </TableCell>
@@ -80,7 +100,7 @@ const PatientListTable: React.FC<PageListTableType> = (props) => {
                     gutterBottom
                     noWrap
                   >
-                    {d.firstName} {d.middleName} {d.lastName}{' '}
+                    {d.name}
                   </Typography>
                 </TableCell>
                 <TableCell>
@@ -102,7 +122,45 @@ const PatientListTable: React.FC<PageListTableType> = (props) => {
                     gutterBottom
                     noWrap
                   >
-                    {d.age}
+                    {(function () {
+                      if (d.gender === 1) {
+                        return (
+                          <Typography
+                            variant="body1"
+                            fontWeight="bold"
+                            color="text.primary"
+                            gutterBottom
+                            noWrap
+                          >
+                            Male
+                          </Typography>
+                        );
+                      } else if (d.gender === 2) {
+                        return (
+                          <Typography
+                            variant="body1"
+                            fontWeight="bold"
+                            color="text.primary"
+                            gutterBottom
+                            noWrap
+                          >
+                            Female
+                          </Typography>
+                        );
+                      } else {
+                        return (
+                          <Typography
+                            variant="body1"
+                            fontWeight="bold"
+                            color="text.primary"
+                            gutterBottom
+                            noWrap
+                          >
+                            Others
+                          </Typography>
+                        );
+                      }
+                    })()}
                   </Typography>
                 </TableCell>
                 <TableCell>
@@ -114,6 +172,17 @@ const PatientListTable: React.FC<PageListTableType> = (props) => {
                     noWrap
                   >
                     {d.address}
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography
+                    variant="body1"
+                    fontWeight="bold"
+                    color="text.primary"
+                    gutterBottom
+                    noWrap
+                  >
+                    {d.companyName}
                   </Typography>
                 </TableCell>
                 <TableCell>

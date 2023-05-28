@@ -8,6 +8,7 @@ import RequestFormReducer from 'src/reducers/requestForm/requestFormReducer';
 import RequestFormLabTestReducer from 'src/reducers/requestFormLabTest/requestFormLabTestReducer';
 import ReceptionistNotificationReducer from 'src/reducers/receptionistNotification/receptionistNotificationReducer';
 import ReceptionistAuthReducer from 'src/reducers/auth/receptionistAuthReducer';
+import BasicInfoReducer from 'src/reducers/basicInfo/basicInfoReducer';
 
 export const store = configureStore({
   reducer: {
@@ -19,7 +20,8 @@ export const store = configureStore({
     subCategory: SubCategoryReducer,
     requestForm: RequestFormReducer,
     requestFormLabTest: RequestFormLabTestReducer,
-    receptionistNotification: ReceptionistNotificationReducer
+    receptionistNotification: ReceptionistNotificationReducer,
+    basicInfo: BasicInfoReducer
   }
 });
 

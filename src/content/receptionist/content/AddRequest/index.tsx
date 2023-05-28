@@ -1,116 +1,235 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import Stepper from '@mui/material/Stepper';
-import Step from '@mui/material/Step';
-import StepLabel from '@mui/material/StepLabel';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
+import { Button, Container, Grid, Paper } from '@mui/material';
+import React from 'react';
+import { Helmet } from 'react-helmet-async';
+import Footer from 'src/components/Footer';
+import PageTitleWrapper from 'src/components/PageTitleWrapper';
+import PageHeader from './PageHeader';
+import StepperComponent from './StepperComponent';
+import { reducer } from './reducer';
+import { initialState } from './initialState';
+import { useAppDispatch, useAppSelector } from 'src/actions/hooks';
+import { fetchAllSubCategory } from 'src/reducers/subCategory/subCategoryReducer';
+import { getToken } from 'src/reducers/auth/receptionistAuthReducer';
+import { createBasicInfo } from 'src/reducers/basicInfo/basicInfoReducer';
+import { createUserRequest } from 'src/reducers/requestForm/requestFormReducer';
+import { createLabTest } from 'src/reducers/requestFormLabTest/requestFormLabTestReducer';
+import { useNavigate } from 'react-router';
 
-const steps = ['Basic Information', 'Laboratory Test', 'Final Step'];
+const AddNewRequest = () => {
+  const [state, dispatch] = React.useReducer(reducer, initialState);
+  const [basicStatus, setBasicStatus] = React.useState<boolean>(false);
+  const [requestFormStatus, setRequestFormStatus] =
+    React.useState<boolean>(false);
+  const [labTestStatus, setLabTestStatus] = React.useState<boolean>(false);
+  const reduxDispatch = useAppDispatch();
+  const navigate = useNavigate();
 
-export default function HorizontalLinearStepper() {
-  const [activeStep, setActiveStep] = React.useState(0);
-  const [skipped, setSkipped] = React.useState(new Set<number>());
+  const handleFinish = async () => {
+    const userData = reduxDispatch(getToken);
 
-  const isStepOptional = (step: number) => {
-    return step === 1;
-  };
+    const basicInfo = {
+      name: state.name,
+      dateOfVisit: new Date(state.dateOfVisit).toISOString(),
+      phone: state.phone,
+      birthday: new Date(state.birthday).toISOString(),
+      gender: state.gender,
+      address: state.address,
+      companyName: state.companyName,
+      others: state.others,
+      referredBy: state.referredBy,
+      dateRequested: new Date(state.dateRequested).toISOString(),
+      status: 1,
+      authBy: userData.userId,
+      created_at: new Date(),
+      updated_at: null
+    };
 
-  const isStepSkipped = (step: number) => {
-    return skipped.has(step);
-  };
-
-  const handleNext = () => {
-    let newSkipped = skipped;
-    if (isStepSkipped(activeStep)) {
-      newSkipped = new Set(newSkipped.values());
-      newSkipped.delete(activeStep);
+    try {
+      const response = await reduxDispatch(createBasicInfo(basicInfo));
+      setBasicStatus(true);
+      createRequestForm(response.payload[0].id, userData.userId);
+    } catch (err) {
+      console.error(err);
     }
 
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    setSkipped(newSkipped);
+    const labTestForm = {
+      request_form_id: 1,
+      sub_category_id: 1,
+      status: 1,
+      authBy: userData.userId,
+      created_at: new Date().toISOString(),
+      updated_at: null
+    };
   };
 
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
+  const createRequestForm = async (basic_info_id: number, userId: number) => {
+    try {
+      const requestForm = {
+        basic_info_id: basic_info_id,
+        user_id: 0,
+        dateOfVisit: new Date(state.dateOfVisit).toISOString(),
+        status: 1,
+        authBy: userId,
+        created_at: new Date(),
+        updated_at: null
+      };
 
-  const handleSkip = () => {
-    if (!isStepOptional(activeStep)) {
-      // You probably want to guard against something like this,
-      // it should never occur unless someone's actively trying to break something.
-      throw new Error("You can't skip a step that isn't optional.");
+      const res = await reduxDispatch(createUserRequest(requestForm));
+      setRequestFormStatus(true);
+      createLabTestForm(res.payload[0].id, userId);
+    } catch (err) {
+      console.error(err);
     }
+  };
 
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    setSkipped((prevSkipped) => {
-      const newSkipped = new Set(prevSkipped.values());
-      newSkipped.add(activeStep);
-      return newSkipped;
+  const createLabTestForm = (request_form_id: number, userId: number) => {
+    try {
+      state.selectedCategories?.map(async (item: any) => {
+        const labTestData = {
+          request_form_id: request_form_id,
+          sub_category_id: item.id,
+          status: 1,
+          authBy: userId,
+          created_at: new Date(),
+          updated_at: null
+        };
+
+        await reduxDispatch(createLabTest(labTestData));
+      });
+      setLabTestStatus(true);
+      final();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const final = () => {
+    if (basicStatus && labTestStatus && requestFormStatus) {
+      navigate('/receptionist/request_management');
+    }
+  };
+
+  const handleSubcategoryChange = (event: any, selectedOptions: any) => {
+    dispatch({
+      type: 'setSelectedCategories',
+      payload: selectedOptions
     });
   };
 
-  const handleReset = () => {
-    setActiveStep(0);
+  const handleOnChange = async (e: any) => {
+    const { value, name } = e.target;
+    switch (name) {
+      case 'name':
+        dispatch({
+          type: 'setName',
+          payload: value
+        });
+        break;
+      case 'dateOfVisit':
+        dispatch({
+          type: 'setDateOfVisit',
+          payload: new Date(value)
+        });
+        break;
+      case 'phone':
+        dispatch({
+          type: 'setPhone',
+          payload: value
+        });
+        break;
+      case 'birthday':
+        dispatch({
+          type: 'setBirthday',
+          payload: new Date(value)
+        });
+        break;
+      case 'gender':
+        dispatch({
+          type: 'setGender',
+          payload: value
+        });
+        break;
+      case 'address':
+        dispatch({
+          type: 'setAddress',
+          payload: value
+        });
+        break;
+      case 'companyName':
+        dispatch({
+          type: 'setCompanyName',
+          payload: value
+        });
+        break;
+      case 'others':
+        dispatch({
+          type: 'setOthers',
+          payload: value
+        });
+        break;
+      case 'referredBy':
+        dispatch({
+          type: 'setReferred',
+          payload: value
+        });
+        break;
+      case 'dateRequested':
+        dispatch({
+          type: 'setDateRequested',
+          payload: new Date(value)
+        });
+        break;
+    }
   };
 
+  const fetchSubCategory = async () => {
+    try {
+      const subCat = await reduxDispatch(fetchAllSubCategory());
+
+      dispatch({
+        type: 'setSubCategory',
+        payload: subCat.payload
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  React.useEffect(() => {
+    fetchSubCategory();
+  }, []);
+
   return (
-    <Box sx={{ width: '100%' }}>
-      <Stepper activeStep={activeStep}>
-        {steps.map((label, index) => {
-          const stepProps: { completed?: boolean } = {};
-          const labelProps: {
-            optional?: React.ReactNode;
-          } = {};
-          if (isStepOptional(index)) {
-            labelProps.optional = (
-              <Typography variant="caption">Optional</Typography>
-            );
-          }
-          if (isStepSkipped(index)) {
-            stepProps.completed = false;
-          }
-          return (
-            <Step key={label} {...stepProps}>
-              <StepLabel {...labelProps}>{label}</StepLabel>
-            </Step>
-          );
-        })}
-      </Stepper>
-      {activeStep === steps.length ? (
-        <React.Fragment>
-          <Typography sx={{ mt: 2, mb: 1 }}>
-            All steps completed - you&apos;re finished
-          </Typography>
-          <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-            <Box sx={{ flex: '1 1 auto' }} />
-            <Button onClick={handleReset}>Reset</Button>
-          </Box>
-        </React.Fragment>
-      ) : (
-        <React.Fragment>
-          <Typography sx={{ mt: 2, mb: 1 }}>Step {activeStep + 1}</Typography>
-          <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-            <Button
-              color="inherit"
-              disabled={activeStep === 0}
-              onClick={handleBack}
-              sx={{ mr: 1 }}
-            >
-              Back
-            </Button>
-            <Box sx={{ flex: '1 1 auto' }} />
-            {isStepOptional(activeStep) && (
-              <Button color="inherit" onClick={handleSkip} sx={{ mr: 1 }}>
-                Skip
-              </Button>
-            )}
-            <Button onClick={handleNext}>
-              {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-            </Button>
-          </Box>
-        </React.Fragment>
-      )}
-    </Box>
+    <>
+      <Helmet>
+        <title>Add New Request - Form</title>
+      </Helmet>
+      <PageTitleWrapper>
+        <PageHeader />
+      </PageTitleWrapper>
+      <Container maxWidth="lg">
+        <Grid
+          container
+          direction="row"
+          justifyContent="center"
+          alignItems="stretch"
+          spacing={3}
+        >
+          <Grid item xs={12}>
+            <Paper elevation={3} sx={{ p: 5 }}>
+              <StepperComponent
+                handleOnChange={handleOnChange}
+                subCategory={state.subCategory}
+                handleFinish={handleFinish}
+                handleSubcategoryChange={handleSubcategoryChange}
+              />
+            </Paper>
+          </Grid>
+        </Grid>
+      </Container>
+      <Footer />
+    </>
   );
-}
+};
+
+export default AddNewRequest;
