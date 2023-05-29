@@ -78,9 +78,8 @@ const PatientListTable: React.FC<PageListTableType> = (props) => {
               </TableCell>
               <TableCell>Full Name</TableCell>
               <TableCell>Phone Number</TableCell>
-              <TableCell>Gender</TableCell>
               <TableCell>Address</TableCell>
-              <TableCell>Company name</TableCell>
+              <TableCell>Birthday</TableCell>
               <TableCell>Appointment Date</TableCell>
               <TableCell>Status</TableCell>
               <TableCell>Action</TableCell>
@@ -122,55 +121,6 @@ const PatientListTable: React.FC<PageListTableType> = (props) => {
                     gutterBottom
                     noWrap
                   >
-                    {(function () {
-                      if (d.gender === 1) {
-                        return (
-                          <Typography
-                            variant="body1"
-                            fontWeight="bold"
-                            color="text.primary"
-                            gutterBottom
-                            noWrap
-                          >
-                            Male
-                          </Typography>
-                        );
-                      } else if (d.gender === 2) {
-                        return (
-                          <Typography
-                            variant="body1"
-                            fontWeight="bold"
-                            color="text.primary"
-                            gutterBottom
-                            noWrap
-                          >
-                            Female
-                          </Typography>
-                        );
-                      } else {
-                        return (
-                          <Typography
-                            variant="body1"
-                            fontWeight="bold"
-                            color="text.primary"
-                            gutterBottom
-                            noWrap
-                          >
-                            Others
-                          </Typography>
-                        );
-                      }
-                    })()}
-                  </Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography
-                    variant="body1"
-                    fontWeight="bold"
-                    color="text.primary"
-                    gutterBottom
-                    noWrap
-                  >
                     {d.address}
                   </Typography>
                 </TableCell>
@@ -182,42 +132,80 @@ const PatientListTable: React.FC<PageListTableType> = (props) => {
                     gutterBottom
                     noWrap
                   >
-                    {d.companyName}
+                    {(function () {
+                      const date = new Date(d.birthday);
+                      const formattedDate = date.toLocaleDateString('en-US', {
+                        month: 'long',
+                        day: 'numeric',
+                        year: 'numeric'
+                      });
+
+                      return formattedDate;
+                    })()}
                   </Typography>
                 </TableCell>
                 <TableCell>
-                  {(function () {
-                    const date = new Date(d.dateOfVisit);
-                    const formattedDate = date.toLocaleDateString('en-US', {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric',
-                      hour: 'numeric',
-                      minute: 'numeric',
-                      second: 'numeric',
-                      timeZone: 'UTC'
-                    });
+                  <Typography
+                    variant="body1"
+                    fontWeight="bold"
+                    color="text.primary"
+                    gutterBottom
+                    noWrap
+                  >
+                    {(function () {
+                      const date = new Date(d.dateOfVisit);
+                      const formattedDate = date.toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        hour: 'numeric',
+                        minute: 'numeric',
+                        second: 'numeric',
+                        timeZone: 'UTC'
+                      });
 
-                    return formattedDate;
-                  })()}
+                      return formattedDate;
+                    })()}
+                  </Typography>
                 </TableCell>
                 <TableCell>
                   {(function () {
                     if (d.status === 1) {
                       return (
-                        <Typography sx={{ color: '#336699' }}>
+                        <Typography
+                          variant="body1"
+                          fontWeight="bold"
+                          color="text.primary"
+                          gutterBottom
+                          noWrap
+                          sx={{ color: '#336699' }}
+                        >
                           Pending
                         </Typography>
                       );
                     } else if (d.status === 2) {
                       return (
-                        <Typography sx={{ color: '#00FF00' }}>
+                        <Typography
+                          variant="body1"
+                          fontWeight="bold"
+                          color="text.primary"
+                          gutterBottom
+                          noWrap
+                          sx={{ color: '#00FF00' }}
+                        >
                           In Progress
                         </Typography>
                       );
                     } else {
                       return (
-                        <Typography sx={{ color: '#0000FF' }}>
+                        <Typography
+                          variant="body1"
+                          fontWeight="bold"
+                          color="text.primary"
+                          gutterBottom
+                          noWrap
+                          sx={{ color: '#0000FF' }}
+                        >
                           Completed
                         </Typography>
                       );
@@ -235,7 +223,7 @@ const PatientListTable: React.FC<PageListTableType> = (props) => {
                       }}
                       color="inherit"
                       size="small"
-                      onClick={() => props.onClickViewRequest(d.id)}
+                      onClick={() => props.onClickViewRequest(d.form_id)}
                     >
                       <RateReviewIcon fontSize="small" />
                     </IconButton>

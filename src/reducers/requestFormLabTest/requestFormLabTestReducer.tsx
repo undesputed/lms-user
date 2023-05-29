@@ -9,12 +9,15 @@ import {
 import { RootState } from 'src/app/store';
 import {
   createRequestFormLabTest,
+  deleteRequestFormLabTest,
+  retrieveAllLabTestByFormId,
   retrieveAllRequestFormLabTest,
   retrieveAllRequestFormLabTestById
 } from 'src/api/requestFormLabTest';
 import {
   RequestFormLabTest,
-  RequestFormLabTestCred
+  RequestFormLabTestCred,
+  deleteCreds
 } from './requestFormLabTest';
 
 const requestFormLabTestAdapter = createEntityAdapter<RequestFormLabTest>();
@@ -40,10 +43,26 @@ export const fetchLabTestById = createAsyncThunk(
   }
 );
 
+export const fetchLabTestByRequestFormId = createAsyncThunk(
+  'requestFormLabTest/fetchAllLabTestByRequestId',
+  async (id: number) => {
+    const response = await retrieveAllLabTestByFormId(id);
+    return response;
+  }
+);
+
 export const createLabTest = createAsyncThunk(
   'requestFormLabTest/createLabTest',
   async (credentials: RequestFormLabTestCred) => {
     const response = await createRequestFormLabTest(credentials);
+    return response;
+  }
+);
+
+export const deleteLabTest = createAsyncThunk(
+  'requestFormLabTest/deleteLabTest',
+  async (credentials: { request_form_id: number; sub_category_id: number }) => {
+    const response = await deleteRequestFormLabTest(credentials);
     return response;
   }
 );

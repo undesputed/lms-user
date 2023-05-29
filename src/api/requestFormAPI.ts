@@ -1,5 +1,8 @@
 import api from 'src/api/api';
-import { basicInfoFormResponse } from 'src/reducers/requestForm/requestForm';
+import {
+  BasicInfoResponseById,
+  basicInfoFormResponse
+} from 'src/reducers/requestForm/requestForm';
 
 interface RequestFormResponse {
   id: number;
@@ -54,5 +57,13 @@ export function retrieveAllPendingRequest(): Promise<RequestFormResponse[]> {
 export function retrieveFormByBasicInfo(): Promise<basicInfoFormResponse[]> {
   return api
     .get<basicInfoFormResponse[]>(`/requestForm/basicInfo/`)
+    .then((res) => res.data);
+}
+
+export function retrieveBasicInfoByFormId(
+  id: number
+): Promise<BasicInfoResponseById> {
+  return api
+    .get<BasicInfoResponseById>(`/requestForm/basicInfo/${id}`)
     .then((res) => res.data);
 }

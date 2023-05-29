@@ -104,9 +104,7 @@ const AddNewRequest = () => {
   };
 
   const final = () => {
-    if (basicStatus && labTestStatus && requestFormStatus) {
-      navigate('/receptionist/request_management');
-    }
+    navigate('/receptionist/request_management');
   };
 
   const handleSubcategoryChange = (event: any, selectedOptions: any) => {

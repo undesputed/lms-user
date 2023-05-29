@@ -35,7 +35,7 @@ const RequestManagement = () => {
     try {
       const res = await reduxDispatch(fetchAllBasicInfo());
       const payload = res.payload as basicInfoFormResponse[];
-
+      
       dispatch({
         type: 'setRequest',
         payload: payload

@@ -39,3 +39,21 @@ export interface basicInfoFormResponse {
   referredBy: string;
   dateRequested: Date | string;
 }
+
+export interface BasicInfoResponseById {
+  id: number;
+  name: string;
+  dateOfVisit: Date | string;
+  phone: string | number;
+  birthday: Date | string;
+  gender: number;
+  address: string;
+  companyName: string | null;
+  others: string | null;
+  referredBy: string | null;
+  dateRequested: Date | string | null;
+  status: number;
+  authBy: number;
+  created_at: Date | string;
+  updated_at: Date | string | null;
+}

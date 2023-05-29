@@ -32,3 +32,36 @@ export interface BasicInfoCred {
   created_at: Date | string;
   updated_at: any;
 }
+
+export interface BasicInfoUpdateCred {
+  id: number;
+  name: string;
+  dateOfVisit: Date | string;
+  phone: string;
+  birthday: Date | string;
+  gender: number;
+  address: string;
+  companyName: string;
+  others: string | null;
+  referredBy: string | null;
+  dateRequested: Date | string | null;
+  status: number;
+  authBy: number;
+  created_at: Date | string | null;
+  updated_at: Date | string | null;
+}
+
+export interface UpdateResponse {
+  id: number;
+  name: string;
+  dateOfVisit: Date | string;
+  phone: string | number;
+  birthday: Date | string;
+  gender: number;
+  address: string;
+  companyName: string;
+  others: string | undefined;
+  referredBy: string;
+  dateRequested: Date | string | null;
+  updated_at: Date | string | null;
+}

@@ -16,3 +16,8 @@ export interface RequestFormLabTestCred {
   created_at: Date;
   updated_at: Date;
 }
+
+export interface deleteCreds {
+  request_form_id: number;
+  sub_category_id: number;
+}

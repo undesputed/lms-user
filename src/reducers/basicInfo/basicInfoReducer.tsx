@@ -6,9 +6,17 @@ import {
   createSelector,
   createEntityAdapter
 } from '@reduxjs/toolkit';
-import { BasicInfoResponse, BasicInfoCred } from './basicInfo';
+import {
+  BasicInfoResponse,
+  BasicInfoCred,
+  BasicInfoUpdateCred
+} from './basicInfo';
 import { RootState } from 'src/app/store';
-import { makeBasicInfo, retrieveAllBasicInfo } from 'src/api/basicInfoAPI';
+import {
+  makeBasicInfo,
+  retrieveAllBasicInfo,
+  updateBasicInfo
+} from 'src/api/basicInfoAPI';
 
 const basicInfoAdapter = createEntityAdapter<BasicInfoResponse>();
 
@@ -30,6 +38,14 @@ export const createBasicInfo = createAsyncThunk(
   async (credentials: BasicInfoCred) => {
     const response = await makeBasicInfo(credentials);
     return response;
+  }
+);
+
+export const editBasicInfo = createAsyncThunk(
+  'basicInfo/updateBasicInfo',
+  async (credentials: BasicInfoUpdateCred) => {
+    const res = await updateBasicInfo(credentials);
+    return res;
   }
 );
 
