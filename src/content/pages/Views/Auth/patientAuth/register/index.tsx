@@ -26,7 +26,6 @@ import {
   Snackbar,
   Stack
 } from '@mui/material';
-import moment from 'moment';
 import { reducer } from './reducer';
 import { initialState } from './initialState';
 import { GoogleLogin } from '@react-oauth/google';

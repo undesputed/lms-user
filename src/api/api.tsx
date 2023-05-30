@@ -1,7 +1,7 @@
 import axios, { formToJSON } from 'axios';
 
 const API = axios.create({
-  baseURL: `http://localhost:8080/api/`
+  baseURL: `http://13.213.63.196:8080/api/`
 });
 
 API.interceptors.request.use((req) => {
