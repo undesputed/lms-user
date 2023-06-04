@@ -88,6 +88,10 @@ const ViewRequest = Loader(
   lazy(() => import('src/content/receptionist/content/ViewRequest'))
 );
 
+const PaymentPage = Loader(
+  lazy(() => import('src/content/receptionist/content/PaymentPage'))
+);
+
 //Patient Pages
 const PatientDashboard = Loader(
   lazy(() => import('src/content/patient/views/dashboard'))
@@ -376,6 +380,16 @@ const routes: RouteObject[] = [
           {
             path: '',
             element: <ViewRequest />
+          }
+        ]
+      },
+      {
+        path: 'payment',
+        element: <ReceptionistSideBar />,
+        children: [
+          {
+            path: '',
+            element: <PaymentPage />
           }
         ]
       }

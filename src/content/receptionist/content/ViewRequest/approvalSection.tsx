@@ -3,21 +3,26 @@ import { Card, Box, Button, Grid, useTheme } from '@mui/material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import { darken } from '@mui/system';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const ApprovalSection = () => {
   const theme = useTheme();
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const id = searchParams.get('form_id');
+  const navigate = useNavigate();
 
   const handleCancel = () => {
     // TODO: Handle cancel action
   };
 
   const handleSubmit = () => {
-    // TODO: Handle submit action
+    navigate(`/receptionist/payment?form_id=${id}`);
   };
 
   // Calculate the darker shade of the background color
-  const cancelButtonColor = darken(theme.palette.error.main, 0.2);
-  const submitButtonColor = darken(theme.palette.success.main, 0.2);
+  const cancelButtonColor = darken(theme.palette.warning.main, 0.2);
+  const submitButtonColor = darken(theme.palette.primary.main, 0.2);
 
   return (
     <Grid container spacing={3} mt={2}>
@@ -38,7 +43,7 @@ const ApprovalSection = () => {
               }}
               onClick={handleCancel}
             >
-              Cancel
+              Go Back
             </Button>
             <Box ml={1}>
               <Button
@@ -50,7 +55,7 @@ const ApprovalSection = () => {
                 }}
                 onClick={handleSubmit}
               >
-                Submit
+                Proceed
               </Button>
             </Box>
           </Box>

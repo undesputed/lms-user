@@ -32,6 +32,7 @@ const LabTest: React.FC<LabTestProps> = (props) => {
   const [filter, setFilter] = useState('');
   const [page, setPage] = useState(1);
   const itemsPerPage = 5;
+  const [totalPrice, setTotalPrice] = useState(0);
 
   const handleFilterChange = (event: ChangeEvent<HTMLInputElement>) => {
     setFilter(event.target.value);
@@ -51,6 +52,16 @@ const LabTest: React.FC<LabTestProps> = (props) => {
     startIndex,
     startIndex + itemsPerPage
   );
+
+  React.useEffect(() => {
+    let sum = 0;
+    if (filteredLabTest) {
+      filteredLabTest.forEach((item) => {
+        sum += item.price;
+      });
+    }
+    setTotalPrice(sum);
+  }, [filteredLabTest]);
 
   return (
     <Grid container spacing={3} mt={2}>
@@ -138,7 +149,7 @@ const LabTest: React.FC<LabTestProps> = (props) => {
                           gutterBottom
                           noWrap
                         >
-                          {item.price}
+                          ₱ {item.price.toLocaleString()}
                         </Typography>
                       </TableCell>
                       <TableCell>
@@ -215,6 +226,12 @@ const LabTest: React.FC<LabTestProps> = (props) => {
                       </TableCell>
                     </TableRow>
                   ))}
+                  <TableRow>
+                    <TableCell />
+                    <TableCell />
+                    <TableCell>Subtotal</TableCell>
+                    <TableCell>₱ {totalPrice.toLocaleString()}</TableCell>{' '}
+                  </TableRow>
                 </TableBody>
               </Table>
             </TableContainer>
