@@ -9,6 +9,7 @@ import RequestFormLabTestReducer from 'src/reducers/requestFormLabTest/requestFo
 import ReceptionistNotificationReducer from 'src/reducers/receptionistNotification/receptionistNotificationReducer';
 import ReceptionistAuthReducer from 'src/reducers/auth/receptionistAuthReducer';
 import BasicInfoReducer from 'src/reducers/basicInfo/basicInfoReducer';
+import PaymentReducer from 'src/reducers/payment/paymentReducer';
 
 export const store = configureStore({
   reducer: {
@@ -21,7 +22,8 @@ export const store = configureStore({
     requestForm: RequestFormReducer,
     requestFormLabTest: RequestFormLabTestReducer,
     receptionistNotification: ReceptionistNotificationReducer,
-    basicInfo: BasicInfoReducer
+    basicInfo: BasicInfoReducer,
+    payment: PaymentReducer
   }
 });
 

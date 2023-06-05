@@ -10,6 +10,8 @@ import { useAppDispatch } from 'src/actions/hooks';
 import { fetchAllCategory } from 'src/reducers/category/categoryReducer';
 import { fetchLabTestByRequestFormId } from 'src/reducers/requestFormLabTest/requestFormLabTestReducer';
 import { SubCategory } from './types.d';
+import { getToken } from 'src/reducers/auth/authReducer';
+import { insertNewPayment } from 'src/reducers/payment/paymentReducer';
 
 const PaymentPage = () => {
   const navigate = useNavigate();
@@ -19,13 +21,28 @@ const PaymentPage = () => {
   const [state, dispatch] = React.useReducer(reducer, initialState);
   const reduxDispatch = useAppDispatch();
 
-  const onSubmit = (type: string, serialNumber: string) => {
+  const onSubmit = async (type: string, serialNumber: string) => {
     if (type === 'gcash') {
       if (serialNumber === '') {
         alert('Please Input Serial Number!');
         return;
       }
-      
+    }
+
+    try {
+      const userData = reduxDispatch(getToken());
+      const paymentData = {
+        request_form_id: id,
+        payment_type: type,
+        serial_number: serialNumber,
+        payment_date: new Date().toISOString(),
+        status: 1,
+        authBy: userData.userId
+      };
+      const res = await reduxDispatch(insertNewPayment(paymentData));
+      console.log(res);
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -86,6 +103,7 @@ const PaymentPage = () => {
             <Options
               subCategory={state.subCategory}
               category={state.category}
+              onSubmit={onSubmit}
             />
           </Grid>
         </Grid>

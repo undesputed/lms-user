@@ -101,6 +101,11 @@ const CardCc = styled(Card)(
 const PaymentOption: React.FC<OptionProps> = (props) => {
   const theme = useTheme();
   const [selectedValue, setSelectedValue] = useState('cash');
+  const [serialNumber, setSerialNumber] = useState('');
+
+  const onSubmit = () => {
+    props.onSubmit(selectedValue, serialNumber);
+  };
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSelectedValue(event.target.value);
@@ -208,6 +213,8 @@ const PaymentOption: React.FC<OptionProps> = (props) => {
                         label="Serial Number"
                         name="serialNumber"
                         required
+                        value={serialNumber}
+                        onChange={(e) => setSerialNumber(e.target.value)}
                       />
                     </>
                   ) : null}
@@ -242,7 +249,7 @@ const PaymentOption: React.FC<OptionProps> = (props) => {
                                 const cat = props.category?.find(
                                   (d) => d.id === item.category_id
                                 );
-                                return cat.category_name;
+                                return cat?.category_name;
                               })()}
                             </TableCell>
                             <TableCell>{item.sub_category_name}</TableCell>
@@ -259,7 +266,7 @@ const PaymentOption: React.FC<OptionProps> = (props) => {
                     </Table>
                   </TableContainer>
                   <Typography
-                    variant="h4"
+                    variant="h3"
                     sx={{
                       marginBottom: '20px',
                       marginRight: '20px',
@@ -297,6 +304,7 @@ const PaymentOption: React.FC<OptionProps> = (props) => {
                           backgroundColor: submitButtonColor,
                           color: theme.palette.success.contrastText
                         }}
+                        onClick={onSubmit}
                       >
                         Proceed
                       </Button>

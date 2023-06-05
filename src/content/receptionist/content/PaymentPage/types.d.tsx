@@ -23,7 +23,7 @@ export interface Category {
 export type OptionProps = {
   subCategory: SubCategory[];
   category: Category[];
-  onSubmit?: (type: string, serialNumber) => void;
+  onSubmit?: (type: string, serialNumber: string) => void;
   onCancel?: () => void;
 };
 
