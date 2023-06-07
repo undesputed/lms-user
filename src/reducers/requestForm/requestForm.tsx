@@ -38,6 +38,7 @@ export interface basicInfoFormResponse {
   others: string;
   referredBy: string;
   dateRequested: Date | string;
+  form_status: number;
 }
 
 export interface BasicInfoResponseById {

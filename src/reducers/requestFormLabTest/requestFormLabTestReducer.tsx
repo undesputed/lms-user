@@ -8,11 +8,13 @@ import {
 } from '@reduxjs/toolkit';
 import { RootState } from 'src/app/store';
 import {
+  completeForm,
   createRequestFormLabTest,
   deleteRequestFormLabTest,
   retrieveAllLabTestByFormId,
   retrieveAllRequestFormLabTest,
-  retrieveAllRequestFormLabTestById
+  retrieveAllRequestFormLabTestById,
+  updateForm
 } from 'src/api/requestFormLabTest';
 import {
   RequestFormLabTest,
@@ -56,6 +58,22 @@ export const createLabTest = createAsyncThunk(
   async (credentials: RequestFormLabTestCred) => {
     const response = await createRequestFormLabTest(credentials);
     return response;
+  }
+);
+
+export const updateAllForm = createAsyncThunk(
+  'requestFormLabTest/updateLabTest',
+  async (id: number) => {
+    const res = await updateForm(id);
+    return res;
+  }
+);
+
+export const updateCompleteStatus = createAsyncThunk(
+  'requestFormLabTest/completeLabTest',
+  async (id: number) => {
+    const res = await completeForm(id);
+    return res;
   }
 );
 

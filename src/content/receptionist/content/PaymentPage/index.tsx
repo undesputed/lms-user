@@ -8,7 +8,10 @@ import { initialState } from './initialState';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAppDispatch } from 'src/actions/hooks';
 import { fetchAllCategory } from 'src/reducers/category/categoryReducer';
-import { fetchLabTestByRequestFormId } from 'src/reducers/requestFormLabTest/requestFormLabTestReducer';
+import {
+  fetchLabTestByRequestFormId,
+  updateAllForm
+} from 'src/reducers/requestFormLabTest/requestFormLabTestReducer';
 import { SubCategory } from './types.d';
 import { getToken } from 'src/reducers/auth/authReducer';
 import { insertNewPayment } from 'src/reducers/payment/paymentReducer';
@@ -21,26 +24,39 @@ const PaymentPage = () => {
   const [state, dispatch] = React.useReducer(reducer, initialState);
   const reduxDispatch = useAppDispatch();
 
-  const onSubmit = async (type: string, serialNumber: string) => {
+  const onSubmit = (type: string, serialNumber: string) => {
     if (type === 'gcash') {
       if (serialNumber === '') {
         alert('Please Input Serial Number!');
         return;
       }
+      onInsertPayment(type, serialNumber);
+
+      return;
     }
 
+    onInsertPayment(type, serialNumber);
+  };
+
+  const onInsertPayment = async (type: string, serialNumber: string) => {
     try {
-      const userData = reduxDispatch(getToken());
+      const userData = reduxDispatch(getToken);
       const paymentData = {
         request_form_id: id,
         payment_type: type,
         serial_number: serialNumber,
         payment_date: new Date().toISOString(),
-        status: 1,
+        status: 2,
         authBy: userData.userId
       };
       const res = await reduxDispatch(insertNewPayment(paymentData));
-      console.log(res);
+      if (res.type === 'payment/createNewPayment/fulfilled') {
+        const response = await reduxDispatch(updateAllForm(parseInt(id)));
+        if (response.type === 'requestFormLabTest/updateLabTest/fulfilled') {
+          alert('Request Approved Successfully!');
+          navigate('/receptionist/request_management');
+        }
+      }
     } catch (err) {
       console.log(err);
     }

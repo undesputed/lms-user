@@ -10,6 +10,26 @@ interface subCategory {
   deleted_at: null;
 }
 
+interface category {
+  id: number;
+  category_name: string;
+  authBy: number;
+  status: number;
+  created_at: Date | string | null;
+  updated_at: Date | string | null;
+  deleted_at: Date | string | null;
+}
+
+export type LabTestModalProps = {
+  open?: boolean;
+  title?: string;
+  handleClose?: () => void;
+  handleSubmit?: () => void;
+  category?: category[];
+  subCategory?: subCategory[];
+  onSelectSubCat?: (e: any, id: number) => void;
+};
+
 export type StepperType = {
   activeStep?: number;
   handleNext?: () => void;
@@ -17,6 +37,7 @@ export type StepperType = {
   handleReset?: () => void;
   handleOnChange?: (e: any) => void;
   subCategory?: subCategory[];
+  category?: category[];
   handleFinish?: () => void;
   handleSubcategoryChange?: (event: any, selectedOptions: any) => void;
 };
@@ -28,6 +49,7 @@ export type BasicInfoProps = {
   handleBack?: () => void;
   handleOnChange?: (e: any) => void;
   subCategory?: subCategory[];
+  category?: category[];
   handleFinish?: () => void;
   handleSubcategoryChange?: (event: any, selectedOptions: any) => void;
 };
@@ -39,6 +61,7 @@ export type LabTestType = {
   handleBack?: () => void;
   handleOnChange?: (e: any) => void;
   subCategory?: subCategory[];
+  category?: category[];
   handleFinish?: () => void;
   handleSubcategoryChange?: (event: any, selectedOptions: any) => void;
 };
@@ -50,6 +73,7 @@ export type FinalFormType = {
   handleBack?: () => void;
   handleOnChange?: (e: any) => void;
   subCategory?: subCategory[];
+  category?: category[];
   handleFinish?: () => void;
   handleSubcategoryChange?: (event: any, selectedOptions: any) => void;
 };
@@ -67,6 +91,7 @@ export type State = {
   dateRequested: Date | string;
   selectedCategories: [];
   subCategory: subCategory[];
+  category?: category[];
   isError: boolean;
   errorMessage: String;
   loading: boolean;
@@ -89,6 +114,7 @@ export type Action =
   | { type: 'setDateRequested'; payload: Date }
   | { type: 'setSelectedCategories'; payload: [] }
   | { type: 'setSubCategory'; payload: subCategory[] }
+  | { type: 'setCategory'; payload: category[] }
   | { type: 'setErrorMessage'; payload: string }
   | { type: 'setLoading'; payload: boolean }
   | { type: 'setOnUpdate'; payload: boolean }

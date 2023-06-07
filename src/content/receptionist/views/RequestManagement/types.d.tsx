@@ -28,6 +28,7 @@ export type PageHeaderType = {
 export type PageListTableType = {
   request: basicInfoFormResponse[];
   onClickViewRequest?: (request_form_id: number) => void;
+  onClickApproved?: (request_form_id: number) => void;
 };
 
 export type State = {

@@ -14,6 +14,7 @@ import { createBasicInfo } from 'src/reducers/basicInfo/basicInfoReducer';
 import { createUserRequest } from 'src/reducers/requestForm/requestFormReducer';
 import { createLabTest } from 'src/reducers/requestFormLabTest/requestFormLabTestReducer';
 import { useNavigate } from 'react-router';
+import { fetchAllCategory } from 'src/reducers/category/categoryReducer';
 
 const AddNewRequest = () => {
   const [state, dispatch] = React.useReducer(reducer, initialState);
@@ -23,6 +24,7 @@ const AddNewRequest = () => {
   const [labTestStatus, setLabTestStatus] = React.useState<boolean>(false);
   const reduxDispatch = useAppDispatch();
   const navigate = useNavigate();
+  const [selectSubCat, setSelectedSubCat] = React.useState([]);
 
   const handleFinish = async () => {
     const userData = reduxDispatch(getToken);
@@ -108,6 +110,16 @@ const AddNewRequest = () => {
   };
 
   const handleSubcategoryChange = (event: any, selectedOptions: any) => {
+    // if (event.target.checked) {
+    //   setSelectedSubCat((prevSelectedSubCat) => [
+    //     ...prevSelectedSubCat,
+    //     selectedOptions
+    //   ]);
+    // } else {
+    //   setSelectedSubCat((prevSelectedSubCat) =>
+    //     prevSelectedSubCat.filter((test) => test.id !== selectedOptions.id)
+    //   );
+    // }
     dispatch({
       type: 'setSelectedCategories',
       payload: selectedOptions
@@ -180,6 +192,18 @@ const AddNewRequest = () => {
     }
   };
 
+  const fetchCategory = async () => {
+    try {
+      const res = await reduxDispatch(fetchAllCategory());
+      dispatch({
+        type: 'setCategory',
+        payload: res.payload
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const fetchSubCategory = async () => {
     try {
       const subCat = await reduxDispatch(fetchAllSubCategory());
@@ -195,6 +219,7 @@ const AddNewRequest = () => {
 
   React.useEffect(() => {
     fetchSubCategory();
+    fetchCategory();
   }, []);
 
   return (
@@ -220,6 +245,7 @@ const AddNewRequest = () => {
                 subCategory={state.subCategory}
                 handleFinish={handleFinish}
                 handleSubcategoryChange={handleSubcategoryChange}
+                category={state.category}
               />
             </Paper>
           </Grid>

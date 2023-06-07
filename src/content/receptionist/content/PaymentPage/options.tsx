@@ -255,10 +255,10 @@ const PaymentOption: React.FC<OptionProps> = (props) => {
                             <TableCell>{item.sub_category_name}</TableCell>
                             <TableCell align="right">1</TableCell>
                             <TableCell align="right">
-                              ₱ {Number(item.price)}
+                              ₱ {Number(item.price).toLocaleString()}
                             </TableCell>
                             <TableCell align="right">
-                              {item.price * 1}
+                              ₱ {Number(item.price).toLocaleString()}
                             </TableCell>
                           </TableRow>
                         ))}
@@ -282,7 +282,7 @@ const PaymentOption: React.FC<OptionProps> = (props) => {
                         total += d.price;
                       });
 
-                      return Number(total);
+                      return Number(total).toLocaleString();
                     })()}
                   </Typography>
                   <Box display="flex" justifyContent="flex-end" p={2}>

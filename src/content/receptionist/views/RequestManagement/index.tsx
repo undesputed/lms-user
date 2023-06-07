@@ -16,12 +16,24 @@ import {
 } from 'src/reducers/requestForm/requestFormReducer';
 import { requestState } from './types.d';
 import { basicInfoFormResponse } from 'src/reducers/requestForm/requestForm';
+import { updateCompleteStatus } from 'src/reducers/requestFormLabTest/requestFormLabTestReducer';
 
 const RequestManagement = () => {
   const [state, dispatch] = React.useReducer(reducer, initialState);
   const navigate = useNavigate();
   const reduxDispatch = useAppDispatch();
   const userData = reduxDispatch(getToken);
+
+  const onClickApproved = async (request_form_id: number) => {
+    try {
+      const res = await reduxDispatch(updateCompleteStatus(request_form_id));
+      if (res.type === 'requestFormLabTest/completeLabTest/fulfilled') {
+        alert('Request Completed!!');
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const onClickViewRequest = (request_form_id: number) => {
     navigate(`/receptionist/view_request?form_id=${request_form_id}`);
@@ -35,7 +47,7 @@ const RequestManagement = () => {
     try {
       const res = await reduxDispatch(fetchAllBasicInfo());
       const payload = res.payload as basicInfoFormResponse[];
-      
+
       dispatch({
         type: 'setRequest',
         payload: payload
@@ -69,6 +81,7 @@ const RequestManagement = () => {
             <PatientListTable
               request={state.request}
               onClickViewRequest={onClickViewRequest}
+              onClickApproved={onClickApproved}
             />
           </Grid>
         </Grid>

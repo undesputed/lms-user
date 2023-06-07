@@ -6,16 +6,52 @@ import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import { Box, Button, Grid, Typography } from '@mui/material';
 import { LabTestType } from './types.d';
+import LabTestModal from './LabTestModal';
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 const LabTestForm: React.FC<LabTestType> = (props) => {
+  const [selectedTest, setSelectedTest] = React.useState([]);
+  const [open, setOpen] = React.useState<boolean>(false);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const onSelectSubCat = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    id: number
+  ) => {
+    if (e.target.checked) {
+      props.handleSubcategoryChange(
+        e,
+        props.subCategory.find((d) => d.id === id)
+      );
+    } else {
+      props.handleSubcategoryChange(
+        e,
+        props.subCategory.find((d) => d.id === id)
+      );
+    }
+  };
   return (
     <>
       <Box component="form" noValidate m={3} mb={2}>
         <Grid container spacing={2}>
           <Grid item xs={12} md={12}>
+            {/* <Button onClick={handleOpen}>Choose Lab Test</Button>
+            <LabTestModal
+              open={open}
+              onSelectSubCat={onSelectSubCat}
+              handleClose={handleClose}
+              category={props.category}
+              subCategory={props.subCategory}
+            /> */}
             <Autocomplete
               multiple
               id="checkboxes-tags-demo"

@@ -27,6 +27,7 @@ import { PatientList } from './Patient_Interface';
 import * as api from 'src/api/apiTest';
 import { PageListTableType, requestState } from './types.d';
 import { basicInfoFormResponse } from 'src/reducers/requestForm/requestForm';
+import BeenhereIcon from '@mui/icons-material/Beenhere';
 
 const PatientListTable: React.FC<PageListTableType> = (props) => {
   const theme = useTheme();
@@ -40,7 +41,7 @@ const PatientListTable: React.FC<PageListTableType> = (props) => {
       setData(props.request);
     } else {
       const filteredData = props.request?.filter(
-        (item) => item.status === status
+        (item) => item.form_status === status
       );
       setData(filteredData);
     }
@@ -170,7 +171,7 @@ const PatientListTable: React.FC<PageListTableType> = (props) => {
                 </TableCell>
                 <TableCell>
                   {(function () {
-                    if (d.status === 1) {
+                    if (d.form_status === 1) {
                       return (
                         <Typography
                           variant="body1"
@@ -183,7 +184,7 @@ const PatientListTable: React.FC<PageListTableType> = (props) => {
                           Pending
                         </Typography>
                       );
-                    } else if (d.status === 2) {
+                    } else if (d.form_status === 2) {
                       return (
                         <Typography
                           variant="body1"
@@ -213,21 +214,45 @@ const PatientListTable: React.FC<PageListTableType> = (props) => {
                   })()}
                 </TableCell>
                 <TableCell>
-                  <Tooltip title="View Request" arrow>
-                    <IconButton
-                      sx={{
-                        '&:hover': {
-                          background: theme.colors.primary.lighter
-                        },
-                        color: theme.palette.primary.main
-                      }}
-                      color="inherit"
-                      size="small"
-                      onClick={() => props.onClickViewRequest(d.form_id)}
-                    >
-                      <RateReviewIcon fontSize="small" />
-                    </IconButton>
-                  </Tooltip>
+                  {(function () {
+                    if (d.form_status === 1) {
+                      return (
+                        <Tooltip title="View Request" arrow>
+                          <IconButton
+                            sx={{
+                              '&:hover': {
+                                background: theme.colors.primary.lighter
+                              },
+                              color: theme.palette.primary.main
+                            }}
+                            color="inherit"
+                            size="small"
+                            onClick={() => props.onClickViewRequest(d.form_id)}
+                          >
+                            <RateReviewIcon fontSize="small" />
+                          </IconButton>
+                        </Tooltip>
+                      );
+                    } else if (d.form_status === 2) {
+                      return (
+                        <Tooltip title="Approve Request" arrow>
+                          <IconButton
+                            sx={{
+                              '&:hover': {
+                                background: theme.colors.primary.lighter
+                              },
+                              color: theme.palette.warning.main
+                            }}
+                            color="inherit"
+                            size="small"
+                            onClick={() => props.onClickApproved(d.form_id)}
+                          >
+                            <BeenhereIcon fontSize="small" />
+                          </IconButton>
+                        </Tooltip>
+                      );
+                    }
+                  })()}
                   <Tooltip title="Reject Request" arrow>
                     <IconButton
                       sx={{

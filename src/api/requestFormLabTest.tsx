@@ -66,6 +66,16 @@ export function createRequestFormLabTest(
     .then((res) => res.data);
 }
 
+export function updateForm(id: number): Promise<{ message: any }> {
+  return api.put(`requestFormLabTest/updateForm/${id}`).then((res) => res.data);
+}
+
+export function completeForm(id: number): Promise<{ message: any }> {
+  return api
+    .put(`requestFormLabTest/updateCompleteForm/${id}`)
+    .then((res) => res.data);
+}
+
 export function deleteRequestFormLabTest(
   credentials: any
 ): Promise<deleteResponse> {

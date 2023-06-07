@@ -62,6 +62,11 @@ export const reducer = (state: State, action: Action): State => {
         ...state,
         subCategory: action.payload
       };
+    case 'setCategory':
+      return {
+        ...state,
+        category: action.payload
+      };
     case 'setErrorMessage':
       return {
         ...state,

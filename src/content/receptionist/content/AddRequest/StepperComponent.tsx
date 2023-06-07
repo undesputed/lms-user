@@ -68,6 +68,7 @@ const RequestFormStepper: React.FC<StepperType> = (props) => {
                 handleOnChange={props.handleOnChange}
                 handleFinish={props.handleFinish}
                 handleSubcategoryChange={props.handleSubcategoryChange}
+                category={props.category}
               />
               {/* <Box sx={{ mb: 2 }}>
                 <div>
