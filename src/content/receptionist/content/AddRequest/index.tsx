@@ -24,7 +24,7 @@ const AddNewRequest = () => {
   const [labTestStatus, setLabTestStatus] = React.useState<boolean>(false);
   const reduxDispatch = useAppDispatch();
   const navigate = useNavigate();
-  const [selectSubCat, setSelectedSubCat] = React.useState([]);
+  const [selectSubCat, setSelectedSubCat] = React.useState<number[]>([]);
 
   const handleFinish = async () => {
     const userData = reduxDispatch(getToken);
@@ -86,10 +86,10 @@ const AddNewRequest = () => {
 
   const createLabTestForm = (request_form_id: number, userId: number) => {
     try {
-      state.selectedCategories?.map(async (item: any) => {
+      selectSubCat?.map(async (item) => {
         const labTestData = {
           request_form_id: request_form_id,
-          sub_category_id: item.id,
+          sub_category_id: item,
           status: 1,
           authBy: userId,
           created_at: new Date(),
@@ -107,6 +107,37 @@ const AddNewRequest = () => {
 
   const final = () => {
     navigate('/receptionist/request_management');
+  };
+
+  const onDelete = (event: any, sub_category_id: number) => {
+    setSelectedSubCat((prevSelectedSubCat) =>
+      prevSelectedSubCat.filter((d) => d !== sub_category_id)
+    );
+  };
+
+  const handleSelectCat = (event: any, sub_category_id: number) => {
+    const checkSubCat = selectSubCat?.find((d) => d === sub_category_id);
+
+    if (event.target.checked) {
+      if (checkSubCat) {
+        return;
+      } else {
+        setSelectedSubCat((prevSelectedSubCat) => [
+          ...prevSelectedSubCat,
+          sub_category_id
+        ]);
+      }
+    } else {
+      if (checkSubCat) {
+        setSelectedSubCat((prevSelectedSubCat) =>
+          prevSelectedSubCat.filter((d) => d !== sub_category_id)
+        );
+      }
+    }
+  };
+
+  const handleAddLabTest = () => {
+    console.log(selectSubCat);
   };
 
   const handleSubcategoryChange = (event: any, selectedOptions: any) => {
@@ -246,6 +277,10 @@ const AddNewRequest = () => {
                 handleFinish={handleFinish}
                 handleSubcategoryChange={handleSubcategoryChange}
                 category={state.category}
+                handleSelectCat={handleSelectCat}
+                handleSubmit={handleAddLabTest}
+                selected={selectSubCat}
+                onDelete={onDelete}
               />
             </Paper>
           </Grid>

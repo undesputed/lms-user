@@ -23,7 +23,7 @@ const LabTestModal: React.FC<LabTestModalProps> = (props) => {
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
       fullWidth
-      maxWidth={'xl'}
+      maxWidth={'lg'}
     >
       <DialogTitle
         id="alert-dialog-title"
@@ -65,7 +65,7 @@ const LabTestModal: React.FC<LabTestModalProps> = (props) => {
                           control={
                             <Checkbox
                               onChange={(e: any) =>
-                                props.onSelectSubCat(e, subCat.id)
+                                props.handleSelectCat(e, subCat.id)
                               }
                             />
                           }
@@ -80,10 +80,10 @@ const LabTestModal: React.FC<LabTestModalProps> = (props) => {
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={props.handleClose}>Cancel</Button>
-        <Button onClick={props.handleSubmit} autoFocus>
+        <Button onClick={props.handleClose}>Close</Button>
+        {/* <Button variant="contained" onClick={props.handleSubmit} autoFocus>
           Submit
-        </Button>
+        </Button> */}
       </DialogActions>
     </Dialog>
   );

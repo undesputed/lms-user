@@ -47,7 +47,7 @@ const PatientListTable: React.FC<PageListTableType> = (props) => {
     }
   }, [props.request, status]);
   return (
-    <Card>
+    <Card sx={{ width: '100%' }}>
       <CardHeader
         action={
           <Box width={150}>
@@ -59,8 +59,8 @@ const PatientListTable: React.FC<PageListTableType> = (props) => {
                 value={status}
                 onChange={(e: any) => setStatus(e.target.value)}
               >
-                <MenuItem value={1}>Pending</MenuItem>
-                <MenuItem value={2}>In Progress</MenuItem>
+                <MenuItem value={1}>For Payment</MenuItem>
+                <MenuItem value={2}>For Processing</MenuItem>
                 <MenuItem value={3}>Completed</MenuItem>
                 <MenuItem value={4}>All</MenuItem>
               </Select>
@@ -179,9 +179,9 @@ const PatientListTable: React.FC<PageListTableType> = (props) => {
                           color="text.primary"
                           gutterBottom
                           noWrap
-                          sx={{ color: '#336699' }}
+                          sx={{ color: '#FFA500' }}
                         >
-                          Pending
+                          For Payment
                         </Typography>
                       );
                     } else if (d.form_status === 2) {
@@ -192,9 +192,9 @@ const PatientListTable: React.FC<PageListTableType> = (props) => {
                           color="text.primary"
                           gutterBottom
                           noWrap
-                          sx={{ color: '#00FF00' }}
+                          sx={{ color: '#00BFFF ' }}
                         >
-                          In Progress
+                          For Processing
                         </Typography>
                       );
                     } else {
@@ -205,7 +205,7 @@ const PatientListTable: React.FC<PageListTableType> = (props) => {
                           color="text.primary"
                           gutterBottom
                           noWrap
-                          sx={{ color: '#0000FF' }}
+                          sx={{ color: '#008000' }}
                         >
                           Completed
                         </Typography>

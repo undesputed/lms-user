@@ -25,5 +25,20 @@ export const reducer = (state: State, action: Action) => {
           [action.name]: action.value
         }
       };
+    case 'setAddLabTest':
+      return {
+        ...state,
+        addLabTest: action.payload
+      };
+    case 'setSubCategory':
+      return {
+        ...state,
+        subCategory: action.payload
+      };
+    case 'setCategory':
+      return {
+        ...state,
+        category: action.payload
+      };
   }
 };

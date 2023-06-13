@@ -28,6 +28,8 @@ export type LabTestModalProps = {
   category?: category[];
   subCategory?: subCategory[];
   onSelectSubCat?: (e: any, id: number) => void;
+  handleSelectCat?: (e: any, id: number) => void;
+  onDelete?: (e: any, id: number) => void;
 };
 
 export type StepperType = {
@@ -40,6 +42,10 @@ export type StepperType = {
   category?: category[];
   handleFinish?: () => void;
   handleSubcategoryChange?: (event: any, selectedOptions: any) => void;
+  handleSelectCat?: (e: any, id: number) => void;
+  handleSubmit?: () => void;
+  selected?: number[];
+  onDelete?: (e: any, id: number) => void;
 };
 
 export type BasicInfoProps = {
@@ -52,6 +58,10 @@ export type BasicInfoProps = {
   category?: category[];
   handleFinish?: () => void;
   handleSubcategoryChange?: (event: any, selectedOptions: any) => void;
+  handleSelectCat?: (e: any, id: number) => void;
+  handleSubmit?: () => void;
+  selected?: number[];
+  onDelete?: (e: any, id: number) => void;
 };
 
 export type LabTestType = {
@@ -64,6 +74,10 @@ export type LabTestType = {
   category?: category[];
   handleFinish?: () => void;
   handleSubcategoryChange?: (event: any, selectedOptions: any) => void;
+  handleSelectCat?: (e: any, id: number) => void;
+  handleSubmit?: () => void;
+  selected?: number[];
+  onDelete?: (e: any, id: number) => void;
 };
 
 export type FinalFormType = {
@@ -76,6 +90,10 @@ export type FinalFormType = {
   category?: category[];
   handleFinish?: () => void;
   handleSubcategoryChange?: (event: any, selectedOptions: any) => void;
+  handleSelectCat?: (e: any, id: number) => void;
+  handleSubmit?: () => void;
+  selected?: number[];
+  onDelete?: (e: any, id: number) => void;
 };
 
 export type State = {

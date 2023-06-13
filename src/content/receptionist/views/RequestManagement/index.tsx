@@ -29,6 +29,7 @@ const RequestManagement = () => {
       const res = await reduxDispatch(updateCompleteStatus(request_form_id));
       if (res.type === 'requestFormLabTest/completeLabTest/fulfilled') {
         alert('Request Completed!!');
+        window.location.reload();
       }
     } catch (err) {
       console.log(err);
@@ -69,7 +70,7 @@ const RequestManagement = () => {
       <PageTitleWrapper>
         <PageHeader onClick={addRequest} />
       </PageTitleWrapper>
-      <Container maxWidth="lg">
+      <Container maxWidth="xl">
         <Grid
           container
           direction="row"

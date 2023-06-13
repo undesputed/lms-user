@@ -4,9 +4,22 @@ import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
-import { Box, Button, Grid, Typography } from '@mui/material';
+import {
+  Avatar,
+  Box,
+  Button,
+  Grid,
+  IconButton,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  Typography
+} from '@mui/material';
 import { LabTestType } from './types.d';
 import LabTestModal from './LabTestModal';
+import FolderIcon from '@mui/icons-material/Folder';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
@@ -44,15 +57,64 @@ const LabTestForm: React.FC<LabTestType> = (props) => {
       <Box component="form" noValidate m={3} mb={2}>
         <Grid container spacing={2}>
           <Grid item xs={12} md={12}>
-            {/* <Button onClick={handleOpen}>Choose Lab Test</Button>
+            <Box mb={2} mt={2}>
+              {(function () {
+                if (props.selected.length !== 0) {
+                  return (
+                    <Typography
+                      sx={{ mt: 4, mb: 2, fontWeight: '600' }}
+                      variant="h6"
+                      component="div"
+                    >
+                      Selected Laboratory Tests:
+                    </Typography>
+                  );
+                } else {
+                  return null;
+                }
+              })()}
+              <List dense={false}>
+                {props.selected?.map((data, index) => (
+                  <ListItem
+                    key={index}
+                    secondaryAction={
+                      <IconButton
+                        edge="end"
+                        aria-label="delete"
+                        onClick={(e: any) => props.onDelete(e, data)}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    }
+                  >
+                    <ListItemAvatar>
+                      <Avatar>
+                        <FolderIcon />
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText
+                      primary={
+                        props.subCategory?.find((d) => d.id === data)
+                          .sub_category_name
+                      }
+                    />
+                  </ListItem>
+                ))}
+              </List>
+              <Button variant="outlined" onClick={handleOpen}>
+                Choose Lab Test
+              </Button>
+            </Box>
             <LabTestModal
               open={open}
               onSelectSubCat={onSelectSubCat}
               handleClose={handleClose}
               category={props.category}
               subCategory={props.subCategory}
-            /> */}
-            <Autocomplete
+              handleSelectCat={props.handleSelectCat}
+              handleSubmit={props.handleSubmit}
+            />
+            {/* <Autocomplete
               multiple
               id="checkboxes-tags-demo"
               options={props.subCategory.sort(
@@ -81,7 +143,7 @@ const LabTestForm: React.FC<LabTestType> = (props) => {
                   placeholder="Favorites"
                 />
               )}
-            />
+            /> */}
           </Grid>
           <Grid item xs={12} md={4}>
             <TextField

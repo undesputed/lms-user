@@ -171,7 +171,7 @@ const routes: RouteObject[] = [
     children: [
       {
         path: '/',
-        element: <Navigate to="/auth/login" replace />
+        element: <Navigate to="/receptionist/login" replace />
       },
       {
         path: 'auth',

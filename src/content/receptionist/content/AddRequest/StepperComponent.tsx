@@ -69,25 +69,11 @@ const RequestFormStepper: React.FC<StepperType> = (props) => {
                 handleFinish={props.handleFinish}
                 handleSubcategoryChange={props.handleSubcategoryChange}
                 category={props.category}
+                handleSelectCat={props.handleSelectCat}
+                handleSubmit={props.handleSubmit}
+                selected={props.selected}
+                onDelete={props.onDelete}
               />
-              {/* <Box sx={{ mb: 2 }}>
-                <div>
-                  <Button
-                    variant="contained"
-                    onClick={handleNext}
-                    sx={{ mt: 1, mr: 1 }}
-                  >
-                    {index === steps.length - 1 ? 'Finish' : 'Continue'}
-                  </Button>
-                  <Button
-                    disabled={index === 0}
-                    onClick={handleBack}
-                    sx={{ mt: 1, mr: 1 }}
-                  >
-                    Back
-                  </Button>
-                </div>
-              </Box> */}
             </StepContent>
           </Step>
         ))}

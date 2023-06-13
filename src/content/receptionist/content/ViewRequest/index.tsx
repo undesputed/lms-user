@@ -15,6 +15,7 @@ import { useAppDispatch } from 'src/actions/hooks';
 import Footer from 'src/components/Footer';
 import { fetchBasicInfoByFormId } from 'src/reducers/requestForm/requestFormReducer';
 import {
+  createLabTest,
   deleteLabTest,
   fetchLabTestByRequestFormId
 } from 'src/reducers/requestFormLabTest/requestFormLabTestReducer';
@@ -26,6 +27,9 @@ import { initialState } from './initialState';
 import { BasicInfo, LabTest } from './types.d';
 import PromptModal from './promptModal';
 import { editBasicInfo } from 'src/reducers/basicInfo/basicInfoReducer';
+import { fetchAllCategory } from 'src/reducers/category/categoryReducer';
+import { fetchAllSubCategory } from 'src/reducers/subCategory/subCategoryReducer';
+import { getToken } from 'src/reducers/auth/receptionistAuthReducer';
 
 const ViewRequest = () => {
   const navigate = useNavigate();
@@ -33,6 +37,7 @@ const ViewRequest = () => {
   const searchParams = new URLSearchParams(location.search);
   const id = searchParams.get('form_id');
   const [state, dispatch] = React.useReducer(reducer, initialState);
+  const [selectedSubCat, setSelectedSubCat] = React.useState<number[]>([]);
   const [open, setOpen] = React.useState<boolean>(false);
   const reduxDispatch = useAppDispatch();
 
@@ -81,12 +86,64 @@ const ViewRequest = () => {
   };
 
   const handleAddTest = () => {
-    console.log(state);
+    dispatch({
+      type: 'setAddLabTest',
+      payload: true
+    });
+  };
+
+  const handleCloseAddTest = () => {
+    dispatch({
+      type: 'setAddLabTest',
+      payload: false
+    });
   };
 
   const handleClose = () => {
     setOpen(false);
     fetchBasicInfo();
+  };
+
+  const handleAddTestOnChange = (event: any, subCategoryId: number) => {
+    const checkSubCat = selectedSubCat?.find((d) => d === subCategoryId);
+
+    if (event.target.checked) {
+      if (checkSubCat) {
+        return;
+      } else {
+        setSelectedSubCat((prevSelectedSubCat) => [
+          ...prevSelectedSubCat,
+          subCategoryId
+        ]);
+      }
+    } else {
+      if (checkSubCat) {
+        setSelectedSubCat((prevSelectedSubCat) =>
+          prevSelectedSubCat.filter((d) => d !== subCategoryId)
+        );
+      }
+    }
+  };
+
+  const handleAddingTest = () => {
+    try {
+      const userData = reduxDispatch(getToken);
+      selectedSubCat?.map(async (item) => {
+        const labTestData = {
+          request_form_id: parseInt(id),
+          sub_category_id: item,
+          status: 1,
+          authBy: parseInt(userData.userId),
+          created_at: new Date(),
+          updated_at: null
+        };
+
+        await reduxDispatch(createLabTest(labTestData));
+        window.location.reload();
+      });
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const handleUpdate = async () => {
@@ -151,9 +208,35 @@ const ViewRequest = () => {
     }
   };
 
+  const fetchCategory = async () => {
+    try {
+      const res = await reduxDispatch(fetchAllCategory());
+      dispatch({
+        type: 'setCategory',
+        payload: res.payload
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const fetchSubCategory = async () => {
+    try {
+      const subCat = await reduxDispatch(fetchAllSubCategory());
+      dispatch({
+        type: 'setSubCategory',
+        payload: subCat.payload
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   React.useEffect(() => {
     fetchBasicInfo();
     fetchLabTests();
+    fetchCategory();
+    fetchSubCategory();
   }, []);
 
   return (
@@ -162,7 +245,7 @@ const ViewRequest = () => {
         <title>Add New Request - Form</title>
       </Helmet>
       <PromptModal open={state.promptModal} handleClose={handleClosePrompt} />
-      <Box maxWidth="lg" m={3}>
+      <Box maxWidth="xl" m={3}>
         <BasicInfoComponent
           basicInfo={state.basicInfo}
           onChange={onChange}
@@ -174,6 +257,12 @@ const ViewRequest = () => {
           labTest={state.labTest}
           handleAddTest={handleAddTest}
           handleOnDelete={handleOnDelete}
+          handleClose={handleCloseAddTest}
+          open={state.addLabTest}
+          subCategory={state.subCategory}
+          category={state.category}
+          handleAddTestOnChange={handleAddTestOnChange}
+          handleAddingTest={handleAddingTest}
         />
         <ApprovalSection />
       </Box>

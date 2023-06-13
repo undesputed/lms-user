@@ -23,9 +23,8 @@ import {
 } from '@mui/material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
-import Text from 'src/components/Text';
-import { format } from 'date-fns';
 import { LabTestProps } from './types.d';
+import AddLabTest from './addTest';
 
 const LabTest: React.FC<LabTestProps> = (props) => {
   const theme = useTheme();
@@ -66,6 +65,14 @@ const LabTest: React.FC<LabTestProps> = (props) => {
   return (
     <Grid container spacing={3} mt={2}>
       <Grid item xs={12}>
+        <AddLabTest
+          open={props.open}
+          handleClose={props.handleClose}
+          subCategory={props.subCategory}
+          category={props.category}
+          handleAddTestOnChange={props.handleAddTestOnChange}
+          handleAddingTest={props.handleAddingTest}
+        />
         <Card>
           <Box
             p={3}
