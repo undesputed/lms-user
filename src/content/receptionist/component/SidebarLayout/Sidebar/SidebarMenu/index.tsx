@@ -20,6 +20,7 @@ import FactCheckIcon from '@mui/icons-material/FactCheck';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import PrecisionManufacturingIcon from '@mui/icons-material/PrecisionManufacturing';
+import CategoryIcon from '@mui/icons-material/Category';
 
 const MenuWrapper = styled(Box)(
   ({ theme }) => `
@@ -223,6 +224,17 @@ function SidebarMenu() {
                   startIcon={<ManageAccountsIcon />}
                 >
                   Patient Management
+                </Button>
+              </ListItem>
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to="/receptionist/category_management"
+                  startIcon={<CategoryIcon />}
+                >
+                  Category Management
                 </Button>
               </ListItem>
               <ListItem component="div">

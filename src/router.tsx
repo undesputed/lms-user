@@ -92,6 +92,10 @@ const PaymentPage = Loader(
   lazy(() => import('src/content/receptionist/content/PaymentPage'))
 );
 
+const CategoryManagement = Loader(
+  lazy(() => import('src/content/receptionist/views/CategoryManagement'))
+);
+
 //Patient Pages
 const PatientDashboard = Loader(
   lazy(() => import('src/content/patient/views/dashboard'))
@@ -390,6 +394,16 @@ const routes: RouteObject[] = [
           {
             path: '',
             element: <PaymentPage />
+          }
+        ]
+      },
+      {
+        path: 'category_management',
+        element: <ReceptionistSideBar />,
+        children: [
+          {
+            path: '',
+            element: <CategoryManagement />
           }
         ]
       }

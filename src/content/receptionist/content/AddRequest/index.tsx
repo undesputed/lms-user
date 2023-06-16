@@ -141,16 +141,6 @@ const AddNewRequest = () => {
   };
 
   const handleSubcategoryChange = (event: any, selectedOptions: any) => {
-    // if (event.target.checked) {
-    //   setSelectedSubCat((prevSelectedSubCat) => [
-    //     ...prevSelectedSubCat,
-    //     selectedOptions
-    //   ]);
-    // } else {
-    //   setSelectedSubCat((prevSelectedSubCat) =>
-    //     prevSelectedSubCat.filter((test) => test.id !== selectedOptions.id)
-    //   );
-    // }
     dispatch({
       type: 'setSelectedCategories',
       payload: selectedOptions
