@@ -13,7 +13,7 @@ const MachineIntegration = () => {
   return (
     <>
       <Helmet>
-        <title>Crypto MachineIntegration</title>
+        <title>Machine Integration</title>
       </Helmet>
       <PageTitleWrapper>
         <PageHeader />

@@ -22,5 +22,20 @@ export const reducer = (state: State, action: Action): State => {
         ...state,
         type: action.payload
       };
+    case 'setValue':
+      return {
+        ...state,
+        value: action.payload
+      };
+    case 'setId':
+      return {
+        ...state,
+        id: action.payload
+      };
+    case 'setPrice':
+      return {
+        ...state,
+        price: action.payload
+      };
   }
 };

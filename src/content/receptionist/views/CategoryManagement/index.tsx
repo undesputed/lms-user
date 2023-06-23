@@ -1,5 +1,9 @@
 import React from 'react';
-import { AccountBalance } from '@mui/icons-material';
+import {
+  AccountBalance,
+  CoPresentOutlined,
+  ConstructionOutlined
+} from '@mui/icons-material';
 import {
   Box,
   Button,
@@ -24,16 +28,30 @@ import { initialState } from './initialState';
 import { useAppDispatch } from 'src/actions/hooks';
 import { useNavigate } from 'react-router';
 import { fetchAllCategory } from 'src/reducers/category/categoryReducer';
-import { fetchAllSubCategory } from 'src/reducers/subCategory/subCategoryReducer';
+import {
+  createNewSubCategory,
+  fetchAllSubCategory
+} from 'src/reducers/subCategory/subCategoryReducer';
 import AddIcon from '@mui/icons-material/Add';
 import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { sub } from 'date-fns';
 import Modal from './modal';
+import { getToken } from 'src/reducers/auth/authReducer';
 
 const CategoryManagement = () => {
   const [state, dispatch] = React.useReducer(reducer, initialState);
   const reduxDispatch = useAppDispatch();
+  const authUser = reduxDispatch(getToken);
   const navigate = useNavigate();
+
+  const onClickUpdateSubCategory = () => {
+    alert(state.value);
+  };
+
+  const onClickUpdateCategory = () => {
+    alert(state.value);
+  };
 
   const onEditSubCategory = (sub_category_id: number) => {
     dispatch({
@@ -44,7 +62,10 @@ const CategoryManagement = () => {
       type: 'setType',
       payload: 'Edit Sub Category'
     });
-    console.log(sub_category_id);
+    dispatch({
+      type: 'setId',
+      payload: sub_category_id
+    });
   };
 
   const onEditCategory = (category_id: number) => {
@@ -56,10 +77,42 @@ const CategoryManagement = () => {
       type: 'setType',
       payload: 'Edit Category'
     });
-    console.log(category_id);
+    dispatch({
+      type: 'setId',
+      payload: category_id
+    });
   };
 
-  const onAddNewSubCategory = () => {
+  const handleValueChange: React.ChangeEventHandler<HTMLInputElement> = (
+    event
+  ) => {
+    dispatch({
+      type: 'setValue',
+      payload: event.target.value
+    });
+  };
+
+  const handlePriceChange: React.ChangeEventHandler<HTMLInputElement> = (
+    event
+  ) => {
+    const inputValue = event.target.value;
+    const numberValue = parseFloat(inputValue);
+    if (numberValue) {
+      dispatch({
+        type: 'setPrice',
+        payload: numberValue
+      });
+    } else {
+      alert('Pice is not Valid!!');
+      return;
+    }
+  };
+
+  const onAddNewSubCategory = (category_id: number) => {
+    dispatch({
+      type: 'setId',
+      payload: category_id
+    });
     dispatch({
       type: 'setOpenModal',
       payload: true
@@ -70,7 +123,45 @@ const CategoryManagement = () => {
     });
   };
 
+  const onClickAddNewSubCategory = async () => {
+    try {
+      if (state.price <= 0) {
+        alert('Please Input a Valid Price!!');
+        return;
+      }
+
+      if (state.value === '') {
+        alert('Please Input a Valid Lab Test Name!!');
+        return;
+      }
+
+      const data = {
+        category_id: state.id,
+        sub_category_name: state.value,
+        price: state.price,
+        authBy: authUser.userId
+      };
+
+      const res = await reduxDispatch(createNewSubCategory(data));
+      if (res.type === 'subCategory/create/fulfilled') {
+        handleOnClose();
+        fetchSubCategory();
+        fetchCategory();
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const handleOnClose = () => {
+    dispatch({
+      type: 'setId',
+      payload: 0
+    });
+    dispatch({
+      type: 'setValue',
+      payload: ''
+    });
     dispatch({
       type: 'setOpenModal',
       payload: false
@@ -140,10 +231,16 @@ const CategoryManagement = () => {
                     fullWidth
                     id="subCategory"
                     label="New Sub-Category Name"
+                    onChange={handleValueChange}
                   />
                   <Box sx={{ mt: 2 }}>
-                    <Button>Cancel</Button>
-                    <Button variant="contained">Update</Button>
+                    <Button onClick={handleOnClose}>Cancel</Button>
+                    <Button
+                      variant="contained"
+                      onClick={onClickUpdateSubCategory}
+                    >
+                      Update
+                    </Button>
                   </Box>
                 </Box>
               </>
@@ -165,15 +262,18 @@ const CategoryManagement = () => {
                     fullWidth
                     id="category"
                     label="New Category Name"
+                    onChange={handleValueChange}
                   />
                   <Box sx={{ mt: 2 }}>
-                    <Button>Cancel</Button>
-                    <Button variant="contained">Update</Button>
+                    <Button onClick={handleOnClose}>Cancel</Button>
+                    <Button variant="contained" onClick={onClickUpdateCategory}>
+                      Update
+                    </Button>
                   </Box>
                 </Box>
               </>
             );
-          } else {
+          } else if (state.type === 'Add New Sub Category') {
             return (
               <>
                 <Box
@@ -184,16 +284,43 @@ const CategoryManagement = () => {
                   alignItems={'center'}
                   flexDirection={'column'}
                 >
-                  <TextField
-                    name="newSubCategory"
-                    required
-                    fullWidth
-                    id="newSubCategory"
-                    label="New Sub-Category Name"
-                  />
+                  <Grid
+                    container
+                    direction="row"
+                    justifyContent="center"
+                    alignItems="stretch"
+                    spacing={4}
+                  >
+                    <Grid item xs={12}>
+                      <TextField
+                        name="newSubCategory"
+                        required
+                        fullWidth
+                        id="newSubCategory"
+                        label="New Sub-Category Name"
+                        onChange={handleValueChange}
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <TextField
+                        type="number"
+                        name="price"
+                        required
+                        fullWidth
+                        id="price"
+                        label="Price"
+                        onChange={handlePriceChange}
+                      />
+                    </Grid>
+                  </Grid>
                   <Box sx={{ mt: 2 }}>
-                    <Button>Cancel</Button>
-                    <Button variant="contained">Update</Button>
+                    <Button onClick={handleOnClose}>Cancel</Button>
+                    <Button
+                      variant="contained"
+                      onClick={onClickAddNewSubCategory}
+                    >
+                      Submit
+                    </Button>
                   </Box>
                 </Box>
               </>
@@ -251,14 +378,21 @@ const CategoryManagement = () => {
                           <FormControlLabel
                             label={data.category_name}
                             control={
-                              <IconButton
-                                aria-label="edit"
-                                size="small"
-                                color="info"
-                                onClick={() => onEditCategory(data.id)}
-                              >
-                                <ModeEditOutlineIcon />
-                              </IconButton>
+                              <>
+                                <IconButton
+                                  aria-label="edit"
+                                  size="small"
+                                  color="info"
+                                  onClick={() => onEditCategory(data.id)}
+                                >
+                                  <ModeEditOutlineIcon />
+                                </IconButton>
+                                <Divider
+                                  orientation="vertical"
+                                  flexItem
+                                  sx={{ mr: 2, ml: 1 }}
+                                />
+                              </>
                             }
                             sx={{
                               '& .MuiFormControlLabel-label': {
@@ -270,20 +404,60 @@ const CategoryManagement = () => {
                           <Divider variant="middle" />
                         </FormGroup>
                         {state.subCategory
-                          .filter((subData) => subData.category_id === data.id)
+                          ?.filter((subData) => subData.category_id === data.id)
                           .map((subCat, i) => (
                             <FormGroup key={i}>
                               <FormControlLabel
                                 control={
-                                  <IconButton
-                                    aria-label="edit"
-                                    size="small"
-                                    onClick={() => onEditSubCategory(subCat.id)}
-                                  >
-                                    <ModeEditOutlineIcon />
-                                  </IconButton>
+                                  <>
+                                    <IconButton
+                                      aria-label="edit"
+                                      size="small"
+                                      onClick={() =>
+                                        onEditSubCategory(subCat.id)
+                                      }
+                                    >
+                                      <ModeEditOutlineIcon />
+                                    </IconButton>
+                                    <IconButton
+                                      aria-label="edit"
+                                      size="small"
+                                      color="secondary"
+                                      onClick={() =>
+                                        onEditSubCategory(subCat.id)
+                                      }
+                                    >
+                                      <DeleteIcon />
+                                    </IconButton>
+                                    <Divider
+                                      orientation="vertical"
+                                      flexItem
+                                      sx={{ mr: 2, ml: 1 }}
+                                    />
+                                  </>
                                 }
-                                label={subCat.sub_category_name}
+                                label={(function () {
+                                  return (
+                                    <Box
+                                      sx={{
+                                        width: '100%',
+                                        mt: 1
+                                      }}
+                                    >
+                                      {subCat.sub_category_name}{' '}
+                                      <Typography sx={{ fontWeight: 'bold' }}>
+                                        ₱ {Number(subCat.price)}
+                                      </Typography>
+                                      <Box
+                                        sx={{
+                                          height: '1px',
+                                          backgroundColor: 'gray',
+                                          width: '100%'
+                                        }}
+                                      ></Box>
+                                    </Box>
+                                  );
+                                })()}
                               />
                             </FormGroup>
                           ))}
@@ -299,7 +473,7 @@ const CategoryManagement = () => {
                             aria-label="add"
                             color="primary"
                             size="large"
-                            onClick={() => onAddNewSubCategory}
+                            onClick={() => onAddNewSubCategory(data.id)}
                           >
                             <AddIcon />
                             <Typography component="h5" variant="h5" ml={1}>

@@ -27,21 +27,6 @@ import { PatientList } from './Patient_Interface';
 import * as api from 'src/api/apiTest';
 
 const PatientListTable = () => {
-  const [patient, setPatient] = React.useState<PatientList[]>([]);
-
-  const fetchAllUser = async () => {
-    try {
-      const { data } = await api.user();
-      setPatient(data);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  React.useEffect(() => {
-    fetchAllUser();
-  });
-
   const theme = useTheme();
   return (
     <Card>
@@ -77,93 +62,86 @@ const PatientListTable = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {patient &&
-              patient?.map((data, index) => {
-                return (
-                  <TableRow hover key={index}>
-                    <TableCell padding="checkbox">
-                      <Checkbox color="primary" />
-                    </TableCell>
-                    <TableCell>
-                      <Typography
-                        variant="body1"
-                        fontWeight="bold"
-                        color="text.primary"
-                        gutterBottom
-                        noWrap
-                      >
-                        {data.firstName}
-                      </Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Typography
-                        variant="body1"
-                        fontWeight="bold"
-                        color="text.primary"
-                        gutterBottom
-                        noWrap
-                      >
-                        {data.lastName}
-                      </Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Typography
-                        variant="body1"
-                        fontWeight="bold"
-                        color="text.primary"
-                        gutterBottom
-                        noWrap
-                      >
-                        {data.email}
-                      </Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Typography
-                        variant="body1"
-                        fontWeight="bold"
-                        color="text.primary"
-                        gutterBottom
-                        noWrap
-                      >
-                        {data.password}
-                      </Typography>
-                    </TableCell>
-                    <TableCell>
-                      {data.status === 1 ? 'Completed' : 'Pending'}
-                    </TableCell>
-                    <TableCell>
-                      <Tooltip title="View Results" arrow>
-                        <IconButton
-                          sx={{
-                            '&:hover': {
-                              background: theme.colors.primary.lighter
-                            },
-                            color: theme.palette.primary.main
-                          }}
-                          color="inherit"
-                          size="small"
-                        >
-                          <SourceIcon fontSize="small" />
-                        </IconButton>
-                      </Tooltip>
-                      <Tooltip title="Edit Results" arrow>
-                        <IconButton
-                          sx={{
-                            '&:hover': {
-                              background: theme.colors.primary.lighter
-                            },
-                            color: theme.palette.error.main
-                          }}
-                          color="inherit"
-                          size="small"
-                        >
-                          <EditTwoToneIcon fontSize="small" />
-                        </IconButton>
-                      </Tooltip>
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
+            <TableRow hover>
+              <TableCell padding="checkbox">
+                <Checkbox color="primary" />
+              </TableCell>
+              <TableCell>
+                <Typography
+                  variant="body1"
+                  fontWeight="bold"
+                  color="text.primary"
+                  gutterBottom
+                  noWrap
+                >
+                  Test
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography
+                  variant="body1"
+                  fontWeight="bold"
+                  color="text.primary"
+                  gutterBottom
+                  noWrap
+                >
+                  Test
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography
+                  variant="body1"
+                  fontWeight="bold"
+                  color="text.primary"
+                  gutterBottom
+                  noWrap
+                >
+                  Test
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography
+                  variant="body1"
+                  fontWeight="bold"
+                  color="text.primary"
+                  gutterBottom
+                  noWrap
+                >
+                  Test
+                </Typography>
+              </TableCell>
+              <TableCell>Test</TableCell>
+              <TableCell>
+                <Tooltip title="View Results" arrow>
+                  <IconButton
+                    sx={{
+                      '&:hover': {
+                        background: theme.colors.primary.lighter
+                      },
+                      color: theme.palette.primary.main
+                    }}
+                    color="inherit"
+                    size="small"
+                  >
+                    <SourceIcon fontSize="small" />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Edit Results" arrow>
+                  <IconButton
+                    sx={{
+                      '&:hover': {
+                        background: theme.colors.primary.lighter
+                      },
+                      color: theme.palette.error.main
+                    }}
+                    color="inherit"
+                    size="small"
+                  >
+                    <EditTwoToneIcon fontSize="small" />
+                  </IconButton>
+                </Tooltip>
+              </TableCell>
+            </TableRow>
           </TableBody>
         </Table>
       </TableContainer>

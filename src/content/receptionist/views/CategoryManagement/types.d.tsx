@@ -33,10 +33,16 @@ export type State = {
   subCategory: subCategory[];
   openModal: boolean;
   type: string;
+  value: string;
+  id: number;
+  price: number;
 };
 
 export type Action =
   | { type: 'setSubCategory'; payload: subCategory[] }
   | { type: 'setCategory'; payload: category[] }
   | { type: 'setOpenModal'; payload: boolean }
-  | { type: 'setType'; payload: string };
+  | { type: 'setType'; payload: string }
+  | { type: 'setValue'; payload: string }
+  | { type: 'setId'; payload: number }
+  | { type: 'setPrice'; payload: number };

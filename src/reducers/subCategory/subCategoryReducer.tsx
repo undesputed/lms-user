@@ -6,9 +6,9 @@ import {
   createSelector,
   createEntityAdapter
 } from '@reduxjs/toolkit';
-import { subCategory } from './subCategory';
+import { createCreds, createResponse, subCategory } from './subCategory';
 import { RootState } from 'src/app/store';
-import { fetchAll } from 'src/api/subCategory';
+import { create, fetchAll } from 'src/api/subCategory';
 
 const subCategoryAdapter = createEntityAdapter<subCategory>({
   selectId: (subCategory) => subCategory.id
@@ -24,6 +24,14 @@ export const fetchAllSubCategory: any = createAsyncThunk(
   async () => {
     const response = await fetchAll();
     return response;
+  }
+);
+
+export const createNewSubCategory: any = createAsyncThunk(
+  'subCategory/create',
+  async (credential: createCreds) => {
+    const res = await create(credential);
+    return res;
   }
 );
 
@@ -60,6 +68,17 @@ const subCategorySlice = createSlice({
         // }
       })
       .addCase(fetchAllSubCategory.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message;
+      })
+      .addCase(createNewSubCategory.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(createNewSubCategory.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        subCategoryAdapter.upsertOne(state, action.payload);
+      })
+      .addCase(createNewSubCategory.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message;
       });

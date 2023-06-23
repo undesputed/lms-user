@@ -111,7 +111,7 @@ const AddNewRequest = () => {
 
   const onDelete = (event: any, sub_category_id: number) => {
     setSelectedSubCat((prevSelectedSubCat) =>
-      prevSelectedSubCat.filter((d) => d !== sub_category_id)
+      prevSelectedSubCat?.filter((d) => d !== sub_category_id)
     );
   };
 
@@ -130,7 +130,7 @@ const AddNewRequest = () => {
     } else {
       if (checkSubCat) {
         setSelectedSubCat((prevSelectedSubCat) =>
-          prevSelectedSubCat.filter((d) => d !== sub_category_id)
+          prevSelectedSubCat?.filter((d) => d !== sub_category_id)
         );
       }
     }
