@@ -27,10 +27,16 @@ import { reducer } from './reducer';
 import { initialState } from './initialState';
 import { useAppDispatch } from 'src/actions/hooks';
 import { useNavigate } from 'react-router';
-import { fetchAllCategory } from 'src/reducers/category/categoryReducer';
+import {
+  createCat,
+  fetchAllCategory,
+  updateCat
+} from 'src/reducers/category/categoryReducer';
 import {
   createNewSubCategory,
-  fetchAllSubCategory
+  deleteSubCat,
+  fetchAllSubCategory,
+  updateSubCat
 } from 'src/reducers/subCategory/subCategoryReducer';
 import AddIcon from '@mui/icons-material/Add';
 import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
@@ -45,15 +51,85 @@ const CategoryManagement = () => {
   const authUser = reduxDispatch(getToken);
   const navigate = useNavigate();
 
-  const onClickUpdateSubCategory = () => {
-    alert(state.value);
+  const handleAddNewCategory = async () => {
+    try {
+      const data = {
+        category_name: state.value,
+        authBy: authUser.userId
+      };
+
+      const res = await reduxDispatch(createCat(data));
+      if (res.type === 'category/create/fulfilled') {
+        handleOnClose();
+        fetchCategory();
+        fetchSubCategory();
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
 
-  const onClickUpdateCategory = () => {
-    alert(state.value);
+  const onClickUpdateSubCategory = async () => {
+    try {
+      const id = state.id;
+      const data = {
+        sub_category_name: state.value,
+        price: state.price
+      };
+
+      const res = await reduxDispatch(updateSubCat({ id, credential: data }));
+      if (res.type === 'subCategory/update/fulfilled') {
+        handleOnClose();
+        fetchSubCategory();
+        fetchCategory();
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
 
-  const onEditSubCategory = (sub_category_id: number) => {
+  const onClickUpdateCategory = async () => {
+    try {
+      const id = state.id;
+      const data = {
+        category_name: state.value
+      };
+
+      const res = await reduxDispatch(updateCat({ id, credential: data }));
+      if (res.type === 'category/update/fulfilled') {
+        handleOnClose();
+        fetchSubCategory();
+        fetchCategory();
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const onOpenAddNewCat = async () => {
+    dispatch({
+      type: 'setOpenModal',
+      payload: true
+    });
+    dispatch({
+      type: 'setType',
+      payload: 'Add Category'
+    });
+  };
+
+  const onEditSubCategory = (
+    sub_category_id: number,
+    sub_category_name: string,
+    price: number
+  ) => {
+    dispatch({
+      type: 'setPrice',
+      payload: price
+    });
+    dispatch({
+      type: 'setValue',
+      payload: sub_category_name
+    });
     dispatch({
       type: 'setOpenModal',
       payload: true
@@ -68,7 +144,23 @@ const CategoryManagement = () => {
     });
   };
 
-  const onEditCategory = (category_id: number) => {
+  const onDeleteSubCategory = async (sub_category_id: number) => {
+    try {
+      const result = window.confirm('Are you sure you want to delete?');
+      if (result) {
+        const res = await reduxDispatch(deleteSubCat(sub_category_id));
+        if (res.type === 'subCategory/delete/fulfilled') {
+          handleOnClose();
+          fetchSubCategory();
+          fetchCategory();
+        }
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const onEditCategory = (category_id: number, category_name: string) => {
     dispatch({
       type: 'setOpenModal',
       payload: true
@@ -80,6 +172,10 @@ const CategoryManagement = () => {
     dispatch({
       type: 'setId',
       payload: category_id
+    });
+    dispatch({
+      type: 'setValue',
+      payload: category_name
     });
   };
 
@@ -159,6 +255,10 @@ const CategoryManagement = () => {
       payload: 0
     });
     dispatch({
+      type: 'setPrice',
+      payload: 0
+    });
+    dispatch({
       type: 'setValue',
       payload: ''
     });
@@ -216,34 +316,55 @@ const CategoryManagement = () => {
         {(function () {
           if (state.type === 'Edit Sub Category') {
             return (
-              <>
-                <Box
-                  component="form"
-                  noValidate
-                  display={'flex'}
-                  justifyContent={'center'}
-                  alignItems={'center'}
-                  flexDirection={'column'}
+              <Box
+                component="form"
+                noValidate
+                display={'flex'}
+                justifyContent={'center'}
+                alignItems={'center'}
+                flexDirection={'column'}
+              >
+                <Grid
+                  container
+                  direction="row"
+                  justifyContent="center"
+                  alignItems="stretch"
+                  spacing={4}
                 >
-                  <TextField
-                    name="subCategory"
-                    required
-                    fullWidth
-                    id="subCategory"
-                    label="New Sub-Category Name"
-                    onChange={handleValueChange}
-                  />
-                  <Box sx={{ mt: 2 }}>
-                    <Button onClick={handleOnClose}>Cancel</Button>
-                    <Button
-                      variant="contained"
-                      onClick={onClickUpdateSubCategory}
-                    >
-                      Update
-                    </Button>
-                  </Box>
+                  <Grid item xs={12}>
+                    <TextField
+                      name="subCategory"
+                      required
+                      fullWidth
+                      id="subCategory"
+                      label="New Sub-Category Name"
+                      value={state.value}
+                      onChange={handleValueChange}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      type="number"
+                      name="price"
+                      required
+                      fullWidth
+                      id="price"
+                      value={state.price}
+                      label="Price"
+                      onChange={handlePriceChange}
+                    />
+                  </Grid>
+                </Grid>
+                <Box sx={{ mt: 2 }}>
+                  <Button onClick={handleOnClose}>Cancel</Button>
+                  <Button
+                    variant="contained"
+                    onClick={onClickUpdateSubCategory}
+                  >
+                    Update
+                  </Button>
                 </Box>
-              </>
+              </Box>
             );
           } else if (state.type === 'Edit Category') {
             return (
@@ -262,6 +383,7 @@ const CategoryManagement = () => {
                     fullWidth
                     id="category"
                     label="New Category Name"
+                    value={state.value}
                     onChange={handleValueChange}
                   />
                   <Box sx={{ mt: 2 }}>
@@ -325,6 +447,35 @@ const CategoryManagement = () => {
                 </Box>
               </>
             );
+          } else {
+            return (
+              <>
+                <Box
+                  component="form"
+                  noValidate
+                  display={'flex'}
+                  justifyContent={'center'}
+                  alignItems={'center'}
+                  flexDirection={'column'}
+                >
+                  <TextField
+                    name="category"
+                    required
+                    fullWidth
+                    id="category"
+                    label="New Category Name"
+                    value={state.value}
+                    onChange={handleValueChange}
+                  />
+                  <Box sx={{ mt: 2 }}>
+                    <Button onClick={handleOnClose}>Cancel</Button>
+                    <Button variant="contained" onClick={handleAddNewCategory}>
+                      Add
+                    </Button>
+                  </Box>
+                </Box>
+              </>
+            );
           }
         })()}
       </Modal>
@@ -345,7 +496,18 @@ const CategoryManagement = () => {
                 mb: 4
               }}
             >
-              <CardHeader title="Laboratory Categories and Sub Categories" />
+              <CardHeader
+                title="Laboratory Categories and Sub Categories"
+                action={
+                  <IconButton
+                    aria-label="settings"
+                    color="primary"
+                    onClick={onOpenAddNewCat}
+                  >
+                    <AddIcon />
+                  </IconButton>
+                }
+              />
               <Divider />
               <CardContent>
                 <Grid
@@ -383,7 +545,9 @@ const CategoryManagement = () => {
                                   aria-label="edit"
                                   size="small"
                                   color="info"
-                                  onClick={() => onEditCategory(data.id)}
+                                  onClick={() =>
+                                    onEditCategory(data.id, data.category_name)
+                                  }
                                 >
                                   <ModeEditOutlineIcon />
                                 </IconButton>
@@ -414,7 +578,11 @@ const CategoryManagement = () => {
                                       aria-label="edit"
                                       size="small"
                                       onClick={() =>
-                                        onEditSubCategory(subCat.id)
+                                        onEditSubCategory(
+                                          subCat.id,
+                                          subCat.sub_category_name,
+                                          subCat.price
+                                        )
                                       }
                                     >
                                       <ModeEditOutlineIcon />
@@ -424,7 +592,7 @@ const CategoryManagement = () => {
                                       size="small"
                                       color="secondary"
                                       onClick={() =>
-                                        onEditSubCategory(subCat.id)
+                                        onDeleteSubCategory(subCat.id)
                                       }
                                     >
                                       <DeleteIcon />

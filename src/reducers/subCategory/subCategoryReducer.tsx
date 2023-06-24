@@ -6,9 +6,19 @@ import {
   createSelector,
   createEntityAdapter
 } from '@reduxjs/toolkit';
-import { createCreds, createResponse, subCategory } from './subCategory';
+import {
+  createCreds,
+  createResponse,
+  subCategory,
+  updateCredentials
+} from './subCategory';
 import { RootState } from 'src/app/store';
-import { create, fetchAll } from 'src/api/subCategory';
+import {
+  create,
+  deleteSubCategory,
+  fetchAll,
+  updateSubCategory
+} from 'src/api/subCategory';
 
 const subCategoryAdapter = createEntityAdapter<subCategory>({
   selectId: (subCategory) => subCategory.id
@@ -35,6 +45,22 @@ export const createNewSubCategory: any = createAsyncThunk(
   }
 );
 
+export const deleteSubCat: any = createAsyncThunk(
+  'subCategory/delete',
+  async (id: number) => {
+    const res = await deleteSubCategory(id);
+    return res;
+  }
+);
+
+export const updateSubCat = createAsyncThunk(
+  'subCategory/update',
+  async (payload: { id: number; credential: updateCredentials }) => {
+    const { id, credential } = payload;
+    const res = await updateSubCategory(id, credential);
+    return res;
+  }
+);
 // const mapResponse = (response: subCategory[]): subCategory[] => {
 //   return response.map((item) => ({
 //     ...item,
@@ -81,6 +107,16 @@ const subCategorySlice = createSlice({
       .addCase(createNewSubCategory.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message;
+      })
+      .addCase(deleteSubCat.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(deleteSubCat.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        subCategoryAdapter.removeOne(state, action.payload);
+      })
+      .addCase(deleteSubCat.rejected, (state, action) => {
+        state.status = 'failed';
       });
   }
 });

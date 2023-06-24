@@ -27,3 +27,18 @@ export interface createResponse {
   created_at: Date;
   updated_at: null;
 }
+
+export interface deleteResponse {
+  message: string;
+}
+
+export interface updateCredentials {
+  sub_category_name: string;
+  price: number;
+}
+
+export interface updateResponse {
+  id: number | string;
+  sub_category_name: string;
+  price: number;
+}
