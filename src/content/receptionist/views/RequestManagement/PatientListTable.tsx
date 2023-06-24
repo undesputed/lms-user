@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Card,
   CardHeader,
   Checkbox,
@@ -9,6 +10,7 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  Stack,
   Table,
   TableBody,
   TableCell,
@@ -28,10 +30,12 @@ import * as api from 'src/api/apiTest';
 import { PageListTableType, requestState } from './types.d';
 import { basicInfoFormResponse } from 'src/reducers/requestForm/requestForm';
 import BeenhereIcon from '@mui/icons-material/Beenhere';
+import UploadIcon from '@mui/icons-material/Upload';
+import DownloadIcon from '@mui/icons-material/Download';
 
 const PatientListTable: React.FC<PageListTableType> = (props) => {
   const theme = useTheme();
-  const [status, setStatus] = React.useState<number>(1);
+  const [status, setStatus] = React.useState<number>(4);
   const [data, setData] = React.useState<basicInfoFormResponse[]>(
     props.request
   );
@@ -50,21 +54,43 @@ const PatientListTable: React.FC<PageListTableType> = (props) => {
     <Card sx={{ width: '100%' }}>
       <CardHeader
         action={
-          <Box width={150}>
-            <FormControl fullWidth variant="outlined">
-              <InputLabel>Status</InputLabel>
-              <Select
-                label="Status"
-                autoWidth
-                value={status}
-                onChange={(e: any) => setStatus(e.target.value)}
+          <Box width={600}>
+            <Stack direction={'row'}>
+              <Button
+                size="medium"
+                color="success"
+                startIcon={<UploadIcon />}
+                sx={{
+                  width: '50%'
+                }}
               >
-                <MenuItem value={1}>For Payment</MenuItem>
-                <MenuItem value={2}>For Processing</MenuItem>
-                <MenuItem value={3}>Completed</MenuItem>
-                <MenuItem value={4}>All</MenuItem>
-              </Select>
-            </FormControl>
+                Export File
+              </Button>
+              <Button
+                size="medium"
+                color="warning"
+                startIcon={<DownloadIcon />}
+                sx={{
+                  width: '50%'
+                }}
+              >
+                Import File
+              </Button>
+              <FormControl fullWidth variant="outlined">
+                <InputLabel>Status</InputLabel>
+                <Select
+                  label="Status"
+                  autoWidth
+                  value={status}
+                  onChange={(e: any) => setStatus(e.target.value)}
+                >
+                  <MenuItem value={1}>For Payment</MenuItem>
+                  <MenuItem value={2}>For Processing</MenuItem>
+                  <MenuItem value={3}>Completed</MenuItem>
+                  <MenuItem value={4}>All</MenuItem>
+                </Select>
+              </FormControl>
+            </Stack>
           </Box>
         }
         title="Recent Requests"

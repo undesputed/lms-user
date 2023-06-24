@@ -18,6 +18,7 @@ import {
   Grid,
   IconButton,
   Paper,
+  Stack,
   TextField,
   Typography
 } from '@mui/material';
@@ -44,6 +45,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { sub } from 'date-fns';
 import Modal from './modal';
 import { getToken } from 'src/reducers/auth/authReducer';
+import UploadIcon from '@mui/icons-material/Upload';
 
 const CategoryManagement = () => {
   const [state, dispatch] = React.useReducer(reducer, initialState);
@@ -499,13 +501,25 @@ const CategoryManagement = () => {
               <CardHeader
                 title="Laboratory Categories and Sub Categories"
                 action={
-                  <IconButton
-                    aria-label="settings"
-                    color="primary"
-                    onClick={onOpenAddNewCat}
-                  >
-                    <AddIcon />
-                  </IconButton>
+                  <Box>
+                    <Stack direction={'row'}>
+                      <Button
+                        size="medium"
+                        color="success"
+                        startIcon={<UploadIcon />}
+                        fullWidth
+                      >
+                        Export File
+                      </Button>
+                      <IconButton
+                        aria-label="settings"
+                        color="primary"
+                        onClick={onOpenAddNewCat}
+                      >
+                        <AddIcon />
+                      </IconButton>
+                    </Stack>
+                  </Box>
                 }
               />
               <Divider />
